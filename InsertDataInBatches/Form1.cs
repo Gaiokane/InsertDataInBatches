@@ -26,24 +26,29 @@ namespace InsertDataInBatches
             InitializeComponent();
         }
 
+        #region 窗体加载事件
         private void Main_Load(object sender, EventArgs e)
         {
             txtboxHost.Text = "127.0.0.1";
+            txtboxPort.Text = "1433";
             txtboxDatabase.Text = "pagination";
             txtboxUsername.Text = "qkk";
             txtboxPassword.Text = "qkk";
         }
+        #endregion
 
+        #region 数据库_连接按钮单击事件
         private void btnConnect_Click(object sender, EventArgs e)
         {
             string host = txtboxHost.Text.Trim();
+            string port = txtboxPort.Text.Trim();
             string database = txtboxDatabase.Text.Trim();
             string username = txtboxUsername.Text.Trim();
             string password = txtboxPassword.Text.Trim();
 
             if (radiobtnMSSQL.Checked == true)
             {
-                string sqlconn = "server=" + host + ";database=" + database + ";uid=" + username + ";pwd=" + password + "";
+                string sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
                 try
                 {
                     mssqlconn = new SqlConnection(sqlconn);
@@ -64,11 +69,12 @@ namespace InsertDataInBatches
             }
             if (radiobtnMYSQL.Checked == true)
             {
-                string sqlconn = "Host = " + host + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
+                string sqlconn = "Host = " + host + "; Port = " + port + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
                 try
                 {
                     mysqlconn = new MySqlConnection(sqlconn);
                     mysqlconn.Open();
+                    MessageBox.Show(mysqlconn.ConnectionTimeout.ToString());
                     //MessageBox.Show(mysqlconn.State.ToString());//Open
                     if (mysqlconn.State == ConnectionState.Open)
                     {
@@ -84,7 +90,9 @@ namespace InsertDataInBatches
                 }
             }
         }
+        #endregion
 
+        #region 数据库_断开按钮单击事件
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
             if (radiobtnMSSQL.Checked == true)
@@ -104,5 +112,20 @@ namespace InsertDataInBatches
                 radiobtnMYSQL.Enabled = true;
             }
         }
+        #endregion
+
+        #region 数据库_单选按钮切换默认端口改变
+        private void radiobtnMSSQL_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radiobtnMSSQL.Checked == true)
+            {
+                txtboxPort.Text = "1433";
+            }
+            else
+            {
+                txtboxPort.Text = "3306";
+            }
+        }
+        #endregion
     }
 }

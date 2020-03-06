@@ -42,11 +42,15 @@
             this.labDatabase = new System.Windows.Forms.Label();
             this.labConnectStatus = new System.Windows.Forms.Label();
             this.labHost = new System.Windows.Forms.Label();
+            this.txtboxPort = new System.Windows.Forms.TextBox();
+            this.labPort = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtboxPort);
+            this.groupBox1.Controls.Add(this.labPort);
             this.groupBox1.Controls.Add(this.btnDisconnect);
             this.groupBox1.Controls.Add(this.btnConnect);
             this.groupBox1.Controls.Add(this.radiobtnMYSQL);
@@ -62,7 +66,7 @@
             this.groupBox1.Controls.Add(this.labHost);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(708, 83);
+            this.groupBox1.Size = new System.Drawing.Size(894, 83);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据库";
@@ -72,7 +76,7 @@
             this.btnDisconnect.Location = new System.Drawing.Point(205, 17);
             this.btnDisconnect.Name = "btnDisconnect";
             this.btnDisconnect.Size = new System.Drawing.Size(75, 23);
-            this.btnDisconnect.TabIndex = 12;
+            this.btnDisconnect.TabIndex = 14;
             this.btnDisconnect.Text = "断开";
             this.btnDisconnect.UseVisualStyleBackColor = true;
             this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
@@ -82,7 +86,7 @@
             this.btnConnect.Location = new System.Drawing.Point(124, 17);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(75, 23);
-            this.btnConnect.TabIndex = 11;
+            this.btnConnect.TabIndex = 13;
             this.btnConnect.Text = "连接";
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
@@ -108,60 +112,61 @@
             this.radiobtnMSSQL.TabStop = true;
             this.radiobtnMSSQL.Text = "mssql";
             this.radiobtnMSSQL.UseVisualStyleBackColor = true;
+            this.radiobtnMSSQL.CheckedChanged += new System.EventHandler(this.radiobtnMSSQL_CheckedChanged);
             // 
             // txtboxPassword
             // 
-            this.txtboxPassword.Location = new System.Drawing.Point(585, 46);
+            this.txtboxPassword.Location = new System.Drawing.Point(738, 46);
             this.txtboxPassword.Name = "txtboxPassword";
             this.txtboxPassword.Size = new System.Drawing.Size(100, 21);
-            this.txtboxPassword.TabIndex = 10;
+            this.txtboxPassword.TabIndex = 12;
             // 
             // txtboxUsername
             // 
-            this.txtboxUsername.Location = new System.Drawing.Point(408, 46);
+            this.txtboxUsername.Location = new System.Drawing.Point(576, 46);
             this.txtboxUsername.Name = "txtboxUsername";
-            this.txtboxUsername.Size = new System.Drawing.Size(100, 21);
-            this.txtboxUsername.TabIndex = 8;
+            this.txtboxUsername.Size = new System.Drawing.Size(85, 21);
+            this.txtboxUsername.TabIndex = 10;
             // 
             // txtboxDatabase
             // 
-            this.txtboxDatabase.Location = new System.Drawing.Point(231, 46);
+            this.txtboxDatabase.Location = new System.Drawing.Point(369, 46);
             this.txtboxDatabase.Name = "txtboxDatabase";
-            this.txtboxDatabase.Size = new System.Drawing.Size(100, 21);
-            this.txtboxDatabase.TabIndex = 6;
+            this.txtboxDatabase.Size = new System.Drawing.Size(130, 21);
+            this.txtboxDatabase.TabIndex = 8;
             // 
             // txtboxHost
             // 
             this.txtboxHost.Location = new System.Drawing.Point(54, 46);
             this.txtboxHost.Name = "txtboxHost";
-            this.txtboxHost.Size = new System.Drawing.Size(100, 21);
+            this.txtboxHost.Size = new System.Drawing.Size(123, 21);
             this.txtboxHost.TabIndex = 4;
             // 
             // labPassword
             // 
             this.labPassword.AutoSize = true;
-            this.labPassword.Location = new System.Drawing.Point(514, 49);
+            this.labPassword.Location = new System.Drawing.Point(667, 49);
             this.labPassword.Name = "labPassword";
             this.labPassword.Size = new System.Drawing.Size(65, 12);
-            this.labPassword.TabIndex = 9;
+            this.labPassword.TabIndex = 11;
             this.labPassword.Text = "Password：";
             // 
             // labUsername
             // 
             this.labUsername.AutoSize = true;
-            this.labUsername.Location = new System.Drawing.Point(337, 49);
+            this.labUsername.Location = new System.Drawing.Point(505, 49);
             this.labUsername.Name = "labUsername";
             this.labUsername.Size = new System.Drawing.Size(65, 12);
-            this.labUsername.TabIndex = 7;
+            this.labUsername.TabIndex = 9;
             this.labUsername.Text = "Username：";
             // 
             // labDatabase
             // 
             this.labDatabase.AutoSize = true;
-            this.labDatabase.Location = new System.Drawing.Point(160, 49);
+            this.labDatabase.Location = new System.Drawing.Point(298, 49);
             this.labDatabase.Name = "labDatabase";
             this.labDatabase.Size = new System.Drawing.Size(65, 12);
-            this.labDatabase.TabIndex = 5;
+            this.labDatabase.TabIndex = 7;
             this.labDatabase.Text = "Database：";
             // 
             // labConnectStatus
@@ -170,7 +175,7 @@
             this.labConnectStatus.Location = new System.Drawing.Point(286, 22);
             this.labConnectStatus.Name = "labConnectStatus";
             this.labConnectStatus.Size = new System.Drawing.Size(77, 12);
-            this.labConnectStatus.TabIndex = 13;
+            this.labConnectStatus.TabIndex = 15;
             this.labConnectStatus.Text = "状态：已断开";
             // 
             // labHost
@@ -182,11 +187,27 @@
             this.labHost.TabIndex = 3;
             this.labHost.Text = "Host：";
             // 
+            // txtboxPort
+            // 
+            this.txtboxPort.Location = new System.Drawing.Point(230, 46);
+            this.txtboxPort.Name = "txtboxPort";
+            this.txtboxPort.Size = new System.Drawing.Size(62, 21);
+            this.txtboxPort.TabIndex = 6;
+            // 
+            // labPort
+            // 
+            this.labPort.AutoSize = true;
+            this.labPort.Location = new System.Drawing.Point(183, 49);
+            this.labPort.Name = "labPort";
+            this.labPort.Size = new System.Drawing.Size(41, 12);
+            this.labPort.TabIndex = 5;
+            this.labPort.Text = "Port：";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(918, 450);
             this.Controls.Add(this.groupBox1);
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -214,6 +235,8 @@
         private System.Windows.Forms.Button btnDisconnect;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Label labConnectStatus;
+        private System.Windows.Forms.TextBox txtboxPort;
+        private System.Windows.Forms.Label labPort;
     }
 }
 
