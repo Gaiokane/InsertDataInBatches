@@ -1,6 +1,6 @@
 ﻿namespace InsertDataInBatches
 {
-    partial class Main
+    partial class FrmMain
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtboxPort = new System.Windows.Forms.TextBox();
+            this.labPort = new System.Windows.Forms.Label();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.radiobtnMYSQL = new System.Windows.Forms.RadioButton();
@@ -42,8 +44,13 @@
             this.labDatabase = new System.Windows.Forms.Label();
             this.labConnectStatus = new System.Windows.Forms.Label();
             this.labHost = new System.Windows.Forms.Label();
-            this.txtboxPort = new System.Windows.Forms.TextBox();
-            this.labPort = new System.Windows.Forms.Label();
+            this.richtxtboxInsertSQL = new System.Windows.Forms.RichTextBox();
+            this.labInsertSQL = new System.Windows.Forms.Label();
+            this.richtxtboxResult = new System.Windows.Forms.RichTextBox();
+            this.labNumberOfExecutions = new System.Windows.Forms.Label();
+            this.txtboxNumberOfExecutions = new System.Windows.Forms.TextBox();
+            this.btnStartInserting = new System.Windows.Forms.Button();
+            this.labResult = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,6 +77,22 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据库";
+            // 
+            // txtboxPort
+            // 
+            this.txtboxPort.Location = new System.Drawing.Point(230, 46);
+            this.txtboxPort.Name = "txtboxPort";
+            this.txtboxPort.Size = new System.Drawing.Size(62, 21);
+            this.txtboxPort.TabIndex = 6;
+            // 
+            // labPort
+            // 
+            this.labPort.AutoSize = true;
+            this.labPort.Location = new System.Drawing.Point(183, 49);
+            this.labPort.Name = "labPort";
+            this.labPort.Size = new System.Drawing.Size(41, 12);
+            this.labPort.TabIndex = 5;
+            this.labPort.Text = "Port：";
             // 
             // btnDisconnect
             // 
@@ -187,35 +210,86 @@
             this.labHost.TabIndex = 3;
             this.labHost.Text = "Host：";
             // 
-            // txtboxPort
+            // richtxtboxInsertSQL
             // 
-            this.txtboxPort.Location = new System.Drawing.Point(230, 46);
-            this.txtboxPort.Name = "txtboxPort";
-            this.txtboxPort.Size = new System.Drawing.Size(62, 21);
-            this.txtboxPort.TabIndex = 6;
+            this.richtxtboxInsertSQL.Location = new System.Drawing.Point(12, 113);
+            this.richtxtboxInsertSQL.Name = "richtxtboxInsertSQL";
+            this.richtxtboxInsertSQL.Size = new System.Drawing.Size(732, 100);
+            this.richtxtboxInsertSQL.TabIndex = 1;
+            this.richtxtboxInsertSQL.Text = "";
             // 
-            // labPort
+            // labInsertSQL
             // 
-            this.labPort.AutoSize = true;
-            this.labPort.Location = new System.Drawing.Point(183, 49);
-            this.labPort.Name = "labPort";
-            this.labPort.Size = new System.Drawing.Size(41, 12);
-            this.labPort.TabIndex = 5;
-            this.labPort.Text = "Port：";
+            this.labInsertSQL.AutoSize = true;
+            this.labInsertSQL.Location = new System.Drawing.Point(10, 98);
+            this.labInsertSQL.Name = "labInsertSQL";
+            this.labInsertSQL.Size = new System.Drawing.Size(77, 12);
+            this.labInsertSQL.TabIndex = 2;
+            this.labInsertSQL.Text = "insert语句：";
             // 
-            // Main
+            // richtxtboxResult
+            // 
+            this.richtxtboxResult.Location = new System.Drawing.Point(12, 231);
+            this.richtxtboxResult.Name = "richtxtboxResult";
+            this.richtxtboxResult.Size = new System.Drawing.Size(732, 207);
+            this.richtxtboxResult.TabIndex = 1;
+            this.richtxtboxResult.Text = "";
+            // 
+            // labNumberOfExecutions
+            // 
+            this.labNumberOfExecutions.AutoSize = true;
+            this.labNumberOfExecutions.Location = new System.Drawing.Point(750, 113);
+            this.labNumberOfExecutions.Name = "labNumberOfExecutions";
+            this.labNumberOfExecutions.Size = new System.Drawing.Size(65, 12);
+            this.labNumberOfExecutions.TabIndex = 3;
+            this.labNumberOfExecutions.Text = "执行次数：";
+            // 
+            // txtboxNumberOfExecutions
+            // 
+            this.txtboxNumberOfExecutions.Location = new System.Drawing.Point(750, 128);
+            this.txtboxNumberOfExecutions.Name = "txtboxNumberOfExecutions";
+            this.txtboxNumberOfExecutions.Size = new System.Drawing.Size(100, 21);
+            this.txtboxNumberOfExecutions.TabIndex = 4;
+            // 
+            // btnStartInserting
+            // 
+            this.btnStartInserting.Location = new System.Drawing.Point(750, 155);
+            this.btnStartInserting.Name = "btnStartInserting";
+            this.btnStartInserting.Size = new System.Drawing.Size(75, 23);
+            this.btnStartInserting.TabIndex = 5;
+            this.btnStartInserting.Text = "开始插入";
+            this.btnStartInserting.UseVisualStyleBackColor = true;
+            // 
+            // labResult
+            // 
+            this.labResult.AutoSize = true;
+            this.labResult.Location = new System.Drawing.Point(10, 216);
+            this.labResult.Name = "labResult";
+            this.labResult.Size = new System.Drawing.Size(65, 12);
+            this.labResult.TabIndex = 6;
+            this.labResult.Text = "执行情况：";
+            // 
+            // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 450);
+            this.Controls.Add(this.labResult);
+            this.Controls.Add(this.btnStartInserting);
+            this.Controls.Add(this.txtboxNumberOfExecutions);
+            this.Controls.Add(this.labNumberOfExecutions);
+            this.Controls.Add(this.labInsertSQL);
+            this.Controls.Add(this.richtxtboxResult);
+            this.Controls.Add(this.richtxtboxInsertSQL);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Main";
+            this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Main_Load);
+            this.Text = "FrmMain";
+            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -237,6 +311,13 @@
         private System.Windows.Forms.Label labConnectStatus;
         private System.Windows.Forms.TextBox txtboxPort;
         private System.Windows.Forms.Label labPort;
+        private System.Windows.Forms.RichTextBox richtxtboxInsertSQL;
+        private System.Windows.Forms.Label labInsertSQL;
+        private System.Windows.Forms.RichTextBox richtxtboxResult;
+        private System.Windows.Forms.Label labNumberOfExecutions;
+        private System.Windows.Forms.TextBox txtboxNumberOfExecutions;
+        private System.Windows.Forms.Button btnStartInserting;
+        private System.Windows.Forms.Label labResult;
     }
 }
 

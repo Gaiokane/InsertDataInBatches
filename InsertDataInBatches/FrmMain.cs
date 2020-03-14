@@ -12,7 +12,7 @@ using MySql.Data.MySqlClient;
 
 namespace InsertDataInBatches
 {
-    public partial class Main : Form
+    public partial class FrmMain : Form
     {
         SqlConnection mssqlconn;
         SqlCommand mssqlcmd = new SqlCommand();
@@ -21,13 +21,13 @@ namespace InsertDataInBatches
         MySqlCommand mysqlcmd = new MySqlCommand();
 
 
-        public Main()
+        public FrmMain()
         {
             InitializeComponent();
         }
 
         #region 窗体加载事件
-        private void Main_Load(object sender, EventArgs e)
+        private void FrmMain_Load(object sender, EventArgs e)
         {
             txtboxHost.Text = "127.0.0.1";
             txtboxPort.Text = "1433";
@@ -46,6 +46,7 @@ namespace InsertDataInBatches
             string username = txtboxUsername.Text.Trim();
             string password = txtboxPassword.Text.Trim();
 
+            #region 使用MSSQL
             if (radiobtnMSSQL.Checked == true)
             {
                 string sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
@@ -67,6 +68,8 @@ namespace InsertDataInBatches
                     MessageBox.Show(ex.Message);
                 }
             }
+            #endregion
+            #region 使用MYSQL
             if (radiobtnMYSQL.Checked == true)
             {
                 string sqlconn = "Host = " + host + "; Port = " + port + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
@@ -89,6 +92,7 @@ namespace InsertDataInBatches
                     MessageBox.Show(ex.Message);
                 }
             }
+            #endregion
         }
         #endregion
 
