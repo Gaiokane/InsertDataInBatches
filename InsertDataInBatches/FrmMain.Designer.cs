@@ -259,6 +259,7 @@
             this.btnStartInserting.TabIndex = 5;
             this.btnStartInserting.Text = "开始插入";
             this.btnStartInserting.UseVisualStyleBackColor = true;
+            this.btnStartInserting.Click += new System.EventHandler(this.btnStartInserting_Click);
             // 
             // labResult
             // 

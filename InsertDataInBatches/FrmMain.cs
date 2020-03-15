@@ -18,7 +18,7 @@ namespace InsertDataInBatches
         SqlCommand mssqlcmd = new SqlCommand();
 
         MySqlConnection mysqlconn;
-        MySqlCommand mysqlcmd = new MySqlCommand();
+        //MySqlCommand mysqlcmd = new MySqlCommand();
 
 
         public FrmMain()
@@ -34,6 +34,9 @@ namespace InsertDataInBatches
             txtboxDatabase.Text = "pagination";
             txtboxUsername.Text = "qkk";
             txtboxPassword.Text = "qkk";
+
+            txtboxNumberOfExecutions.Text = "2";
+            richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('q1')";
         }
         #endregion
 
@@ -131,5 +134,17 @@ namespace InsertDataInBatches
             }
         }
         #endregion
+
+        private void btnStartInserting_Click(object sender, EventArgs e)
+        {
+            SqlHelper sqlhelp = new SqlHelper();
+            int NumberOfExecutions = Convert.ToInt32(txtboxNumberOfExecutions.Text);
+            string[] sqlQuerys = new string[NumberOfExecutions];
+            for (int i = 0; i < NumberOfExecutions; i++)
+            {
+                sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
+            }
+            richtxtboxResult.Text = sqlhelp.getAffectRowsTransaction(sqlQuerys, mysqlconn).ToString();
+        }
     }
 }
