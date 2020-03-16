@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
+using System.Text.RegularExpressions;
 
 namespace InsertDataInBatches
 {
@@ -36,7 +37,7 @@ namespace InsertDataInBatches
             txtboxPassword.Text = "qkk";
 
             txtboxNumberOfExecutions.Text = "2";
-            richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('q1')";
+            richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('{{id:7}}'){{id:7}}";
         }
         #endregion
 
@@ -137,6 +138,8 @@ namespace InsertDataInBatches
 
         private void btnStartInserting_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())));
+
             SqlHelper sqlhelp = new SqlHelper();
             int NumberOfExecutions = Convert.ToInt32(txtboxNumberOfExecutions.Text);
             string[] sqlQuerys = new string[NumberOfExecutions];
@@ -145,6 +148,31 @@ namespace InsertDataInBatches
                 sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
             }
             richtxtboxResult.Text = sqlhelp.getAffectRowsTransaction(sqlQuerys, mysqlconn).ToString();
+        }
+
+        private string getRegexSQL(string sourceSQL, int times)
+        {
+            Regex rgGetNum = new Regex("(?<={{id:).*?(?=}})");//{{id:7}}取冒号后的数字
+            Regex rgGetID = new Regex("{{id:[0-9]*}}");//{{id:7}}取{{}}
+
+            Match matchGetNum = rgGetNum.Match(sourceSQL);
+            Match matchrgGetID = rgGetID.Match(sourceSQL);
+
+            string regexSQL = "";
+            string result = "";
+            //int count = GetCountByAppointString(sourceSQL, matchrgGetID.Groups[0].Value, "for");
+            int count = Regex.Matches(sourceSQL, matchrgGetID.Groups[0].Value).Count;
+            regexSQL = sourceSQL;
+            for (int i = 0; i < times; i++)
+            {
+                for (int x = 0; x < count; x++)
+                {
+                    regexSQL = sourceSQL.Replace(matchrgGetID.Groups[0].Value, (Convert.ToInt32(matchGetNum.Groups[0].Value) + i).ToString());
+                }
+                result += regexSQL + "\n";
+            }
+
+            return result;
         }
     }
 }
