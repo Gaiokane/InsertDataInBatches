@@ -30,14 +30,17 @@ namespace InsertDataInBatches
         #region 窗体加载事件
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            radiobtnMYSQL.Checked = true;
+
             txtboxHost.Text = "127.0.0.1";
-            txtboxPort.Text = "1433";
+            txtboxPort.Text = "3306";
             txtboxDatabase.Text = "pagination";
             txtboxUsername.Text = "qkk";
             txtboxPassword.Text = "qkk";
 
             txtboxNumberOfExecutions.Text = "2";
-            richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('{{id:7}}'){{id:7}}";
+            //richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('{{id:7}}'){{id:7}}";
+            richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('test{{id:7}}')";
         }
         #endregion
 
@@ -81,7 +84,7 @@ namespace InsertDataInBatches
                 {
                     mysqlconn = new MySqlConnection(sqlconn);
                     mysqlconn.Open();
-                    MessageBox.Show(mysqlconn.ConnectionTimeout.ToString());
+                    //MessageBox.Show(mysqlconn.ConnectionTimeout.ToString());
                     //MessageBox.Show(mysqlconn.State.ToString());//Open
                     if (mysqlconn.State == ConnectionState.Open)
                     {
@@ -128,10 +131,24 @@ namespace InsertDataInBatches
             if (radiobtnMSSQL.Checked == true)
             {
                 txtboxPort.Text = "1433";
+
+                txtboxHost.Text = "127.0.0.1";
+                txtboxPort.Text = "1433";
+                txtboxDatabase.Text = "qktest";
+                txtboxUsername.Text = "sa";
+                txtboxPassword.Text = "11111";
+                richtxtboxInsertSQL.Text = "INSERT INTO [qktest].[dbo].[forinsert]([xxx]) VALUES ('test{{id:7}}');";
             }
             else
             {
                 txtboxPort.Text = "3306";
+
+                txtboxHost.Text = "127.0.0.1";
+                txtboxPort.Text = "3306";
+                txtboxDatabase.Text = "pagination";
+                txtboxUsername.Text = "qkk";
+                txtboxPassword.Text = "qkk";
+                richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('test{{id:7}}');";
             }
         }
         #endregion
@@ -140,14 +157,51 @@ namespace InsertDataInBatches
         {
             MessageBox.Show(getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())));
 
-            SqlHelper sqlhelp = new SqlHelper();
-            int NumberOfExecutions = Convert.ToInt32(txtboxNumberOfExecutions.Text);
-            string[] sqlQuerys = new string[NumberOfExecutions];
-            for (int i = 0; i < NumberOfExecutions; i++)
+            if (checkConnect(labConnectStatus.Text)==false)
             {
-                sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
+                MessageBox.Show("请先连接数据库！");
+                btnConnect.Focus();
             }
-            richtxtboxResult.Text = sqlhelp.getAffectRowsTransaction(sqlQuerys, mysqlconn).ToString();
+            else
+            {
+                SqlHelper sqlhelp = new SqlHelper();
+                /*int NumberOfExecutions = Convert.ToInt32(txtboxNumberOfExecutions.Text);
+                string[] sqlQuerys = new string[NumberOfExecutions];
+                for (int i = 0; i < NumberOfExecutions; i++)
+                {
+                    //sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
+                    sqlQuerys[i] = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim()));
+                }*/
+
+                string[] sqlQuerys = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())).Trim().Split('\n');
+
+                #region 使用MSSQL
+                if (radiobtnMSSQL.Checked == true)
+                {
+                    try
+                    {
+                        richtxtboxResult.Text = sqlhelp.getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn).ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+                #endregion
+                #region 使用MYSQL
+                if (radiobtnMYSQL.Checked == true)
+                {
+                    try
+                    {
+                        richtxtboxResult.Text = sqlhelp.getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn).ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+                #endregion
+            }
         }
 
         private string getRegexSQL(string sourceSQL, int times)
@@ -173,6 +227,18 @@ namespace InsertDataInBatches
             }
 
             return result;
+        }
+
+        private bool checkConnect(string connectStatus)
+        {
+            if (connectStatus== "状态：已连接")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
