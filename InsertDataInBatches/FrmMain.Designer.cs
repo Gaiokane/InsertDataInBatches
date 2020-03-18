@@ -30,7 +30,6 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtboxPort = new System.Windows.Forms.TextBox();
-            this.labPort = new System.Windows.Forms.Label();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.radiobtnMYSQL = new System.Windows.Forms.RadioButton();
@@ -51,13 +50,14 @@
             this.txtboxNumberOfExecutions = new System.Windows.Forms.TextBox();
             this.btnStartInserting = new System.Windows.Forms.Button();
             this.labResult = new System.Windows.Forms.Label();
+            this.chkboxPort = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkboxPort);
             this.groupBox1.Controls.Add(this.txtboxPort);
-            this.groupBox1.Controls.Add(this.labPort);
             this.groupBox1.Controls.Add(this.btnDisconnect);
             this.groupBox1.Controls.Add(this.btnConnect);
             this.groupBox1.Controls.Add(this.radiobtnMYSQL);
@@ -80,19 +80,10 @@
             // 
             // txtboxPort
             // 
-            this.txtboxPort.Location = new System.Drawing.Point(230, 46);
+            this.txtboxPort.Location = new System.Drawing.Point(249, 46);
             this.txtboxPort.Name = "txtboxPort";
             this.txtboxPort.Size = new System.Drawing.Size(62, 21);
             this.txtboxPort.TabIndex = 6;
-            // 
-            // labPort
-            // 
-            this.labPort.AutoSize = true;
-            this.labPort.Location = new System.Drawing.Point(183, 49);
-            this.labPort.Name = "labPort";
-            this.labPort.Size = new System.Drawing.Size(41, 12);
-            this.labPort.TabIndex = 5;
-            this.labPort.Text = "Port：";
             // 
             // btnDisconnect
             // 
@@ -139,21 +130,21 @@
             // 
             // txtboxPassword
             // 
-            this.txtboxPassword.Location = new System.Drawing.Point(738, 46);
+            this.txtboxPassword.Location = new System.Drawing.Point(757, 46);
             this.txtboxPassword.Name = "txtboxPassword";
             this.txtboxPassword.Size = new System.Drawing.Size(100, 21);
             this.txtboxPassword.TabIndex = 12;
             // 
             // txtboxUsername
             // 
-            this.txtboxUsername.Location = new System.Drawing.Point(576, 46);
+            this.txtboxUsername.Location = new System.Drawing.Point(595, 46);
             this.txtboxUsername.Name = "txtboxUsername";
             this.txtboxUsername.Size = new System.Drawing.Size(85, 21);
             this.txtboxUsername.TabIndex = 10;
             // 
             // txtboxDatabase
             // 
-            this.txtboxDatabase.Location = new System.Drawing.Point(369, 46);
+            this.txtboxDatabase.Location = new System.Drawing.Point(388, 46);
             this.txtboxDatabase.Name = "txtboxDatabase";
             this.txtboxDatabase.Size = new System.Drawing.Size(130, 21);
             this.txtboxDatabase.TabIndex = 8;
@@ -168,7 +159,7 @@
             // labPassword
             // 
             this.labPassword.AutoSize = true;
-            this.labPassword.Location = new System.Drawing.Point(667, 49);
+            this.labPassword.Location = new System.Drawing.Point(686, 50);
             this.labPassword.Name = "labPassword";
             this.labPassword.Size = new System.Drawing.Size(65, 12);
             this.labPassword.TabIndex = 11;
@@ -177,7 +168,7 @@
             // labUsername
             // 
             this.labUsername.AutoSize = true;
-            this.labUsername.Location = new System.Drawing.Point(505, 49);
+            this.labUsername.Location = new System.Drawing.Point(524, 50);
             this.labUsername.Name = "labUsername";
             this.labUsername.Size = new System.Drawing.Size(65, 12);
             this.labUsername.TabIndex = 9;
@@ -186,7 +177,7 @@
             // labDatabase
             // 
             this.labDatabase.AutoSize = true;
-            this.labDatabase.Location = new System.Drawing.Point(298, 49);
+            this.labDatabase.Location = new System.Drawing.Point(317, 50);
             this.labDatabase.Name = "labDatabase";
             this.labDatabase.Size = new System.Drawing.Size(65, 12);
             this.labDatabase.TabIndex = 7;
@@ -204,7 +195,7 @@
             // labHost
             // 
             this.labHost.AutoSize = true;
-            this.labHost.Location = new System.Drawing.Point(7, 49);
+            this.labHost.Location = new System.Drawing.Point(7, 50);
             this.labHost.Name = "labHost";
             this.labHost.Size = new System.Drawing.Size(41, 12);
             this.labHost.TabIndex = 3;
@@ -270,6 +261,16 @@
             this.labResult.TabIndex = 6;
             this.labResult.Text = "执行情况：";
             // 
+            // chkboxPort
+            // 
+            this.chkboxPort.AutoSize = true;
+            this.chkboxPort.Location = new System.Drawing.Point(183, 49);
+            this.chkboxPort.Name = "chkboxPort";
+            this.chkboxPort.Size = new System.Drawing.Size(60, 16);
+            this.chkboxPort.TabIndex = 16;
+            this.chkboxPort.Text = "Port：";
+            this.chkboxPort.UseVisualStyleBackColor = true;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -311,7 +312,6 @@
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Label labConnectStatus;
         private System.Windows.Forms.TextBox txtboxPort;
-        private System.Windows.Forms.Label labPort;
         private System.Windows.Forms.RichTextBox richtxtboxInsertSQL;
         private System.Windows.Forms.Label labInsertSQL;
         private System.Windows.Forms.RichTextBox richtxtboxResult;
@@ -319,6 +319,7 @@
         private System.Windows.Forms.TextBox txtboxNumberOfExecutions;
         private System.Windows.Forms.Button btnStartInserting;
         private System.Windows.Forms.Label labResult;
+        private System.Windows.Forms.CheckBox chkboxPort;
     }
 }
 

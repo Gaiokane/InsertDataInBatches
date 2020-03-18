@@ -56,7 +56,15 @@ namespace InsertDataInBatches
             #region 使用MSSQL
             if (radiobtnMSSQL.Checked == true)
             {
-                string sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                string sqlconn = string.Empty;
+                if (chkboxPort.Checked == true)//指定端口
+                {
+                    sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                }
+                else//不指定端口
+                {
+                    sqlconn = "server=" + host + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                }
                 try
                 {
                     mssqlconn = new SqlConnection(sqlconn);
@@ -68,6 +76,12 @@ namespace InsertDataInBatches
                         btnConnect.Enabled = false;
                         radiobtnMSSQL.Enabled = false;
                         radiobtnMYSQL.Enabled = false;
+                        txtboxHost.Enabled = false;
+                        chkboxPort.Enabled = false;
+                        txtboxPort.Enabled = false;
+                        txtboxDatabase.Enabled = false;
+                        txtboxUsername.Enabled = false;
+                        txtboxPassword.Enabled = false;
                     }
                 }
                 catch (Exception ex)
@@ -79,7 +93,15 @@ namespace InsertDataInBatches
             #region 使用MYSQL
             if (radiobtnMYSQL.Checked == true)
             {
-                string sqlconn = "Host = " + host + "; Port = " + port + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
+                string sqlconn = string.Empty;
+                if (chkboxPort.Checked == true)//指定端口
+                {
+                    sqlconn = "Host = " + host + "; Port = " + port + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
+                }
+                else//不指定端口
+                {
+                    sqlconn = "Host = " + host + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
+                }
                 try
                 {
                     mysqlconn = new MySqlConnection(sqlconn);
@@ -92,6 +114,12 @@ namespace InsertDataInBatches
                         btnConnect.Enabled = false;
                         radiobtnMSSQL.Enabled = false;
                         radiobtnMYSQL.Enabled = false;
+                        txtboxHost.Enabled = false;
+                        chkboxPort.Enabled = false;
+                        txtboxPort.Enabled = false;
+                        txtboxDatabase.Enabled = false;
+                        txtboxUsername.Enabled = false;
+                        txtboxPassword.Enabled = false;
                     }
                 }
                 catch (Exception ex)
@@ -113,6 +141,12 @@ namespace InsertDataInBatches
                 btnConnect.Enabled = true;
                 radiobtnMSSQL.Enabled = true;
                 radiobtnMYSQL.Enabled = true;
+                txtboxHost.Enabled = true;
+                chkboxPort.Enabled = true;
+                txtboxPort.Enabled = true;
+                txtboxDatabase.Enabled = true;
+                txtboxUsername.Enabled = true;
+                txtboxPassword.Enabled = true;
             }
             if (radiobtnMYSQL.Checked == true)
             {
@@ -121,6 +155,12 @@ namespace InsertDataInBatches
                 btnConnect.Enabled = true;
                 radiobtnMSSQL.Enabled = true;
                 radiobtnMYSQL.Enabled = true;
+                txtboxHost.Enabled = true;
+                chkboxPort.Enabled = true;
+                txtboxPort.Enabled = true;
+                txtboxDatabase.Enabled = true;
+                txtboxUsername.Enabled = true;
+                txtboxPassword.Enabled = true;
             }
         }
         #endregion
@@ -157,7 +197,7 @@ namespace InsertDataInBatches
         {
             MessageBox.Show(getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())));
 
-            if (checkConnect(labConnectStatus.Text)==false)
+            if (checkConnect(labConnectStatus.Text) == false)
             {
                 MessageBox.Show("请先连接数据库！");
                 btnConnect.Focus();
@@ -180,7 +220,15 @@ namespace InsertDataInBatches
                 {
                     try
                     {
-                        richtxtboxResult.Text = sqlhelp.getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn).ToString();
+                        int result = sqlhelp.getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn);
+                        if (result==1)
+                        {
+                            richtxtboxResult.Text = "插入成功";
+                        }
+                        else
+                        {
+                            richtxtboxResult.Text = "插入失败";
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -193,7 +241,15 @@ namespace InsertDataInBatches
                 {
                     try
                     {
-                        richtxtboxResult.Text = sqlhelp.getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn).ToString();
+                        int result = sqlhelp.getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn);
+                        if (result == 1)
+                        {
+                            richtxtboxResult.Text = "插入成功";
+                        }
+                        else
+                        {
+                            richtxtboxResult.Text = "插入失败";
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -231,7 +287,7 @@ namespace InsertDataInBatches
 
         private bool checkConnect(string connectStatus)
         {
-            if (connectStatus== "状态：已连接")
+            if (connectStatus == "状态：已连接")
             {
                 return true;
             }
