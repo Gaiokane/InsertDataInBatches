@@ -21,6 +21,10 @@ namespace InsertDataInBatches
         MySqlConnection mysqlconn;
         //MySqlCommand mysqlcmd = new MySqlCommand();
 
+        Regex rgGetNum = new Regex("(?<={{id:).*?(?=}})");//{{id:7}}取冒号后的数字
+        Regex rgGetID = new Regex("{{id:[0-9]*}}");//{{id:7}}取{{}}
+
+        string[] sqlQuerys;
 
         public FrmMain()
         {
@@ -195,7 +199,7 @@ namespace InsertDataInBatches
 
         private void btnStartInserting_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())));
+            //MessageBox.Show(getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())));
 
             if (checkConnect(labConnectStatus.Text) == false)
             {
@@ -204,7 +208,7 @@ namespace InsertDataInBatches
             }
             else
             {
-                SqlHelper sqlhelp = new SqlHelper();
+                //SqlHelper sqlhelp = new SqlHelper();
                 /*int NumberOfExecutions = Convert.ToInt32(txtboxNumberOfExecutions.Text);
                 string[] sqlQuerys = new string[NumberOfExecutions];
                 for (int i = 0; i < NumberOfExecutions; i++)
@@ -213,21 +217,29 @@ namespace InsertDataInBatches
                     sqlQuerys[i] = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim()));
                 }*/
 
-                string[] sqlQuerys = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())).Trim().Split('\n');
+                if (rgGetID.IsMatch(richtxtboxInsertSQL.Text.Trim()) == true)
+                {
+                    sqlQuerys = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())).Trim().Split('\n');
+                }
+                else
+                {
+                    sqlQuerys = richtxtboxInsertSQL.Text.Trim().Split('\n');
+                }
 
                 #region 使用MSSQL
                 if (radiobtnMSSQL.Checked == true)
                 {
                     try
                     {
-                        int result = sqlhelp.getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn);
-                        if (result==1)
+                        richtxtboxResult.Text = "";
+                        int result = getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn);
+                        if (result == 1)
                         {
-                            richtxtboxResult.Text = "插入成功";
+                            richtxtboxResult.Text += "\n插入成功，插入结束";
                         }
                         else
                         {
-                            richtxtboxResult.Text = "插入失败";
+                            richtxtboxResult.Text += "\n插入失败，插入结束";
                         }
                     }
                     catch (Exception ex)
@@ -241,14 +253,15 @@ namespace InsertDataInBatches
                 {
                     try
                     {
-                        int result = sqlhelp.getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn);
+                        richtxtboxResult.Text = "";
+                        int result = getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn);
                         if (result == 1)
                         {
-                            richtxtboxResult.Text = "插入成功";
+                            richtxtboxResult.Text += "\n插入成功，插入结束";
                         }
                         else
                         {
-                            richtxtboxResult.Text = "插入失败";
+                            richtxtboxResult.Text += "\n插入失败，插入结束";
                         }
                     }
                     catch (Exception ex)
@@ -262,9 +275,6 @@ namespace InsertDataInBatches
 
         private string getRegexSQL(string sourceSQL, int times)
         {
-            Regex rgGetNum = new Regex("(?<={{id:).*?(?=}})");//{{id:7}}取冒号后的数字
-            Regex rgGetID = new Regex("{{id:[0-9]*}}");//{{id:7}}取{{}}
-
             Match matchGetNum = rgGetNum.Match(sourceSQL);
             Match matchrgGetID = rgGetID.Match(sourceSQL);
 
@@ -285,6 +295,12 @@ namespace InsertDataInBatches
             return result;
         }
 
+        #region 判断是否连接数据库
+        /// <summary>
+        /// 判断是否连接数据库
+        /// </summary>
+        /// <param name="connectStatus">连接状态</param>
+        /// <returns>true：已连接，false：已断开</returns>
         private bool checkConnect(string connectStatus)
         {
             if (connectStatus == "状态：已连接")
@@ -296,5 +312,111 @@ namespace InsertDataInBatches
                 return false;
             }
         }
+        #endregion
+
+        #region MSSQL、MySQL插数据事务
+        #region MSSQL
+        /// <summary>
+        /// （支持事务）传入SQL，返回该命令所影响行数，其他类型语句（建表）、回滚，返回值为-1
+        /// </summary>
+        /// <param name="Querys">sql数组</param>
+        /// <param name="SQLConn">SqlConnection连接</param>
+        /// <returns></returns>
+        public int getAffectRowsTransactionMSSQL(string[] Querys, SqlConnection SQLConn)
+        {
+            int result = 0;
+            int i = 0;
+            string temp = string.Empty;
+            SqlCommand comm = new SqlCommand();
+            comm.Connection = SQLConn;
+            comm.Transaction = SQLConn.BeginTransaction();
+            try
+            {
+                for (i = 0; i < Querys.Length; i++)
+                {
+                    comm.CommandText = Querys[i];
+                    result = comm.ExecuteNonQuery();
+                    temp = "执行成功：" + Querys[i];
+                    if (i + 1 < Querys.Length)
+                    {
+                        temp += "\n" + temp;
+                    }
+                }
+                comm.Transaction.Commit();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                comm.Transaction.Rollback();
+                if (result == 1)
+                {
+                    temp += "\n";
+                }
+                result = 0;
+                temp += "\n执行失败：" + Querys[i] + "\n失败原因：" + ex.Message;
+                return result;
+                //throw ex;
+            }
+            finally
+            {
+                richtxtboxResult.Text = temp;
+                //MySQLConn.Close();
+            }
+        }
+        #endregion
+
+        #region MySQL
+        /// <summary>
+        /// （支持事务）传入SQL，返回该命令所影响行数，其他类型语句（建表）、回滚，返回值为-1
+        /// </summary>
+        /// <param name="Querys">sql数组</param>
+        /// <param name="MySQLConn">MySqlConnection连接</param>
+        /// <returns></returns>
+        public int getAffectRowsTransactionMySQL(string[] Querys, MySqlConnection MySQLConn)
+        {
+            int result = 0;
+            int i = 0;
+            string temp = string.Empty;
+            MySqlCommand comm = new MySqlCommand();
+            comm.Connection = MySQLConn;
+            comm.Transaction = MySQLConn.BeginTransaction();
+            try
+            {
+                for (i = 0; i < Querys.Length; i++)
+                {
+                    comm.CommandText = Querys[i];
+                    result = comm.ExecuteNonQuery();
+                    temp = "执行成功：" + Querys[i];
+                    if (i + 1 < Querys.Length)
+                    {
+                        temp += "\n" + temp;
+                    }
+                }
+                comm.Transaction.Commit();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                comm.Transaction.Rollback();
+                if (result == 1)
+                {
+                    temp += "\n";
+                }
+                result = 0;
+                temp += "执行失败：" + Querys[i] + "\n失败原因：" + ex.Message;
+                return result;
+                //throw ex;
+
+            }
+            finally
+            {
+                richtxtboxResult.Text = temp;
+                //MySQLConn.Close();
+            }
+        }
+        #endregion
+        #endregion
     }
 }
