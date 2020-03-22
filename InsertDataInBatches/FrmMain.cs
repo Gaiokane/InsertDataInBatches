@@ -417,6 +417,18 @@ namespace InsertDataInBatches
             }
         }
         #endregion
+
         #endregion
+
+        private void fastbtn_idIncreasing_Click(object sender, EventArgs e)
+        {
+            string str = "{{id:x}}";
+            int i = richtxtboxInsertSQL.SelectionStart;
+            string s = richtxtboxInsertSQL.Text;
+            s = s.Insert(i, str);
+            richtxtboxInsertSQL.Text = s;
+            richtxtboxInsertSQL.SelectionStart = i + str.Length;
+            richtxtboxInsertSQL.Focus();
+        }
     }
 }

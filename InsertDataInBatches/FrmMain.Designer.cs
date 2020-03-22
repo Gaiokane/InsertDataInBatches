@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkboxPort = new System.Windows.Forms.CheckBox();
             this.txtboxPort = new System.Windows.Forms.TextBox();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -50,7 +51,7 @@
             this.txtboxNumberOfExecutions = new System.Windows.Forms.TextBox();
             this.btnStartInserting = new System.Windows.Forms.Button();
             this.labResult = new System.Windows.Forms.Label();
-            this.chkboxPort = new System.Windows.Forms.CheckBox();
+            this.fastbtn_idIncreasing = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,6 +78,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "数据库";
+            // 
+            // chkboxPort
+            // 
+            this.chkboxPort.AutoSize = true;
+            this.chkboxPort.Location = new System.Drawing.Point(183, 49);
+            this.chkboxPort.Name = "chkboxPort";
+            this.chkboxPort.Size = new System.Drawing.Size(60, 16);
+            this.chkboxPort.TabIndex = 16;
+            this.chkboxPort.Text = "Port：";
+            this.chkboxPort.UseVisualStyleBackColor = true;
             // 
             // txtboxPort
             // 
@@ -261,21 +272,22 @@
             this.labResult.TabIndex = 6;
             this.labResult.Text = "执行情况：";
             // 
-            // chkboxPort
+            // fastbtn_idIncreasing
             // 
-            this.chkboxPort.AutoSize = true;
-            this.chkboxPort.Location = new System.Drawing.Point(183, 49);
-            this.chkboxPort.Name = "chkboxPort";
-            this.chkboxPort.Size = new System.Drawing.Size(60, 16);
-            this.chkboxPort.TabIndex = 16;
-            this.chkboxPort.Text = "Port：";
-            this.chkboxPort.UseVisualStyleBackColor = true;
+            this.fastbtn_idIncreasing.Location = new System.Drawing.Point(750, 190);
+            this.fastbtn_idIncreasing.Name = "fastbtn_idIncreasing";
+            this.fastbtn_idIncreasing.Size = new System.Drawing.Size(75, 23);
+            this.fastbtn_idIncreasing.TabIndex = 7;
+            this.fastbtn_idIncreasing.Text = "id递增";
+            this.fastbtn_idIncreasing.UseVisualStyleBackColor = true;
+            this.fastbtn_idIncreasing.Click += new System.EventHandler(this.fastbtn_idIncreasing_Click);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 450);
+            this.Controls.Add(this.fastbtn_idIncreasing);
             this.Controls.Add(this.labResult);
             this.Controls.Add(this.btnStartInserting);
             this.Controls.Add(this.txtboxNumberOfExecutions);
@@ -320,6 +332,7 @@
         private System.Windows.Forms.Button btnStartInserting;
         private System.Windows.Forms.Label labResult;
         private System.Windows.Forms.CheckBox chkboxPort;
+        private System.Windows.Forms.Button fastbtn_idIncreasing;
     }
 }
 
