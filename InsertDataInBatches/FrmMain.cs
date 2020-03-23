@@ -21,8 +21,11 @@ namespace InsertDataInBatches
         MySqlConnection mysqlconn;
         //MySqlCommand mysqlcmd = new MySqlCommand();
 
+        Regex rgGetID = new Regex("{{id:[0-9]*}}");//{{id:7}}取整块
         Regex rgGetNum = new Regex("(?<={{id:).*?(?=}})");//{{id:7}}取冒号后的数字
-        Regex rgGetID = new Regex("{{id:[0-9]*}}");//{{id:7}}取{{}}
+
+        Regex rgGetRandom = new Regex("{{\\[(\\d+)(\\.\\d+)?-(\\d+)(\\.\\d+)?]}}");//{{[1.22-22]}}取整块
+        Regex rgGetRandomRange = new Regex("(?<={{\\[)(\\d+)(\\.\\d+)?-(\\d+)(\\.\\d+)?(?=]}})");//{{[1.22-22]}}取[]中的随机范围
 
         string[] sqlQuerys;
 
