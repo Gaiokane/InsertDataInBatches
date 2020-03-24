@@ -27,6 +27,8 @@ namespace InsertDataInBatches
         Regex rgGetRandom = new Regex("{{\\[(\\d+)(\\.\\d+)?-(\\d+)(\\.\\d+)?]}}");//{{[1.22-22]}}取整块
         Regex rgGetRandomRange = new Regex("(?<={{\\[)(\\d+)(\\.\\d+)?-(\\d+)(\\.\\d+)?(?=]}})");//{{[1.22-22]}}取[]中的随机范围
 
+        Regex rgGetNewID = new Regex("{{newid}}");//{{newid}}取整块
+
         string[] sqlQuerys;
 
         public FrmMain()
