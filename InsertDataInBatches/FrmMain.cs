@@ -15,13 +15,20 @@ namespace InsertDataInBatches
 {
     public partial class FrmMain : Form
     {
+        /* 先把输入的SQL按照执行次数转成数组
+         * 对数组中的每个元素判断是否有指定格式的字符串
+         * -有就执行相应的逻辑操作：替换，累加等
+         * -没有就返回
+         * 多种情况写多个方法
+         * ......
+         */
         SqlConnection mssqlconn;
         SqlCommand mssqlcmd = new SqlCommand();
 
         MySqlConnection mysqlconn;
         //MySqlCommand mysqlcmd = new MySqlCommand();
 
-        Regex rgGetID = new Regex("{{id:[0-9]*}}");//{{id:7}}取整块
+        Regex rgGetID = new Regex("{{id:\\d\\d*}}");//{{id:7}}取整块
         Regex rgGetNum = new Regex("(?<={{id:).*?(?=}})");//{{id:7}}取冒号后的数字
 
         Regex rgGetRandom = new Regex("{{\\[(\\d+)(\\.\\d+)?-(\\d+)(\\.\\d+)?]}}");//{{[1.22-22]}}取整块
@@ -205,6 +212,8 @@ namespace InsertDataInBatches
         private void btnStartInserting_Click(object sender, EventArgs e)
         {
             //MessageBox.Show(getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())));
+            //MessageBox.Show(rgGetNewID.IsMatch(richtxtboxInsertSQL.Text).ToString());
+            //MessageBox.Show(getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())));
 
             if (checkConnect(labConnectStatus.Text) == false)
             {
@@ -225,10 +234,18 @@ namespace InsertDataInBatches
                 if (rgGetID.IsMatch(richtxtboxInsertSQL.Text.Trim()) == true)
                 {
                     sqlQuerys = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())).Trim().Split('\n');
+                    //MessageBox.Show(sqlQuerys.Length.ToString() + "\n" + sqlQuerys[0]);
                 }
                 else
                 {
-                    sqlQuerys = richtxtboxInsertSQL.Text.Trim().Split('\n');
+                    int n = Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim());
+                    sqlQuerys = new string[n];
+                    for (int i = 0; i < n; i++)
+                    {
+                        sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
+                    }
+                    //sqlQuerys = richtxtboxInsertSQL.Text.Trim().Split('\n');
+                    MessageBox.Show(sqlQuerys.Length.ToString()+"\n"+sqlQuerys[0]);
                 }
 
                 #region 使用MSSQL
