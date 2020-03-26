@@ -222,80 +222,139 @@ namespace InsertDataInBatches
             }
             else
             {
-                //SqlHelper sqlhelp = new SqlHelper();
-                /*int NumberOfExecutions = Convert.ToInt32(txtboxNumberOfExecutions.Text);
-                string[] sqlQuerys = new string[NumberOfExecutions];
-                for (int i = 0; i < NumberOfExecutions; i++)
+                if (string.IsNullOrEmpty(richtxtboxInsertSQL.Text.Trim()))
                 {
-                    //sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
-                    sqlQuerys[i] = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim()));
-                }*/
-
-                if (rgGetID.IsMatch(richtxtboxInsertSQL.Text.Trim()) == true)
-                {
-                    sqlQuerys = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())).Trim().Split('\n');
-                    //MessageBox.Show(sqlQuerys.Length.ToString() + "\n" + sqlQuerys[0]);
+                    MessageBox.Show("insert语句不能为空！");
+                    richtxtboxInsertSQL.Focus();
                 }
                 else
                 {
-                    int n = Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim());
-                    sqlQuerys = new string[n];
-                    for (int i = 0; i < n; i++)
+                    //SqlHelper sqlhelp = new SqlHelper();
+                    /*int NumberOfExecutions = Convert.ToInt32(txtboxNumberOfExecutions.Text);
+                    string[] sqlQuerys = new string[NumberOfExecutions];
+                    for (int i = 0; i < NumberOfExecutions; i++)
+                    {
+                        //sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
+                        sqlQuerys[i] = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim()));
+                    }*/
+
+                    #region 换方法实现，已注释
+                    /*if (rgGetID.IsMatch(richtxtboxInsertSQL.Text.Trim()) == true)
+                    {
+                        sqlQuerys = getRegexSQL(richtxtboxInsertSQL.Text.Trim(), Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim())).Trim().Split('\n');
+                        //MessageBox.Show(sqlQuerys.Length.ToString() + "\n" + sqlQuerys[0]);
+                    }
+                    else
+                    {
+                        int n = Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim());
+                        sqlQuerys = new string[n];
+                        for (int i = 0; i < n; i++)
+                        {
+                            sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
+                        }
+                        //sqlQuerys = richtxtboxInsertSQL.Text.Trim().Split('\n');
+                        MessageBox.Show(sqlQuerys.Length.ToString() + "\n" + sqlQuerys[0]);
+                    }*/
+                    #endregion
+
+                    int times = Convert.ToInt32(txtboxNumberOfExecutions.Text.Trim());
+                    sqlQuerys = new string[times];
+                    for (int i = 0; i < times; i++)
                     {
                         sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
                     }
-                    //sqlQuerys = richtxtboxInsertSQL.Text.Trim().Split('\n');
-                    MessageBox.Show(sqlQuerys.Length.ToString()+"\n"+sqlQuerys[0]);
-                }
 
-                #region 使用MSSQL
-                if (radiobtnMSSQL.Checked == true)
-                {
-                    try
+                    //判断是否有匹配{{id:x}}
+                    if (rgGetID.IsMatch(sqlQuerys[0]))
                     {
-                        richtxtboxResult.Text = "";
-                        int result = getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn);
-                        if (result == 1)
+                        //MessageBox.Show("true");
+                        getResultID(sqlQuerys);
+                    }
+                    else
+                    {
+                        MessageBox.Show("没有匹配项");
+                    }
+
+                    //遍历数组
+                    string q = ""; ;
+                    foreach (var item in sqlQuerys)
+                    {
+                        q += item + "\n";
+                    }
+                    MessageBox.Show(q);
+
+                    #region 使用MSSQL
+                    if (radiobtnMSSQL.Checked == true)
+                    {
+                        try
                         {
-                            richtxtboxResult.Text += "\n插入成功，插入结束";
+                            richtxtboxResult.Text = "";
+                            int result = getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn);
+                            if (result == 1)
+                            {
+                                richtxtboxResult.Text += "\n插入成功，插入结束";
+                            }
+                            else
+                            {
+                                richtxtboxResult.Text += "\n插入失败，插入结束";
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            richtxtboxResult.Text += "\n插入失败，插入结束";
+                            MessageBox.Show(ex.Message);
                         }
                     }
-                    catch (Exception ex)
+                    #endregion
+                    #region 使用MYSQL
+                    if (radiobtnMYSQL.Checked == true)
                     {
-                        MessageBox.Show(ex.Message);
+                        try
+                        {
+                            richtxtboxResult.Text = "";
+                            int result = getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn);
+                            if (result == 1)
+                            {
+                                richtxtboxResult.Text += "\n插入成功，插入结束";
+                            }
+                            else
+                            {
+                                richtxtboxResult.Text += "\n插入失败，插入结束";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
+                    #endregion
                 }
-                #endregion
-                #region 使用MYSQL
-                if (radiobtnMYSQL.Checked == true)
-                {
-                    try
-                    {
-                        richtxtboxResult.Text = "";
-                        int result = getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn);
-                        if (result == 1)
-                        {
-                            richtxtboxResult.Text += "\n插入成功，插入结束";
-                        }
-                        else
-                        {
-                            richtxtboxResult.Text += "\n插入失败，插入结束";
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-                #endregion
             }
         }
 
-        private string getRegexSQL(string sourceSQL, int times)
+        #region 将{{id:x}}替换为x
+        /// <summary>
+        /// 将{{id:x}}替换为x
+        /// </summary>
+        /// <param name="sourceSQL">原始SQL数组</param>
+        /// <returns>替换完的数组</returns>
+        private string[] getResultID(string[] sourceSQL)
+        {
+
+            Match matchrgGetID;
+            Match matchGetNum;
+            for (int i = 0; i < sourceSQL.Length; i++)
+            {
+                matchrgGetID = rgGetID.Match(sourceSQL[i]);//{{id:7}}取整块
+                matchGetNum = rgGetNum.Match(sourceSQL[i]);//{{id:7}}取冒号后的数字
+                sourceSQL[i] = sourceSQL[i].Replace(matchrgGetID.Groups[0].Value, (Convert.ToInt32(matchGetNum.Groups[0].Value) + i).ToString());
+            }
+
+            return sourceSQL;
+        }
+        #endregion
+
+        #region 替换{{id:x}}为指定数字，换流程，已注释
+        /*private string getRegexSQL(string sourceSQL, int times)
         {
             Match matchGetNum = rgGetNum.Match(sourceSQL);
             Match matchrgGetID = rgGetID.Match(sourceSQL);
@@ -315,7 +374,8 @@ namespace InsertDataInBatches
             }
 
             return result;
-        }
+        }*/
+        #endregion
 
         #region 判断是否连接数据库
         /// <summary>
@@ -442,6 +502,7 @@ namespace InsertDataInBatches
 
         #endregion
 
+        #region {{id:x}}按钮快速插入操作
         private void fastbtn_idIncreasing_Click(object sender, EventArgs e)
         {
             string str = "{{id:x}}";
@@ -452,5 +513,6 @@ namespace InsertDataInBatches
             richtxtboxInsertSQL.SelectionStart = i + str.Length;
             richtxtboxInsertSQL.Focus();
         }
+        #endregion
     }
 }
