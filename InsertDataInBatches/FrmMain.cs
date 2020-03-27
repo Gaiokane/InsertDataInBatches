@@ -264,6 +264,7 @@ namespace InsertDataInBatches
                         sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
                     }
 
+                    #region 判断是否有匹配{{id:x}}
                     //判断是否有匹配{{id:x}}
                     if (rgGetID.IsMatch(sqlQuerys[0]))
                     {
@@ -272,8 +273,24 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        MessageBox.Show("没有匹配项");
+                        MessageBox.Show("没有匹配项{{id:x}}");
                     }
+                    #endregion
+
+                    #region 判断是否有匹配{{newid}}
+                    //判断是否有匹配{{newid}}
+                    if (rgGetNewID.IsMatch(sqlQuerys[0]))
+                    {
+                        //MessageBox.Show("true");
+                        getGetNewID(sqlQuerys);
+                    }
+                    else
+                    {
+                        MessageBox.Show("没有匹配项{{newid}}");
+                    }
+                    #endregion
+
+                    
 
                     //遍历数组
                     string q = ""; ;
@@ -347,6 +364,26 @@ namespace InsertDataInBatches
                 matchrgGetID = rgGetID.Match(sourceSQL[i]);//{{id:7}}取整块
                 matchGetNum = rgGetNum.Match(sourceSQL[i]);//{{id:7}}取冒号后的数字
                 sourceSQL[i] = sourceSQL[i].Replace(matchrgGetID.Groups[0].Value, (Convert.ToInt32(matchGetNum.Groups[0].Value) + i).ToString());
+            }
+
+            return sourceSQL;
+        }
+        #endregion
+
+        #region 将{{newid}}替换为uuid
+        /// <summary>
+        /// 将{{newid}}替换为uuid
+        /// </summary>
+        /// <param name="sourceSQL">原始SQL数组</param>
+        /// <returns>替换完的数组</returns>
+        private string[] getGetNewID(string[] sourceSQL)
+        {
+
+            Match matchrgGetNewID;
+            for (int i = 0; i < sourceSQL.Length; i++)
+            {
+                matchrgGetNewID = rgGetNewID.Match(sourceSQL[i]);//{{newid}}取整块
+                sourceSQL[i] = sourceSQL[i].Replace(matchrgGetNewID.Groups[0].Value, Guid.NewGuid().ToString());
             }
 
             return sourceSQL;
