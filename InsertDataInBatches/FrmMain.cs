@@ -46,6 +46,8 @@ namespace InsertDataInBatches
         #region 窗体加载事件
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            //MessageBox.Show(getDotLength(1.1).ToString());
+
             radiobtnMYSQL.Checked = true;
 
             txtboxHost.Text = "127.0.0.1";
@@ -277,6 +279,19 @@ namespace InsertDataInBatches
                     }
                     #endregion
 
+                    #region 判断是否有匹配{{[1.22-22]}}
+                    //判断是否有匹配{{id:x}}
+                    if (rgGetRandom.IsMatch(sqlQuerys[0]))
+                    {
+                        //MessageBox.Show("true");
+                        getRandomNum(sqlQuerys);
+                    }
+                    else
+                    {
+                        MessageBox.Show("没有匹配项{{id:x}}");
+                    }
+                    #endregion
+
                     #region 判断是否有匹配{{newid}}
                     //判断是否有匹配{{newid}}
                     if (rgGetNewID.IsMatch(sqlQuerys[0]))
@@ -290,7 +305,7 @@ namespace InsertDataInBatches
                     }
                     #endregion
 
-                    
+
 
                     //遍历数组
                     string q = ""; ;
@@ -364,6 +379,41 @@ namespace InsertDataInBatches
                 matchrgGetID = rgGetID.Match(sourceSQL[i]);//{{id:7}}取整块
                 matchGetNum = rgGetNum.Match(sourceSQL[i]);//{{id:7}}取冒号后的数字
                 sourceSQL[i] = sourceSQL[i].Replace(matchrgGetID.Groups[0].Value, (Convert.ToInt32(matchGetNum.Groups[0].Value) + i).ToString());
+            }
+
+            return sourceSQL;
+        }
+        #endregion
+
+        #region 将{{[1.22-22]}}替换为指定范围内的随机数
+        /// <summary>
+        /// 将{{[1.22-22]}}替换为指定范围内的随机数
+        /// </summary>
+        /// <param name="sourceSQL">原始SQL数组</param>
+        /// <returns>替换完的数组</returns>
+        private string[] getRandomNum(string[] sourceSQL)
+        {
+            Match matchRandom;
+            Match matchRandomRange;
+            Random rand = new Random();
+            for (int i = 0; i < sourceSQL.Length; i++)
+            {
+                matchRandom = rgGetRandom.Match(sourceSQL[i]);//{{[1.22-22]}}取整块
+                matchRandomRange = rgGetRandomRange.Match(sourceSQL[i]);//{{[1.22-22]}}取[]中的随机范围
+                double x = Convert.ToDouble(matchRandomRange.Groups[0].Value.Split('-')[0]);
+                double y = Convert.ToDouble(matchRandomRange.Groups[0].Value.Split('-')[1]);
+                /*int xdotlength = getDotLength(x);
+                int ydotlength = getDotLength(y);
+                double randvalue = NextDouble(rand, x, y);
+                if (xdotlength>ydotlength)
+                {
+                    sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, Math.Round(randvalue,xdotlength).ToString());
+                }
+                else
+                {
+                    sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, Math.Round(randvalue, ydotlength).ToString());
+                }*/
+                sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, NextDouble(rand, x, y).ToString());
             }
 
             return sourceSQL;
@@ -551,5 +601,56 @@ namespace InsertDataInBatches
             richtxtboxInsertSQL.Focus();
         }
         #endregion
+
+        /// <summary>
+        /// 生成设置范围内的Double的随机数
+        /// eg:_random.NextDouble(1.5,2.5)
+        /// </summary>
+        /// <param name="random">Random</param>
+        /// <param name="miniDouble">生成随机数的最大值</param>
+        /// <param name="maxiDouble">生成随机数的最小值</param>
+        /// <returns>当Random等于NULL的时候返回0;</returns>
+        private static double NextDouble(Random random, double miniDouble, double maxiDouble)
+        {
+            int mindotlength = getDotLength(miniDouble);
+            int maxdotlength = getDotLength(maxiDouble);
+            int length = 0;
+            if (maxdotlength > mindotlength)
+            {
+                length = maxdotlength;
+            }
+            else
+            {
+                length = mindotlength;
+            }
+            if (random != null)
+            {
+                return Math.Round(random.NextDouble() * (maxiDouble - miniDouble) + miniDouble, length);
+            }
+            else
+            {
+                return 0.0d;
+            }
+        }
+
+        /// <summary>
+        /// 获取小数点后的位数
+        /// </summary>
+        /// <param name="num">需要判断的数字</param>
+        /// <returns>返回小数点后位数 int</returns>
+        private static int getDotLength(double num)
+        {
+            string temp = num.ToString();
+            int index = 0;
+            if (temp.Contains('.'))
+            {
+                index = temp.IndexOf(".");
+                return temp.Length - index - 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }
