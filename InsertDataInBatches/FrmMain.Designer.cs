@@ -52,6 +52,8 @@
             this.btnStartInserting = new System.Windows.Forms.Button();
             this.labResult = new System.Windows.Forms.Label();
             this.fastbtn_idIncreasing = new System.Windows.Forms.Button();
+            this.fastbtn_randomNum = new System.Windows.Forms.Button();
+            this.fastbtn_newid = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -282,11 +284,33 @@
             this.fastbtn_idIncreasing.UseVisualStyleBackColor = true;
             this.fastbtn_idIncreasing.Click += new System.EventHandler(this.fastbtn_idIncreasing_Click);
             // 
+            // fastbtn_randomNum
+            // 
+            this.fastbtn_randomNum.Location = new System.Drawing.Point(750, 219);
+            this.fastbtn_randomNum.Name = "fastbtn_randomNum";
+            this.fastbtn_randomNum.Size = new System.Drawing.Size(75, 23);
+            this.fastbtn_randomNum.TabIndex = 8;
+            this.fastbtn_randomNum.Text = "随机数";
+            this.fastbtn_randomNum.UseVisualStyleBackColor = true;
+            this.fastbtn_randomNum.Click += new System.EventHandler(this.fastbtn_randomNum_Click);
+            // 
+            // fastbtn_newid
+            // 
+            this.fastbtn_newid.Location = new System.Drawing.Point(750, 248);
+            this.fastbtn_newid.Name = "fastbtn_newid";
+            this.fastbtn_newid.Size = new System.Drawing.Size(75, 23);
+            this.fastbtn_newid.TabIndex = 9;
+            this.fastbtn_newid.Text = "生成newid";
+            this.fastbtn_newid.UseVisualStyleBackColor = true;
+            this.fastbtn_newid.Click += new System.EventHandler(this.fastbtn_newid_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 450);
+            this.Controls.Add(this.fastbtn_newid);
+            this.Controls.Add(this.fastbtn_randomNum);
             this.Controls.Add(this.fastbtn_idIncreasing);
             this.Controls.Add(this.labResult);
             this.Controls.Add(this.btnStartInserting);
@@ -333,6 +357,8 @@
         private System.Windows.Forms.Label labResult;
         private System.Windows.Forms.CheckBox chkboxPort;
         private System.Windows.Forms.Button fastbtn_idIncreasing;
+        private System.Windows.Forms.Button fastbtn_randomNum;
+        private System.Windows.Forms.Button fastbtn_newid;
     }
 }
 

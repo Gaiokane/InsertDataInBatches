@@ -652,5 +652,31 @@ namespace InsertDataInBatches
                 return 0;
             }
         }
+
+        #region {{[1-2]}}按钮快速插入操作
+        private void fastbtn_randomNum_Click(object sender, EventArgs e)
+        {
+            string str = "{{[1-2]}}";
+            int i = richtxtboxInsertSQL.SelectionStart;
+            string s = richtxtboxInsertSQL.Text;
+            s = s.Insert(i, str);
+            richtxtboxInsertSQL.Text = s;
+            richtxtboxInsertSQL.SelectionStart = i + str.Length;
+            richtxtboxInsertSQL.Focus();
+        }
+        #endregion
+
+        #region {{newid}}按钮快速插入操作
+        private void fastbtn_newid_Click(object sender, EventArgs e)
+        {
+            string str = "{{newid}}";
+            int i = richtxtboxInsertSQL.SelectionStart;
+            string s = richtxtboxInsertSQL.Text;
+            s = s.Insert(i, str);
+            richtxtboxInsertSQL.Text = s;
+            richtxtboxInsertSQL.SelectionStart = i + str.Length;
+            richtxtboxInsertSQL.Focus();
+        }
+        #endregion
     }
 }
