@@ -36,6 +36,8 @@ namespace InsertDataInBatches
 
         Regex rgGetNewID = new Regex("{{newid}}");//{{newid}}取整块
 
+        Regex rgGetDateTimeHourAll = new Regex("{{timeh:\\d{4}-(0?[1-9]|1[0-2])-((0?[1-9])|((1|2)[0-9])|30|31) (((0|1)[0-9])|(2[0-3])):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])}}");//{{timeh:2020-03-29 20:00:00}}取整块
+
         string[] sqlQuerys;
 
         public FrmMain()
