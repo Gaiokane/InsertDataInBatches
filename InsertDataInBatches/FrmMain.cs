@@ -307,11 +307,24 @@ namespace InsertDataInBatches
                     if (rgGetNewID.IsMatch(sqlQuerys[0]))
                     {
                         //MessageBox.Show("true");
-                        getGetNewID(sqlQuerys);
+                        getNewID(sqlQuerys);
                     }
                     else
                     {
                         MessageBox.Show("没有匹配项{{newid}}");
+                    }
+                    #endregion
+
+                    #region 判断是否有匹配{{time(d|h|m|s)(+|-)7:datetime}}
+                    //判断是否有匹配{{time(d|h|m|s)(+|-)7:datetime}}
+                    if (rgGetDateTimeAll.IsMatch(sqlQuerys[0]))
+                    {
+                        //MessageBox.Show("true");
+                        getNewDateTime(sqlQuerys);
+                    }
+                    else
+                    {
+                        MessageBox.Show("没有匹配项{{time(d|h|m|s)(+|-)7:datetime}}");
                     }
                     #endregion
 
@@ -436,7 +449,7 @@ namespace InsertDataInBatches
         /// </summary>
         /// <param name="sourceSQL">原始SQL数组</param>
         /// <returns>替换完的数组</returns>
-        private string[] getGetNewID(string[] sourceSQL)
+        private string[] getNewID(string[] sourceSQL)
         {
 
             Match matchrgGetNewID;
@@ -444,6 +457,37 @@ namespace InsertDataInBatches
             {
                 matchrgGetNewID = rgGetNewID.Match(sourceSQL[i]);//{{newid}}取整块
                 sourceSQL[i] = sourceSQL[i].Replace(matchrgGetNewID.Groups[0].Value, Guid.NewGuid().ToString());
+            }
+
+            return sourceSQL;
+        }
+        #endregion
+
+        #region 将time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}指定时间并递增
+        /// <summary>
+        /// 将time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}指定时间并递增
+        /// </summary>
+        /// <param name="sourceSQL">原始SQL数组</param>
+        /// <returns>替换完的数组</returns>
+        private string[] getNewDateTime(string[] sourceSQL)
+        {
+            Match matchDateTimeAll;
+            Match matchDateTimeDiff;
+            
+            for (int i = 0; i < sourceSQL.Length; i++)
+            {
+                matchDateTimeAll = rgGetDateTimeAll.Match(sourceSQL[i]);//{{time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}取整块 日、小时、分钟、秒
+                matchDateTimeDiff = rgGetDateTimeDiff.Match(sourceSQL[i]);//{{timed+-7:2020-03-29 20:00:00}}取(d|h|m|s)(+|-)数字
+                DateTime dt = new DateTime();
+                string str = matchDateTimeDiff.Groups[0].Value;
+                string format = str.Substring(0, 1);
+                string uplow = str.Substring(1, 1);
+                int length = Convert.ToInt32(str.Substring(2, str.Length-2));
+
+                //正则有问题d+7能匹配，d+77不行
+                MessageBox.Show(length.ToString());
+
+                //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, Guid.NewGuid().ToString());
             }
 
             return sourceSQL;
@@ -599,19 +643,6 @@ namespace InsertDataInBatches
 
         #endregion
 
-        #region {{id:x}}按钮快速插入操作
-        private void fastbtn_idIncreasing_Click(object sender, EventArgs e)
-        {
-            string str = "{{id:x}}";
-            int i = richtxtboxInsertSQL.SelectionStart;
-            string s = richtxtboxInsertSQL.Text;
-            s = s.Insert(i, str);
-            richtxtboxInsertSQL.Text = s;
-            richtxtboxInsertSQL.SelectionStart = i + str.Length;
-            richtxtboxInsertSQL.Focus();
-        }
-        #endregion
-
         /// <summary>
         /// 生成设置范围内的Double的随机数
         /// eg:_random.NextDouble(1.5,2.5)
@@ -662,6 +693,19 @@ namespace InsertDataInBatches
                 return 0;
             }
         }
+
+        #region {{id:x}}按钮快速插入操作
+        private void fastbtn_idIncreasing_Click(object sender, EventArgs e)
+        {
+            string str = "{{id:x}}";
+            int i = richtxtboxInsertSQL.SelectionStart;
+            string s = richtxtboxInsertSQL.Text;
+            s = s.Insert(i, str);
+            richtxtboxInsertSQL.Text = s;
+            richtxtboxInsertSQL.SelectionStart = i + str.Length;
+            richtxtboxInsertSQL.Focus();
+        }
+        #endregion
 
         #region {{[1-2]}}按钮快速插入操作
         private void fastbtn_randomNum_Click(object sender, EventArgs e)
