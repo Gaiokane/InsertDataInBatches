@@ -43,8 +43,8 @@ namespace InsertDataInBatches
          * Regex rgGetDateTimeSecAll = new Regex("{{times(\\+|\\-)\\d:\\d{4}-(0?[1-9]|1[0-2])-((0?[1-9])|((1|2)[0-9])|30|31) (((0|1)[0-9])|(2[0-3])):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])}}");//{{times+-7:2020-03-29 20:00:00}}取整块 秒
          */
 
-        Regex rgGetDateTimeAll = new Regex("{{time(d|h|m|s)(\\+|\\-)\\d:\\d{4}-(0?[1-9]|1[0-2])-((0?[1-9])|((1|2)[0-9])|30|31) (((0|1)[0-9])|(2[0-3])):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])}}");//{{time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}取整块 日、小时、分钟、秒
-        Regex rgGetDateTimeDiff = new Regex("(d|h|m|s)(\\+|\\-)\\d");//{{timed+-7:2020-03-29 20:00:00}}取(d|h|m|s)(+|-)数字
+        Regex rgGetDateTimeAll = new Regex("{{time(d|h|m|s)(\\+|\\-)\\d*:\\d{4}-(0?[1-9]|1[0-2])-((0?[1-9])|((1|2)[0-9])|30|31) (((0|1)[0-9])|(2[0-3])):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])}}");//{{time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}取整块 日、小时、分钟、秒
+        Regex rgGetDateTimeDiff = new Regex("(d|h|m|s)(\\+|\\-)\\d*");//{{timed+-7:2020-03-29 20:00:00}}取(d|h|m|s)(+|-)数字
 
         string[] sqlQuerys;
 
@@ -68,7 +68,7 @@ namespace InsertDataInBatches
 
             txtboxNumberOfExecutions.Text = "2";
             //richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('{{id:7}}'){{id:7}}";
-            richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('test{{id:7}}')";
+            richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('test{{id:7}}'){{timed+777:2020-04-04 11:47:07}}";
         }
         #endregion
 
@@ -471,6 +471,8 @@ namespace InsertDataInBatches
         /// <returns>替换完的数组</returns>
         private string[] getNewDateTime(string[] sourceSQL)
         {
+            //{{timed+777:2020-04-04 11:47:07}}
+
             Match matchDateTimeAll;
             Match matchDateTimeDiff;
             
