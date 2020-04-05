@@ -54,6 +54,7 @@
             this.fastbtn_idIncreasing = new System.Windows.Forms.Button();
             this.fastbtn_randomNum = new System.Windows.Forms.Button();
             this.fastbtn_newid = new System.Windows.Forms.Button();
+            this.fastbtn_newdatetime = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -304,11 +305,22 @@
             this.fastbtn_newid.UseVisualStyleBackColor = true;
             this.fastbtn_newid.Click += new System.EventHandler(this.fastbtn_newid_Click);
             // 
+            // fastbtn_newdatetime
+            // 
+            this.fastbtn_newdatetime.Location = new System.Drawing.Point(750, 277);
+            this.fastbtn_newdatetime.Name = "fastbtn_newdatetime";
+            this.fastbtn_newdatetime.Size = new System.Drawing.Size(75, 23);
+            this.fastbtn_newdatetime.TabIndex = 10;
+            this.fastbtn_newdatetime.Text = "时间递增";
+            this.fastbtn_newdatetime.UseVisualStyleBackColor = true;
+            this.fastbtn_newdatetime.Click += new System.EventHandler(this.fastbtn_newdatetime_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 450);
+            this.Controls.Add(this.fastbtn_newdatetime);
             this.Controls.Add(this.fastbtn_newid);
             this.Controls.Add(this.fastbtn_randomNum);
             this.Controls.Add(this.fastbtn_idIncreasing);
@@ -359,6 +371,7 @@
         private System.Windows.Forms.Button fastbtn_idIncreasing;
         private System.Windows.Forms.Button fastbtn_randomNum;
         private System.Windows.Forms.Button fastbtn_newid;
+        private System.Windows.Forms.Button fastbtn_newdatetime;
     }
 }
 

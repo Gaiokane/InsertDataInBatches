@@ -45,6 +45,7 @@ namespace InsertDataInBatches
 
         Regex rgGetDateTimeAll = new Regex("{{time(d|h|m|s)(\\+|\\-)\\d*:\\d{4}-(0?[1-9]|1[0-2])-((0?[1-9])|((1|2)[0-9])|30|31) (((0|1)[0-9])|(2[0-3])):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])}}");//{{time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}取整块 日、小时、分钟、秒
         Regex rgGetDateTimeDiff = new Regex("(d|h|m|s)(\\+|\\-)\\d*");//{{timed+-7:2020-03-29 20:00:00}}取(d|h|m|s)(+|-)数字
+        Regex rgGetDateTime = new Regex("\\d{4}-(0?[1-9]|1[0-2])-((0?[1-9])|((1|2)[0-9])|30|31) (((0|1)[0-9])|(2[0-3])):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])");//{{timed+-7:2020-03-29 20:00:00}}取时间
 
         string[] sqlQuerys;
 
@@ -394,14 +395,29 @@ namespace InsertDataInBatches
         /// <returns>替换完的数组</returns>
         private string[] getResultID(string[] sourceSQL)
         {
-
-            Match matchrgGetID;
+            //以下有bug，只支持替换第一个匹配的正则，现更新为下方，while判断是否有匹配正则
+            /*Match matchrgGetID;
             Match matchGetNum;
             for (int i = 0; i < sourceSQL.Length; i++)
             {
                 matchrgGetID = rgGetID.Match(sourceSQL[i]);//{{id:7}}取整块
                 matchGetNum = rgGetNum.Match(sourceSQL[i]);//{{id:7}}取冒号后的数字
                 sourceSQL[i] = sourceSQL[i].Replace(matchrgGetID.Groups[0].Value, (Convert.ToInt32(matchGetNum.Groups[0].Value) + i).ToString());
+            }*/
+
+            Match matchrgGetID;
+            Match matchGetNum;
+            while (rgGetID.Match(sourceSQL[0]).Success == true)
+            {
+                for (int i = 0; i < sourceSQL.Length; i++)
+                {
+                    matchrgGetID = rgGetID.Match(sourceSQL[i]);//{{id:7}}取整块
+                    matchGetNum = rgGetNum.Match(sourceSQL[i]);//{{id:7}}取冒号后的数字
+                    //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                    //sourceSQL[i] = sourceSQL[i].Replace(matchrgGetID.Groups[0].Value, (Convert.ToInt32(matchGetNum.Groups[0].Value) + i).ToString());
+                    //用这条，仅替换第一个匹配对象
+                    sourceSQL[i] = rgGetID.Replace(sourceSQL[i], (Convert.ToInt32(matchGetNum.Groups[0].Value) + i).ToString(), 1);
+                }
             }
 
             return sourceSQL;
@@ -419,26 +435,31 @@ namespace InsertDataInBatches
             Match matchRandom;
             Match matchRandomRange;
             Random rand = new Random();
-            for (int i = 0; i < sourceSQL.Length; i++)
+            while (rgGetRandom.Match(sourceSQL[0]).Success == true)
             {
-                matchRandom = rgGetRandom.Match(sourceSQL[i]);//{{[1.22-22]}}取整块
-                matchRandomRange = rgGetRandomRange.Match(sourceSQL[i]);//{{[1.22-22]}}取[]中的随机范围
-                double x = Convert.ToDouble(matchRandomRange.Groups[0].Value.Split('-')[0]);
-                double y = Convert.ToDouble(matchRandomRange.Groups[0].Value.Split('-')[1]);
-                /*int xdotlength = getDotLength(x);
-                int ydotlength = getDotLength(y);
-                double randvalue = NextDouble(rand, x, y);
-                if (xdotlength>ydotlength)
+                for (int i = 0; i < sourceSQL.Length; i++)
                 {
-                    sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, Math.Round(randvalue,xdotlength).ToString());
+                    matchRandom = rgGetRandom.Match(sourceSQL[i]);//{{[1.22-22]}}取整块
+                    matchRandomRange = rgGetRandomRange.Match(sourceSQL[i]);//{{[1.22-22]}}取[]中的随机范围
+                    double x = Convert.ToDouble(matchRandomRange.Groups[0].Value.Split('-')[0]);
+                    double y = Convert.ToDouble(matchRandomRange.Groups[0].Value.Split('-')[1]);
+                    /*int xdotlength = getDotLength(x);
+                    int ydotlength = getDotLength(y);
+                    double randvalue = NextDouble(rand, x, y);
+                    if (xdotlength>ydotlength)
+                    {
+                        sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, Math.Round(randvalue,xdotlength).ToString());
+                    }
+                    else
+                    {
+                        sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, Math.Round(randvalue, ydotlength).ToString());
+                    }*/
+                    //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                    //sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, NextDouble(rand, x, y).ToString());
+                    //用这条，仅替换第一个匹配对象
+                    sourceSQL[i] = rgGetRandom.Replace(sourceSQL[i], NextDouble(rand, x, y).ToString(), 1);
                 }
-                else
-                {
-                    sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, Math.Round(randvalue, ydotlength).ToString());
-                }*/
-                sourceSQL[i] = sourceSQL[i].Replace(matchRandom.Groups[0].Value, NextDouble(rand, x, y).ToString());
             }
-
             return sourceSQL;
         }
         #endregion
@@ -451,12 +472,17 @@ namespace InsertDataInBatches
         /// <returns>替换完的数组</returns>
         private string[] getNewID(string[] sourceSQL)
         {
-
             Match matchrgGetNewID;
-            for (int i = 0; i < sourceSQL.Length; i++)
+            while (rgGetNewID.Match(sourceSQL[0]).Success == true)
             {
-                matchrgGetNewID = rgGetNewID.Match(sourceSQL[i]);//{{newid}}取整块
-                sourceSQL[i] = sourceSQL[i].Replace(matchrgGetNewID.Groups[0].Value, Guid.NewGuid().ToString());
+                for (int i = 0; i < sourceSQL.Length; i++)
+                {
+                    matchrgGetNewID = rgGetNewID.Match(sourceSQL[i]);//{{newid}}取整块
+                    //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                    //sourceSQL[i] = sourceSQL[i].Replace(matchrgGetNewID.Groups[0].Value, Guid.NewGuid().ToString());
+                    //用这条，仅替换第一个匹配对象
+                    sourceSQL[i] = rgGetNewID.Replace(sourceSQL[i], Guid.NewGuid().ToString(), 1);
+                }
             }
 
             return sourceSQL;
@@ -475,21 +501,96 @@ namespace InsertDataInBatches
 
             Match matchDateTimeAll;
             Match matchDateTimeDiff;
-            
-            for (int i = 0; i < sourceSQL.Length; i++)
+            Match matchDateTime;
+
+            while (rgGetDateTimeAll.Match(sourceSQL[0]).Success == true)
             {
-                matchDateTimeAll = rgGetDateTimeAll.Match(sourceSQL[i]);//{{time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}取整块 日、小时、分钟、秒
-                matchDateTimeDiff = rgGetDateTimeDiff.Match(sourceSQL[i]);//{{timed+-7:2020-03-29 20:00:00}}取(d|h|m|s)(+|-)数字
-                DateTime dt = new DateTime();
-                string str = matchDateTimeDiff.Groups[0].Value;
-                string format = str.Substring(0, 1);
-                string uplow = str.Substring(1, 1);
-                int length = Convert.ToInt32(str.Substring(2, str.Length-2));
+                for (int i = 0; i < sourceSQL.Length; i++)
+                {
+                    matchDateTimeAll = rgGetDateTimeAll.Match(sourceSQL[i]);//{{time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}取整块 日、小时、分钟、秒
+                    //matchDateTimeDiff = rgGetDateTimeDiff.Match(sourceSQL[i]);//{{timed+-7:2020-03-29 20:00:00}}取(d|h|m|s)(+|-)数字
+                    matchDateTimeDiff = rgGetDateTimeDiff.Match(matchDateTimeAll.Groups[0].Value);//{{timed+-7:2020-03-29 20:00:00}}取(d|h|m|s)(+|-)数字
+                    //matchDateTime = rgGetDateTime.Match(sourceSQL[i]);//{{timed+-7:2020-03-29 20:00:00}}取时间
+                    matchDateTime = rgGetDateTime.Match(matchDateTimeAll.Groups[0].Value);//{{timed+-7:2020-03-29 20:00:00}}取时间
+                    //DateTime dt = new DateTime();
+                    DateTime dt = Convert.ToDateTime(matchDateTime.Groups[0].Value);
+                    string str = matchDateTimeDiff.Groups[0].Value;//取(d|h|m|s)(+|-)数字
+                    string type = str.Substring(0, 1);//(d|h|m|s)
+                    string symbol = str.Substring(1, 1);//(+|-)
+                    int length = Convert.ToInt32(str.Substring(2, str.Length - 2));//数字
 
-                //正则有问题d+7能匹配，d+77不行
-                MessageBox.Show(length.ToString());
+                    //MessageBox.Show(type+"\n"+symbol+"\n"+length.ToString());
+                    //MessageBox.Show(dt.AddHours(7).ToString("yyyy-MM-dd HH:mm:ss"));
 
-                //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, Guid.NewGuid().ToString());
+                    if (type == "d")//日+/-
+                    {
+                        if (symbol == "+")//+
+                        {
+                            //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                            //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, dt.AddDays(length * i).ToString("yyyy-MM-dd HH:mm:ss"));//日+
+                            //用这条，仅替换第一个匹配对象
+                            sourceSQL[i] = rgGetDateTimeAll.Replace(sourceSQL[i], dt.AddDays(length * i).ToString("yyyy-MM-dd HH:mm:ss"), 1);
+                        }
+                        if (symbol == "-")//-
+                        {
+                            //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                            //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, dt.AddDays(-(length * i)).ToString("yyyy-MM-dd HH:mm:ss"));//日-
+                            //用这条，仅替换第一个匹配对象
+                            sourceSQL[i] = rgGetDateTimeAll.Replace(sourceSQL[i], dt.AddDays(-(length * i)).ToString("yyyy-MM-dd HH:mm:ss"), 1);
+                        }
+                    }
+                    if (type == "h")//小时+/-
+                    {
+                        if (symbol == "+")//+
+                        {
+                            //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                            //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, dt.AddHours(length * i).ToString("yyyy-MM-dd HH:mm:ss"));//小时+
+                            //用这条，仅替换第一个匹配对象
+                            sourceSQL[i] = rgGetDateTimeAll.Replace(sourceSQL[i], dt.AddHours(length * i).ToString("yyyy-MM-dd HH:mm:ss"), 1);
+                        }
+                        if (symbol == "-")//-
+                        {
+                            //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                            //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, dt.AddHours(-(length * i)).ToString("yyyy-MM-dd HH:mm:ss"));//小时-
+                            //用这条，仅替换第一个匹配对象
+                            sourceSQL[i] = rgGetDateTimeAll.Replace(sourceSQL[i], dt.AddHours(-(length * i)).ToString("yyyy-MM-dd HH:mm:ss"), 1);
+                        }
+                    }
+                    if (type == "m")//分钟+/-
+                    {
+                        if (symbol == "+")//+
+                        {
+                            //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                            //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, dt.AddMinutes(length * i).ToString("yyyy-MM-dd HH:mm:ss"));//分钟+
+                            //用这条，仅替换第一个匹配对象
+                            sourceSQL[i] = rgGetDateTimeAll.Replace(sourceSQL[i], dt.AddMinutes(length * i).ToString("yyyy-MM-dd HH:mm:ss"), 1);
+                        }
+                        if (symbol == "-")//-
+                        {
+                            //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                            //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, dt.AddMinutes(-(length * i)).ToString("yyyy-MM-dd HH:mm:ss"));//分钟-
+                            //用这条，仅替换第一个匹配对象
+                            sourceSQL[i] = rgGetDateTimeAll.Replace(sourceSQL[i], dt.AddMinutes(-(length * i)).ToString("yyyy-MM-dd HH:mm:ss"), 1);
+                        }
+                    }
+                    if (type == "s")//秒+/-
+                    {
+                        if (symbol == "+")//+
+                        {
+                            //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                            //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, dt.AddSeconds(length * i).ToString("yyyy-MM-dd HH:mm:ss"));//秒+
+                            //用这条，仅替换第一个匹配对象
+                            sourceSQL[i] = rgGetDateTimeAll.Replace(sourceSQL[i], dt.AddSeconds(length * i).ToString("yyyy-MM-dd HH:mm:ss"), 1);
+                        }
+                        if (symbol == "-")//-
+                        {
+                            //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                            //sourceSQL[i] = sourceSQL[i].Replace(matchDateTimeAll.Groups[0].Value, dt.AddSeconds(-(length * i)).ToString("yyyy-MM-dd HH:mm:ss"));//秒-
+                            //用这条，仅替换第一个匹配对象
+                            sourceSQL[i] = rgGetDateTimeAll.Replace(sourceSQL[i], dt.AddSeconds(-(length * i)).ToString("yyyy-MM-dd HH:mm:ss"), 1);
+                        }
+                    }
+                }
             }
 
             return sourceSQL;
@@ -726,6 +827,19 @@ namespace InsertDataInBatches
         private void fastbtn_newid_Click(object sender, EventArgs e)
         {
             string str = "{{newid}}";
+            int i = richtxtboxInsertSQL.SelectionStart;
+            string s = richtxtboxInsertSQL.Text;
+            s = s.Insert(i, str);
+            richtxtboxInsertSQL.Text = s;
+            richtxtboxInsertSQL.SelectionStart = i + str.Length;
+            richtxtboxInsertSQL.Focus();
+        }
+        #endregion
+
+        #region {{time(d|h|m|s)(+|-)7:2020-03-29 20:00:00}}按钮快速插入操作
+        private void fastbtn_newdatetime_Click(object sender, EventArgs e)
+        {
+            string str = "{{timed+7:2020-04-04 11:47:07}}";
             int i = richtxtboxInsertSQL.SelectionStart;
             string s = richtxtboxInsertSQL.Text;
             s = s.Insert(i, str);
