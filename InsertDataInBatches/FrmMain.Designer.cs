@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupbox_DataBase = new System.Windows.Forms.GroupBox();
             this.chkboxPort = new System.Windows.Forms.CheckBox();
             this.txtboxPort = new System.Windows.Forms.TextBox();
             this.btnDisconnect = new System.Windows.Forms.Button();
@@ -51,36 +51,37 @@
             this.txtboxNumberOfExecutions = new System.Windows.Forms.TextBox();
             this.btnStartInserting = new System.Windows.Forms.Button();
             this.labResult = new System.Windows.Forms.Label();
-            this.fastbtn_idIncreasing = new System.Windows.Forms.Button();
-            this.fastbtn_randomNum = new System.Windows.Forms.Button();
-            this.fastbtn_newid = new System.Windows.Forms.Button();
-            this.fastbtn_newdatetime = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.groupbox_QuickInsert = new System.Windows.Forms.GroupBox();
+            this.cmbox_QuickInsert_List = new System.Windows.Forms.ComboBox();
+            this.btn_QuickInsert_Settings = new System.Windows.Forms.Button();
+            this.btn_QuickInsert_Insert = new System.Windows.Forms.Button();
+            this.groupbox_DataBase.SuspendLayout();
+            this.groupbox_QuickInsert.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // groupbox_DataBase
             // 
-            this.groupBox1.Controls.Add(this.chkboxPort);
-            this.groupBox1.Controls.Add(this.txtboxPort);
-            this.groupBox1.Controls.Add(this.btnDisconnect);
-            this.groupBox1.Controls.Add(this.btnConnect);
-            this.groupBox1.Controls.Add(this.radiobtnMYSQL);
-            this.groupBox1.Controls.Add(this.radiobtnMSSQL);
-            this.groupBox1.Controls.Add(this.txtboxPassword);
-            this.groupBox1.Controls.Add(this.txtboxUsername);
-            this.groupBox1.Controls.Add(this.txtboxDatabase);
-            this.groupBox1.Controls.Add(this.txtboxHost);
-            this.groupBox1.Controls.Add(this.labPassword);
-            this.groupBox1.Controls.Add(this.labUsername);
-            this.groupBox1.Controls.Add(this.labDatabase);
-            this.groupBox1.Controls.Add(this.labConnectStatus);
-            this.groupBox1.Controls.Add(this.labHost);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(894, 83);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "数据库";
+            this.groupbox_DataBase.Controls.Add(this.chkboxPort);
+            this.groupbox_DataBase.Controls.Add(this.txtboxPort);
+            this.groupbox_DataBase.Controls.Add(this.btnDisconnect);
+            this.groupbox_DataBase.Controls.Add(this.btnConnect);
+            this.groupbox_DataBase.Controls.Add(this.radiobtnMYSQL);
+            this.groupbox_DataBase.Controls.Add(this.radiobtnMSSQL);
+            this.groupbox_DataBase.Controls.Add(this.txtboxPassword);
+            this.groupbox_DataBase.Controls.Add(this.txtboxUsername);
+            this.groupbox_DataBase.Controls.Add(this.txtboxDatabase);
+            this.groupbox_DataBase.Controls.Add(this.txtboxHost);
+            this.groupbox_DataBase.Controls.Add(this.labPassword);
+            this.groupbox_DataBase.Controls.Add(this.labUsername);
+            this.groupbox_DataBase.Controls.Add(this.labDatabase);
+            this.groupbox_DataBase.Controls.Add(this.labConnectStatus);
+            this.groupbox_DataBase.Controls.Add(this.labHost);
+            this.groupbox_DataBase.Location = new System.Drawing.Point(12, 12);
+            this.groupbox_DataBase.Name = "groupbox_DataBase";
+            this.groupbox_DataBase.Size = new System.Drawing.Size(894, 83);
+            this.groupbox_DataBase.TabIndex = 0;
+            this.groupbox_DataBase.TabStop = false;
+            this.groupbox_DataBase.Text = "数据库";
             // 
             // chkboxPort
             // 
@@ -275,55 +276,52 @@
             this.labResult.TabIndex = 6;
             this.labResult.Text = "执行情况：";
             // 
-            // fastbtn_idIncreasing
+            // groupbox_QuickInsert
             // 
-            this.fastbtn_idIncreasing.Location = new System.Drawing.Point(750, 190);
-            this.fastbtn_idIncreasing.Name = "fastbtn_idIncreasing";
-            this.fastbtn_idIncreasing.Size = new System.Drawing.Size(75, 23);
-            this.fastbtn_idIncreasing.TabIndex = 7;
-            this.fastbtn_idIncreasing.Text = "id递增";
-            this.fastbtn_idIncreasing.UseVisualStyleBackColor = true;
-            this.fastbtn_idIncreasing.Click += new System.EventHandler(this.fastbtn_idIncreasing_Click);
+            this.groupbox_QuickInsert.Controls.Add(this.btn_QuickInsert_Insert);
+            this.groupbox_QuickInsert.Controls.Add(this.btn_QuickInsert_Settings);
+            this.groupbox_QuickInsert.Controls.Add(this.cmbox_QuickInsert_List);
+            this.groupbox_QuickInsert.Location = new System.Drawing.Point(750, 184);
+            this.groupbox_QuickInsert.Name = "groupbox_QuickInsert";
+            this.groupbox_QuickInsert.Size = new System.Drawing.Size(156, 78);
+            this.groupbox_QuickInsert.TabIndex = 11;
+            this.groupbox_QuickInsert.TabStop = false;
+            this.groupbox_QuickInsert.Text = "快捷插入";
             // 
-            // fastbtn_randomNum
+            // cmbox_QuickInsert_List
             // 
-            this.fastbtn_randomNum.Location = new System.Drawing.Point(750, 219);
-            this.fastbtn_randomNum.Name = "fastbtn_randomNum";
-            this.fastbtn_randomNum.Size = new System.Drawing.Size(75, 23);
-            this.fastbtn_randomNum.TabIndex = 8;
-            this.fastbtn_randomNum.Text = "随机数";
-            this.fastbtn_randomNum.UseVisualStyleBackColor = true;
-            this.fastbtn_randomNum.Click += new System.EventHandler(this.fastbtn_randomNum_Click);
+            this.cmbox_QuickInsert_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbox_QuickInsert_List.FormattingEnabled = true;
+            this.cmbox_QuickInsert_List.Location = new System.Drawing.Point(6, 20);
+            this.cmbox_QuickInsert_List.Name = "cmbox_QuickInsert_List";
+            this.cmbox_QuickInsert_List.Size = new System.Drawing.Size(98, 20);
+            this.cmbox_QuickInsert_List.TabIndex = 0;
             // 
-            // fastbtn_newid
+            // btn_QuickInsert_Settings
             // 
-            this.fastbtn_newid.Location = new System.Drawing.Point(750, 248);
-            this.fastbtn_newid.Name = "fastbtn_newid";
-            this.fastbtn_newid.Size = new System.Drawing.Size(75, 23);
-            this.fastbtn_newid.TabIndex = 9;
-            this.fastbtn_newid.Text = "生成newid";
-            this.fastbtn_newid.UseVisualStyleBackColor = true;
-            this.fastbtn_newid.Click += new System.EventHandler(this.fastbtn_newid_Click);
+            this.btn_QuickInsert_Settings.Location = new System.Drawing.Point(6, 47);
+            this.btn_QuickInsert_Settings.Name = "btn_QuickInsert_Settings";
+            this.btn_QuickInsert_Settings.Size = new System.Drawing.Size(98, 23);
+            this.btn_QuickInsert_Settings.TabIndex = 1;
+            this.btn_QuickInsert_Settings.Text = "快捷插入配置";
+            this.btn_QuickInsert_Settings.UseVisualStyleBackColor = true;
             // 
-            // fastbtn_newdatetime
+            // btn_QuickInsert_Insert
             // 
-            this.fastbtn_newdatetime.Location = new System.Drawing.Point(750, 277);
-            this.fastbtn_newdatetime.Name = "fastbtn_newdatetime";
-            this.fastbtn_newdatetime.Size = new System.Drawing.Size(75, 23);
-            this.fastbtn_newdatetime.TabIndex = 10;
-            this.fastbtn_newdatetime.Text = "时间递增";
-            this.fastbtn_newdatetime.UseVisualStyleBackColor = true;
-            this.fastbtn_newdatetime.Click += new System.EventHandler(this.fastbtn_newdatetime_Click);
+            this.btn_QuickInsert_Insert.Location = new System.Drawing.Point(110, 18);
+            this.btn_QuickInsert_Insert.Name = "btn_QuickInsert_Insert";
+            this.btn_QuickInsert_Insert.Size = new System.Drawing.Size(40, 23);
+            this.btn_QuickInsert_Insert.TabIndex = 2;
+            this.btn_QuickInsert_Insert.Text = "插入";
+            this.btn_QuickInsert_Insert.UseVisualStyleBackColor = true;
+            this.btn_QuickInsert_Insert.Click += new System.EventHandler(this.btn_QuickInsert_Insert_Click);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 450);
-            this.Controls.Add(this.fastbtn_newdatetime);
-            this.Controls.Add(this.fastbtn_newid);
-            this.Controls.Add(this.fastbtn_randomNum);
-            this.Controls.Add(this.fastbtn_idIncreasing);
+            this.Controls.Add(this.groupbox_QuickInsert);
             this.Controls.Add(this.labResult);
             this.Controls.Add(this.btnStartInserting);
             this.Controls.Add(this.txtboxNumberOfExecutions);
@@ -331,13 +329,14 @@
             this.Controls.Add(this.labInsertSQL);
             this.Controls.Add(this.richtxtboxResult);
             this.Controls.Add(this.richtxtboxInsertSQL);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupbox_DataBase);
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FrmMain";
             this.Load += new System.EventHandler(this.FrmMain_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupbox_DataBase.ResumeLayout(false);
+            this.groupbox_DataBase.PerformLayout();
+            this.groupbox_QuickInsert.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -345,7 +344,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupbox_DataBase;
         private System.Windows.Forms.Label labHost;
         private System.Windows.Forms.TextBox txtboxPassword;
         private System.Windows.Forms.TextBox txtboxUsername;
@@ -368,10 +367,10 @@
         private System.Windows.Forms.Button btnStartInserting;
         private System.Windows.Forms.Label labResult;
         private System.Windows.Forms.CheckBox chkboxPort;
-        private System.Windows.Forms.Button fastbtn_idIncreasing;
-        private System.Windows.Forms.Button fastbtn_randomNum;
-        private System.Windows.Forms.Button fastbtn_newid;
-        private System.Windows.Forms.Button fastbtn_newdatetime;
+        private System.Windows.Forms.GroupBox groupbox_QuickInsert;
+        private System.Windows.Forms.Button btn_QuickInsert_Insert;
+        private System.Windows.Forms.Button btn_QuickInsert_Settings;
+        private System.Windows.Forms.ComboBox cmbox_QuickInsert_List;
     }
 }
 

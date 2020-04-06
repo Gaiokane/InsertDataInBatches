@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
+using Gaiokane;
 
 namespace InsertDataInBatches
 {
@@ -70,6 +71,44 @@ namespace InsertDataInBatches
             txtboxNumberOfExecutions.Text = "2";
             //richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('{{id:7}}'){{id:7}}";
             richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('test{{id:7}}'){{timed+777:2020-04-04 11:47:07}}";
+
+            ConfigSettings.getQuickInsertSettingsByappSettings();
+            ConfigSettings.setDefaultQuickInsertSettingsIfIsNullOrEmptyByappSettings();
+            ConfigSettings.getQuickInsertSettingsByappSettings();
+
+            string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
+            foreach (var item in QuickInsert)
+            {
+                string[] QuickInsertKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
+                cmbox_QuickInsert_List.Items.Add(QuickInsertKeyValue[0]);
+            }
+            if (cmbox_QuickInsert_List.Items.Count > 0)
+            {
+                cmbox_QuickInsert_List.SelectedIndex = 0;
+            }
+            //MessageBox.Show(str);
+        }
+        #endregion
+
+        #region 快捷插入-插入按钮点击事件 根据下拉框所选快捷功能，执行插入操作
+        private void btn_QuickInsert_Insert_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show(cmbox_QuickInsert_List.SelectedItem.ToString());
+            string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
+            foreach (var item in QuickInsert)
+            {
+                string[] QuickInsertKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
+                if (cmbox_QuickInsert_List.SelectedItem.ToString() == QuickInsertKeyValue[0])
+                {
+                    string str = QuickInsertKeyValue[1];
+                    int index = richtxtboxInsertSQL.SelectionStart;
+                    string s = richtxtboxInsertSQL.Text;
+                    s = s.Insert(index, str);
+                    richtxtboxInsertSQL.Text = s;
+                    richtxtboxInsertSQL.SelectionStart = index + str.Length;
+                    richtxtboxInsertSQL.Focus();
+                }
+            }
         }
         #endregion
 
@@ -299,7 +338,7 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        MessageBox.Show("没有匹配项{{id:x}}");
+                        MessageBox.Show("没有匹配项{{[x-y]}}");
                     }
                     #endregion
 
@@ -797,6 +836,8 @@ namespace InsertDataInBatches
             }
         }
 
+        #region （该部分注释）快捷按钮插入操作 已通过下拉替换
+        /*
         #region {{id:x}}按钮快速插入操作
         private void fastbtn_idIncreasing_Click(object sender, EventArgs e)
         {
@@ -847,6 +888,8 @@ namespace InsertDataInBatches
             richtxtboxInsertSQL.SelectionStart = i + str.Length;
             richtxtboxInsertSQL.Focus();
         }
+        #endregion
+        */
         #endregion
     }
 }
