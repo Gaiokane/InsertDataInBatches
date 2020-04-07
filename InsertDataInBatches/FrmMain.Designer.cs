@@ -52,9 +52,9 @@
             this.btnStartInserting = new System.Windows.Forms.Button();
             this.labResult = new System.Windows.Forms.Label();
             this.groupbox_QuickInsert = new System.Windows.Forms.GroupBox();
-            this.cmbox_QuickInsert_List = new System.Windows.Forms.ComboBox();
-            this.btn_QuickInsert_Settings = new System.Windows.Forms.Button();
             this.btn_QuickInsert_Insert = new System.Windows.Forms.Button();
+            this.btn_QuickInsert_Settings = new System.Windows.Forms.Button();
+            this.cmbox_QuickInsert_List = new System.Windows.Forms.ComboBox();
             this.groupbox_DataBase.SuspendLayout();
             this.groupbox_QuickInsert.SuspendLayout();
             this.SuspendLayout();
@@ -288,24 +288,6 @@
             this.groupbox_QuickInsert.TabStop = false;
             this.groupbox_QuickInsert.Text = "快捷插入";
             // 
-            // cmbox_QuickInsert_List
-            // 
-            this.cmbox_QuickInsert_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbox_QuickInsert_List.FormattingEnabled = true;
-            this.cmbox_QuickInsert_List.Location = new System.Drawing.Point(6, 20);
-            this.cmbox_QuickInsert_List.Name = "cmbox_QuickInsert_List";
-            this.cmbox_QuickInsert_List.Size = new System.Drawing.Size(98, 20);
-            this.cmbox_QuickInsert_List.TabIndex = 0;
-            // 
-            // btn_QuickInsert_Settings
-            // 
-            this.btn_QuickInsert_Settings.Location = new System.Drawing.Point(6, 47);
-            this.btn_QuickInsert_Settings.Name = "btn_QuickInsert_Settings";
-            this.btn_QuickInsert_Settings.Size = new System.Drawing.Size(98, 23);
-            this.btn_QuickInsert_Settings.TabIndex = 1;
-            this.btn_QuickInsert_Settings.Text = "快捷插入配置";
-            this.btn_QuickInsert_Settings.UseVisualStyleBackColor = true;
-            // 
             // btn_QuickInsert_Insert
             // 
             this.btn_QuickInsert_Insert.Location = new System.Drawing.Point(110, 18);
@@ -315,6 +297,25 @@
             this.btn_QuickInsert_Insert.Text = "插入";
             this.btn_QuickInsert_Insert.UseVisualStyleBackColor = true;
             this.btn_QuickInsert_Insert.Click += new System.EventHandler(this.btn_QuickInsert_Insert_Click);
+            // 
+            // btn_QuickInsert_Settings
+            // 
+            this.btn_QuickInsert_Settings.Location = new System.Drawing.Point(6, 47);
+            this.btn_QuickInsert_Settings.Name = "btn_QuickInsert_Settings";
+            this.btn_QuickInsert_Settings.Size = new System.Drawing.Size(98, 23);
+            this.btn_QuickInsert_Settings.TabIndex = 1;
+            this.btn_QuickInsert_Settings.Text = "快捷插入配置";
+            this.btn_QuickInsert_Settings.UseVisualStyleBackColor = true;
+            this.btn_QuickInsert_Settings.Click += new System.EventHandler(this.btn_QuickInsert_Settings_Click);
+            // 
+            // cmbox_QuickInsert_List
+            // 
+            this.cmbox_QuickInsert_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbox_QuickInsert_List.FormattingEnabled = true;
+            this.cmbox_QuickInsert_List.Location = new System.Drawing.Point(6, 20);
+            this.cmbox_QuickInsert_List.Name = "cmbox_QuickInsert_List";
+            this.cmbox_QuickInsert_List.Size = new System.Drawing.Size(98, 20);
+            this.cmbox_QuickInsert_List.TabIndex = 0;
             // 
             // FrmMain
             // 

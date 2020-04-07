@@ -54,5 +54,26 @@ namespace InsertDataInBatches
             }
         }
         #endregion
+
+        #region 获取配置文件中快捷插入配置所有配置编码
+        /// <summary>
+        /// 获取配置文件中快捷插入配置所有配置编码
+        /// </summary>
+        public static string[] getQuickInsertSettingsAllCodes()
+        {
+            string[] result = { };
+            QuickInsert = RWConfig.GetappSettingsValue("QuickInsert", ConfigPath);
+            if (string.IsNullOrEmpty(QuickInsert))
+            {
+                setDefaultQuickInsertSettingsIfIsNullOrEmptyByappSettings();
+                getQuickInsertSettingsByappSettings();
+            }
+            else
+            {
+                result = QuickInsert.Split(';');
+            }
+            return result;
+        }
+        #endregion
     }
 }

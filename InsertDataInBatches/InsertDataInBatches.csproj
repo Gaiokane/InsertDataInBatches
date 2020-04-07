@@ -60,6 +60,18 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmQuickInsertConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmQuickInsertConfig.Designer.cs">
+      <DependentUpon>FrmQuickInsertConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmQuickInsertConfigNewEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmQuickInsertConfigNewEdit.Designer.cs">
+      <DependentUpon>FrmQuickInsertConfigNewEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmVariableConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,6 +83,12 @@
     <Compile Include="SqlHelper.cs" />
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmQuickInsertConfig.resx">
+      <DependentUpon>FrmQuickInsertConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmQuickInsertConfigNewEdit.resx">
+      <DependentUpon>FrmQuickInsertConfigNewEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

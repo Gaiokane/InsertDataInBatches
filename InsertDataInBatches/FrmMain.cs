@@ -891,5 +891,11 @@ namespace InsertDataInBatches
         #endregion
         */
         #endregion
+
+        private void btn_QuickInsert_Settings_Click(object sender, EventArgs e)
+        {
+            FrmQuickInsertConfig fqic = new FrmQuickInsertConfig();
+            fqic.Show();
+        }
     }
 }
