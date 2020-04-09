@@ -41,7 +41,7 @@
             this.FQIC_New.Location = new System.Drawing.Point(93, 12);
             this.FQIC_New.Name = "FQIC_New";
             this.FQIC_New.Size = new System.Drawing.Size(75, 23);
-            this.FQIC_New.TabIndex = 0;
+            this.FQIC_New.TabIndex = 1;
             this.FQIC_New.Text = "新增";
             this.FQIC_New.UseVisualStyleBackColor = true;
             this.FQIC_New.Click += new System.EventHandler(this.FQIC_New_Click);
@@ -51,37 +51,46 @@
             this.FQIC_Edit.Location = new System.Drawing.Point(174, 12);
             this.FQIC_Edit.Name = "FQIC_Edit";
             this.FQIC_Edit.Size = new System.Drawing.Size(75, 23);
-            this.FQIC_Edit.TabIndex = 1;
+            this.FQIC_Edit.TabIndex = 2;
             this.FQIC_Edit.Text = "编辑";
             this.FQIC_Edit.UseVisualStyleBackColor = true;
             this.FQIC_Edit.Click += new System.EventHandler(this.FQIC_Edit_Click);
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 41);
+            this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(500, 200);
-            this.dataGridView1.TabIndex = 2;
+            this.dataGridView1.TabIndex = 4;
             // 
             // FQIC_Refresh
             // 
             this.FQIC_Refresh.Location = new System.Drawing.Point(12, 12);
             this.FQIC_Refresh.Name = "FQIC_Refresh";
             this.FQIC_Refresh.Size = new System.Drawing.Size(75, 23);
-            this.FQIC_Refresh.TabIndex = 3;
+            this.FQIC_Refresh.TabIndex = 0;
             this.FQIC_Refresh.Text = "刷新";
             this.FQIC_Refresh.UseVisualStyleBackColor = true;
+            this.FQIC_Refresh.Click += new System.EventHandler(this.FQIC_Refresh_Click);
             // 
             // FQIC_Del
             // 
             this.FQIC_Del.Location = new System.Drawing.Point(255, 12);
             this.FQIC_Del.Name = "FQIC_Del";
             this.FQIC_Del.Size = new System.Drawing.Size(75, 23);
-            this.FQIC_Del.TabIndex = 4;
+            this.FQIC_Del.TabIndex = 3;
             this.FQIC_Del.Text = "删除";
             this.FQIC_Del.UseVisualStyleBackColor = true;
+            this.FQIC_Del.Click += new System.EventHandler(this.FQIC_Del_Click);
             // 
             // FrmQuickInsertConfig
             // 
@@ -95,7 +104,8 @@
             this.Controls.Add(this.FQIC_New);
             this.Name = "FrmQuickInsertConfig";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrmQuickInsertConfig";
+            this.Text = "快捷插入配置";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmQuickInsertConfig_FormClosed);
             this.Load += new System.EventHandler(this.FrmQuickInsertConfig_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

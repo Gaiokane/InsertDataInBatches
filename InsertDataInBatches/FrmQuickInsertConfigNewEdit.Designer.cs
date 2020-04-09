@@ -71,7 +71,6 @@
             this.txtbox_Name.Name = "txtbox_Name";
             this.txtbox_Name.Size = new System.Drawing.Size(250, 21);
             this.txtbox_Name.TabIndex = 12;
-            this.txtbox_Name.Text = "{{timed+777:2020-12-31 23:59:59}}";
             // 
             // txtbox_Code
             // 
@@ -122,7 +121,8 @@
             this.Controls.Add(this.lab_Code);
             this.Name = "FrmQuickInsertConfigNewEdit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrmQuickInsertConfigNewEdit";
+            this.Text = "新增/编辑，代码控制";
+            this.Load += new System.EventHandler(this.FrmQuickInsertConfigNewEdit_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

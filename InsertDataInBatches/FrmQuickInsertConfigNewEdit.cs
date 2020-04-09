@@ -12,6 +12,8 @@ namespace InsertDataInBatches
 {
     public partial class FrmQuickInsertConfigNewEdit : Form
     {
+        public string code, name, value;
+
         public FrmQuickInsertConfigNewEdit()
         {
             InitializeComponent();
@@ -25,6 +27,14 @@ namespace InsertDataInBatches
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void FrmQuickInsertConfigNewEdit_Load(object sender, EventArgs e)
+        {
+            //txtbox_Value.Text = "{{timed+777:2020-12-31 23:59:59}}";
+            txtbox_Code.Text = code;
+            txtbox_Name.Text = name;
+            txtbox_Value.Text = value;
         }
     }
 }

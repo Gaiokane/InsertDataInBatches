@@ -892,10 +892,19 @@ namespace InsertDataInBatches
         */
         #endregion
 
+        #region 快捷插入配置按钮单击事件 打开快捷插入配置窗口 设置只能打开一个
         private void btn_QuickInsert_Settings_Click(object sender, EventArgs e)
         {
+            //设置只能打开一个，配合FrmQuickInsertConfig中的GetFrmQuickInsertConfig()设置
+            FrmQuickInsertConfig.GetFrmQuickInsertConfig().Activate();
+
+            //接收FrmQuickInsertConfig返回的DialogResult，刷新右侧常用按钮功能Text
             FrmQuickInsertConfig fqic = new FrmQuickInsertConfig();
-            fqic.Show();
+            if (fqic.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
+        #endregion
     }
 }

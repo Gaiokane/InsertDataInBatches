@@ -333,7 +333,7 @@
             this.Controls.Add(this.groupbox_DataBase);
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrmMain";
+            this.Text = "批量插数据小工具";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.groupbox_DataBase.ResumeLayout(false);
             this.groupbox_DataBase.PerformLayout();

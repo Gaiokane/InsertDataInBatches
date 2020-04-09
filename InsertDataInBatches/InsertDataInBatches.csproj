@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gaiokane">
-      <HintPath>..\..\..\dll\Gaiokane.dll</HintPath>
+    <Reference Include="Gaiokane, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dll\Gaiokane 2.0 含删除\Gaiokane.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=8.0.18.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,12 +72,6 @@
     </Compile>
     <Compile Include="FrmQuickInsertConfigNewEdit.Designer.cs">
       <DependentUpon>FrmQuickInsertConfigNewEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmVariableConfig.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmVariableConfig.Designer.cs">
-      <DependentUpon>FrmVariableConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
