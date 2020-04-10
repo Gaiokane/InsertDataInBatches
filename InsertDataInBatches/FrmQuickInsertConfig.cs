@@ -21,9 +21,19 @@ namespace InsertDataInBatches
         #region 新增按钮单击事件，设置新增窗口标题
         private void FQIC_New_Click(object sender, EventArgs e)
         {
-            FrmQuickInsertConfigNewEdit fqic = new FrmQuickInsertConfigNewEdit();
-            fqic.Text = "新增快捷插入配置";
-            fqic.Show();
+            //设置只能打开一个，配合FrmQuickInsertConfig中的GetFrmQuickInsertConfig()设置
+            FrmQuickInsertConfigNewEdit.GetFrmQuickInsertConfigNewEdit().Activate();
+
+            FrmQuickInsertConfigNewEdit fqicne = new FrmQuickInsertConfigNewEdit();
+            fqicne.Text = "新增快捷插入配置";
+            fqicne.type = 0;//(type 0：新增，1：编辑)
+            //fqic.Show();
+
+            //接收FrmQuickInsertConfig返回的DialogResult，刷新右侧常用按钮功能Text
+            if (fqicne.ShowDialog() == DialogResult.OK)
+            {
+
+            }
         }
         #endregion
 
@@ -42,12 +52,22 @@ namespace InsertDataInBatches
                 }
                 else
                 {
-                    FrmQuickInsertConfigNewEdit fqic = new FrmQuickInsertConfigNewEdit();
-                    fqic.Text = "编辑快捷插入配置";
-                    fqic.code = dataGridView1.SelectedCells[0].Value.ToString();
-                    fqic.name = dataGridView1.SelectedCells[1].Value.ToString();
-                    fqic.value = dataGridView1.SelectedCells[2].Value.ToString();
-                    fqic.Show();
+                    //设置只能打开一个，配合FrmQuickInsertConfig中的GetFrmQuickInsertConfig()设置
+                    FrmQuickInsertConfigNewEdit.GetFrmQuickInsertConfigNewEdit().Activate();
+
+                    FrmQuickInsertConfigNewEdit fqicne = new FrmQuickInsertConfigNewEdit();
+                    fqicne.Text = "编辑快捷插入配置";
+                    fqicne.type = 1;//(type 0：新增，1：编辑)
+                    fqicne.code = dataGridView1.SelectedCells[0].Value.ToString();
+                    fqicne.name = dataGridView1.SelectedCells[1].Value.ToString();
+                    fqicne.value = dataGridView1.SelectedCells[2].Value.ToString();
+                    //fqic.Show();
+
+                    //接收FrmQuickInsertConfig返回的DialogResult，刷新右侧常用按钮功能Text
+                    if (fqicne.ShowDialog() == DialogResult.OK)
+                    {
+
+                    }
                 }
             }
         }
@@ -150,6 +170,42 @@ namespace InsertDataInBatches
         private void FrmQuickInsertConfig_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.DialogResult = DialogResult.OK;
+        }
+        #endregion
+
+        #region dg双击事件 同编辑
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("没有要编辑的数据！");
+            }
+            else
+            {
+                if (dataGridView1.SelectedRows.Count == 0)
+                {
+                    MessageBox.Show("请选择要编辑的数据！");
+                }
+                else
+                {
+                    //设置只能打开一个，配合FrmQuickInsertConfig中的GetFrmQuickInsertConfig()设置
+                    FrmQuickInsertConfigNewEdit.GetFrmQuickInsertConfigNewEdit().Activate();
+
+                    FrmQuickInsertConfigNewEdit fqicne = new FrmQuickInsertConfigNewEdit();
+                    fqicne.Text = "编辑快捷插入配置";
+                    fqicne.type = 1;//(type 0：新增，1：编辑)
+                    fqicne.code = dataGridView1.SelectedCells[0].Value.ToString();
+                    fqicne.name = dataGridView1.SelectedCells[1].Value.ToString();
+                    fqicne.value = dataGridView1.SelectedCells[2].Value.ToString();
+                    //fqic.Show();
+
+                    //接收FrmQuickInsertConfig返回的DialogResult，刷新右侧常用按钮功能Text
+                    if (fqicne.ShowDialog() == DialogResult.OK)
+                    {
+
+                    }
+                }
+            }
         }
         #endregion
     }
