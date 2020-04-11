@@ -32,7 +32,7 @@ namespace InsertDataInBatches
             //接收FrmQuickInsertConfig返回的DialogResult，刷新右侧常用按钮功能Text
             if (fqicne.ShowDialog() == DialogResult.OK)
             {
-
+                RefreshDG();
             }
         }
         #endregion
@@ -66,7 +66,7 @@ namespace InsertDataInBatches
                     //接收FrmQuickInsertConfig返回的DialogResult，刷新右侧常用按钮功能Text
                     if (fqicne.ShowDialog() == DialogResult.OK)
                     {
-
+                        RefreshDG();
                     }
                 }
             }
@@ -93,25 +93,32 @@ namespace InsertDataInBatches
         {
             dataGridView1.Rows.Clear();
 
-            //普通写法
-            foreach (var item in ConfigSettings.getQuickInsertSettingsAllCodes())
+            try
             {
-                string[] str = ConfigSettings.getQuickInsertModelNameValueByCode(item);
-                int index = dataGridView1.Rows.Add();
-                dataGridView1.Rows[index].Cells["QuickInsertModelCode"].Value = item;
-                dataGridView1.Rows[index].Cells["QuickInsertModelName"].Value = str[0];
-                dataGridView1.Rows[index].Cells["QuickInsertModelValue"].Value = str[1];
-            }
+                //普通写法
+                foreach (var item in ConfigSettings.getQuickInsertSettingsAllCodes())
+                {
+                    string[] str = ConfigSettings.getQuickInsertModelNameValueByCode(item);
+                    int index = dataGridView1.Rows.Add();
+                    dataGridView1.Rows[index].Cells["QuickInsertModelCode"].Value = item;
+                    dataGridView1.Rows[index].Cells["QuickInsertModelName"].Value = str[0];
+                    dataGridView1.Rows[index].Cells["QuickInsertModelValue"].Value = str[1];
+                }
 
-            //二维数组
-            /*string[,] str = ConfigSettings.getQuickInsertModelCodeNameValue();
-            for (int i = 0; i < str.Length / 3; i++)
+                //二维数组
+                /*string[,] str = ConfigSettings.getQuickInsertModelCodeNameValue();
+                for (int i = 0; i < str.Length / 3; i++)
+                {
+                    int index = dataGridView1.Rows.Add();
+                    dataGridView1.Rows[index].Cells["QuickInsertModelCode"].Value = str[i, 0];
+                    dataGridView1.Rows[index].Cells["QuickInsertModelName"].Value = str[i, 1];
+                    dataGridView1.Rows[index].Cells["QuickInsertModelValue"].Value = str[i, 2];
+                }*/
+            }
+            catch (Exception ex)
             {
-                int index = dataGridView1.Rows.Add();
-                dataGridView1.Rows[index].Cells["QuickInsertModelCode"].Value = str[i, 0];
-                dataGridView1.Rows[index].Cells["QuickInsertModelName"].Value = str[i, 1];
-                dataGridView1.Rows[index].Cells["QuickInsertModelValue"].Value = str[i, 2];
-            }*/
+                MessageBox.Show(ex.Message);
+            }
 
             dataGridView1.ClearSelection();
         }

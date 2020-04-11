@@ -93,21 +93,28 @@ namespace InsertDataInBatches
         #region 快捷插入-插入按钮点击事件 根据下拉框所选快捷功能，执行插入操作
         private void btn_QuickInsert_Insert_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show(cmbox_QuickInsert_List.SelectedItem.ToString());
-            string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
-            foreach (var item in QuickInsert)
+            try
             {
-                string[] QuickInsertKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
-                if (cmbox_QuickInsert_List.SelectedItem.ToString() == QuickInsertKeyValue[0])
+                //MessageBox.Show(cmbox_QuickInsert_List.SelectedItem.ToString());
+                string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
+                foreach (var item in QuickInsert)
                 {
-                    string str = QuickInsertKeyValue[1];
-                    int index = richtxtboxInsertSQL.SelectionStart;
-                    string s = richtxtboxInsertSQL.Text;
-                    s = s.Insert(index, str);
-                    richtxtboxInsertSQL.Text = s;
-                    richtxtboxInsertSQL.SelectionStart = index + str.Length;
-                    richtxtboxInsertSQL.Focus();
+                    string[] QuickInsertKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
+                    if (cmbox_QuickInsert_List.SelectedItem.ToString() == QuickInsertKeyValue[0])
+                    {
+                        string str = QuickInsertKeyValue[1];
+                        int index = richtxtboxInsertSQL.SelectionStart;
+                        string s = richtxtboxInsertSQL.Text;
+                        s = s.Insert(index, str);
+                        richtxtboxInsertSQL.Text = s;
+                        richtxtboxInsertSQL.SelectionStart = index + str.Length;
+                        richtxtboxInsertSQL.Focus();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion

@@ -27,22 +27,41 @@ namespace InsertDataInBatches
                 if (string.IsNullOrEmpty(txtbox_Code.Text) || string.IsNullOrWhiteSpace(txtbox_Code.Text))
                 {
                     MessageBox.Show("快捷插入模块编码不能为空！");
+                    txtbox_Code.Focus();
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(txtbox_Name.Text) || string.IsNullOrWhiteSpace(txtbox_Name.Text))
                     {
                         MessageBox.Show("快捷插入模块名称不能为空！");
+                        txtbox_Name.Focus();
                     }
                     else
                     {
                         if (string.IsNullOrEmpty(txtbox_Value.Text) || string.IsNullOrWhiteSpace(txtbox_Value.Text))
                         {
                             MessageBox.Show("快捷插入模块值不能为空！");
+                            txtbox_Value.Focus();
                         }
                         else
                         {
-                            
+                            code = txtbox_Code.Text.Trim();
+                            name = txtbox_Name.Text.Trim();
+                            value = txtbox_Value.Text.Trim();
+
+                            string result = ConfigSettings.setQuickInsertModelCodeNameValue(code, name, value);
+
+                            if (result== "新增成功")
+                            {
+                                MessageBox.Show(code + result);
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show(result);
+                                txtbox_Code.Focus();
+                                txtbox_Code.SelectAll();
+                            }
                         }
                     }
                 }
@@ -69,7 +88,7 @@ namespace InsertDataInBatches
                             }
                             else
                             {
-
+                                
                             }
                         }
                     }
