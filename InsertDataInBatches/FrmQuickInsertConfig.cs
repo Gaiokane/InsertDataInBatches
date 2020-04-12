@@ -209,7 +209,7 @@ namespace InsertDataInBatches
                     //接收FrmQuickInsertConfig返回的DialogResult，刷新右侧常用按钮功能Text
                     if (fqicne.ShowDialog() == DialogResult.OK)
                     {
-
+                        RefreshDG();
                     }
                 }
             }

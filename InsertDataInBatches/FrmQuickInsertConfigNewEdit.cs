@@ -51,7 +51,7 @@ namespace InsertDataInBatches
 
                             string result = ConfigSettings.setQuickInsertModelCodeNameValue(code, name, value);
 
-                            if (result== "新增成功")
+                            if (result == "新增成功")
                             {
                                 MessageBox.Show(code + result);
                                 this.Close();
@@ -70,7 +70,7 @@ namespace InsertDataInBatches
             {
                 if (type == 1)//编辑
                 {
-                    if (string.IsNullOrEmpty(txtbox_Code.Text)||string.IsNullOrWhiteSpace(txtbox_Code.Text))
+                    if (string.IsNullOrEmpty(txtbox_Code.Text) || string.IsNullOrWhiteSpace(txtbox_Code.Text))
                     {
                         MessageBox.Show("快捷插入模块编码不能为空！");
                     }
@@ -88,7 +88,23 @@ namespace InsertDataInBatches
                             }
                             else
                             {
-                                
+                                code = txtbox_Code.Text.Trim();
+                                name = txtbox_Name.Text.Trim();
+                                value = txtbox_Value.Text.Trim();
+
+                                string result = ConfigSettings.editQuickInsertModelCodeNameValue(code, name, value);
+
+                                if (result == "修改成功")
+                                {
+                                    MessageBox.Show(code + result);
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    MessageBox.Show(result);
+                                    txtbox_Name.Focus();
+                                    txtbox_Name.SelectAll();
+                                }
                             }
                         }
                     }

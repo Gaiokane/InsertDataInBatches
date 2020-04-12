@@ -188,5 +188,35 @@ namespace InsertDataInBatches
             }
         }
         #endregion
+
+        #region 修改快捷插入配置
+        /// <summary>
+        /// 修改快捷插入配置
+        /// </summary>
+        /// <param name="Code">快捷插入配置编码</param>
+        /// <param name="Name">快捷插入配置名称</param>
+        /// <param name="Value">快捷插入配置值</param>
+        /// <returns>string：修改成功/修改失败/报错信息</returns>
+        public static string editQuickInsertModelCodeNameValue(string Code, string Name, string Value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Value))
+                {
+                    return "快捷插入配置编码/名称/值不能为空！";
+                }
+                else
+                {
+
+                    RWConfig.SetappSettingsValue(Code, Name + ";" + Value, ConfigPath);
+                    return "修改成功";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
     }
 }

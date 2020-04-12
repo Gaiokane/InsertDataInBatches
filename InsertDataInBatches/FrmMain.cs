@@ -76,7 +76,15 @@ namespace InsertDataInBatches
             ConfigSettings.setDefaultQuickInsertSettingsIfIsNullOrEmptyByappSettings();
             ConfigSettings.getQuickInsertSettingsByappSettings();
 
+            RefreshQuickInsertCombox();
+        }
+        #endregion
+
+        #region 快捷插入配置下拉框重新获取数据
+        public void RefreshQuickInsertCombox()
+        {
             string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
+            cmbox_QuickInsert_List.Items.Clear();
             foreach (var item in QuickInsert)
             {
                 string[] QuickInsertKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
@@ -86,7 +94,6 @@ namespace InsertDataInBatches
             {
                 cmbox_QuickInsert_List.SelectedIndex = 0;
             }
-            //MessageBox.Show(str);
         }
         #endregion
 
@@ -909,7 +916,7 @@ namespace InsertDataInBatches
             FrmQuickInsertConfig fqic = new FrmQuickInsertConfig();
             if (fqic.ShowDialog() == DialogResult.OK)
             {
-
+                RefreshQuickInsertCombox();
             }
         }
         #endregion
