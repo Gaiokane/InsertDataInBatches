@@ -55,8 +55,14 @@
             this.btn_QuickInsert_Insert = new System.Windows.Forms.Button();
             this.btn_QuickInsert_Settings = new System.Windows.Forms.Button();
             this.cmbox_QuickInsert_List = new System.Windows.Forms.ComboBox();
+            this.groupbox_CommonlyUsedSQL = new System.Windows.Forms.GroupBox();
+            this.combox_CommonlyUsedSQL_List = new System.Windows.Forms.ComboBox();
+            this.btn_CommonlyUsedSQL_Insert = new System.Windows.Forms.Button();
+            this.btn_CommonlyUsedSQL_New = new System.Windows.Forms.Button();
+            this.btn_CommonlyUsedSQL_Settings = new System.Windows.Forms.Button();
             this.groupbox_DataBase.SuspendLayout();
             this.groupbox_QuickInsert.SuspendLayout();
+            this.groupbox_CommonlyUsedSQL.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupbox_DataBase
@@ -317,11 +323,61 @@
             this.cmbox_QuickInsert_List.Size = new System.Drawing.Size(98, 20);
             this.cmbox_QuickInsert_List.TabIndex = 0;
             // 
+            // groupbox_CommonlyUsedSQL
+            // 
+            this.groupbox_CommonlyUsedSQL.Controls.Add(this.btn_CommonlyUsedSQL_Settings);
+            this.groupbox_CommonlyUsedSQL.Controls.Add(this.btn_CommonlyUsedSQL_New);
+            this.groupbox_CommonlyUsedSQL.Controls.Add(this.btn_CommonlyUsedSQL_Insert);
+            this.groupbox_CommonlyUsedSQL.Controls.Add(this.combox_CommonlyUsedSQL_List);
+            this.groupbox_CommonlyUsedSQL.Location = new System.Drawing.Point(750, 268);
+            this.groupbox_CommonlyUsedSQL.Name = "groupbox_CommonlyUsedSQL";
+            this.groupbox_CommonlyUsedSQL.Size = new System.Drawing.Size(156, 75);
+            this.groupbox_CommonlyUsedSQL.TabIndex = 12;
+            this.groupbox_CommonlyUsedSQL.TabStop = false;
+            this.groupbox_CommonlyUsedSQL.Text = "常用SQL";
+            // 
+            // combox_CommonlyUsedSQL_List
+            // 
+            this.combox_CommonlyUsedSQL_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.combox_CommonlyUsedSQL_List.FormattingEnabled = true;
+            this.combox_CommonlyUsedSQL_List.Location = new System.Drawing.Point(6, 20);
+            this.combox_CommonlyUsedSQL_List.Name = "combox_CommonlyUsedSQL_List";
+            this.combox_CommonlyUsedSQL_List.Size = new System.Drawing.Size(144, 20);
+            this.combox_CommonlyUsedSQL_List.TabIndex = 0;
+            // 
+            // btn_CommonlyUsedSQL_Insert
+            // 
+            this.btn_CommonlyUsedSQL_Insert.Location = new System.Drawing.Point(6, 46);
+            this.btn_CommonlyUsedSQL_Insert.Name = "btn_CommonlyUsedSQL_Insert";
+            this.btn_CommonlyUsedSQL_Insert.Size = new System.Drawing.Size(40, 23);
+            this.btn_CommonlyUsedSQL_Insert.TabIndex = 1;
+            this.btn_CommonlyUsedSQL_Insert.Text = "插入";
+            this.btn_CommonlyUsedSQL_Insert.UseVisualStyleBackColor = true;
+            // 
+            // btn_CommonlyUsedSQL_New
+            // 
+            this.btn_CommonlyUsedSQL_New.Location = new System.Drawing.Point(58, 46);
+            this.btn_CommonlyUsedSQL_New.Name = "btn_CommonlyUsedSQL_New";
+            this.btn_CommonlyUsedSQL_New.Size = new System.Drawing.Size(40, 23);
+            this.btn_CommonlyUsedSQL_New.TabIndex = 2;
+            this.btn_CommonlyUsedSQL_New.Text = "新增";
+            this.btn_CommonlyUsedSQL_New.UseVisualStyleBackColor = true;
+            // 
+            // btn_CommonlyUsedSQL_Settings
+            // 
+            this.btn_CommonlyUsedSQL_Settings.Location = new System.Drawing.Point(110, 46);
+            this.btn_CommonlyUsedSQL_Settings.Name = "btn_CommonlyUsedSQL_Settings";
+            this.btn_CommonlyUsedSQL_Settings.Size = new System.Drawing.Size(40, 23);
+            this.btn_CommonlyUsedSQL_Settings.TabIndex = 3;
+            this.btn_CommonlyUsedSQL_Settings.Text = "配置";
+            this.btn_CommonlyUsedSQL_Settings.UseVisualStyleBackColor = true;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 450);
+            this.Controls.Add(this.groupbox_CommonlyUsedSQL);
             this.Controls.Add(this.groupbox_QuickInsert);
             this.Controls.Add(this.labResult);
             this.Controls.Add(this.btnStartInserting);
@@ -338,6 +394,7 @@
             this.groupbox_DataBase.ResumeLayout(false);
             this.groupbox_DataBase.PerformLayout();
             this.groupbox_QuickInsert.ResumeLayout(false);
+            this.groupbox_CommonlyUsedSQL.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -372,6 +429,11 @@
         private System.Windows.Forms.Button btn_QuickInsert_Insert;
         private System.Windows.Forms.Button btn_QuickInsert_Settings;
         private System.Windows.Forms.ComboBox cmbox_QuickInsert_List;
+        private System.Windows.Forms.GroupBox groupbox_CommonlyUsedSQL;
+        private System.Windows.Forms.ComboBox combox_CommonlyUsedSQL_List;
+        private System.Windows.Forms.Button btn_CommonlyUsedSQL_New;
+        private System.Windows.Forms.Button btn_CommonlyUsedSQL_Insert;
+        private System.Windows.Forms.Button btn_CommonlyUsedSQL_Settings;
     }
 }
 
