@@ -744,10 +744,10 @@ namespace InsertDataInBatches
                 {
                     comm.CommandText = Querys[i];
                     result = comm.ExecuteNonQuery();
-                    temp = "执行成功：" + Querys[i];
+                    temp += "执行成功：" + Querys[i];
                     if (i + 1 < Querys.Length)
                     {
-                        temp += "\n" + temp;
+                        temp += "\n";
                     }
                 }
                 comm.Transaction.Commit();
@@ -795,10 +795,10 @@ namespace InsertDataInBatches
                 {
                     comm.CommandText = Querys[i];
                     result = comm.ExecuteNonQuery();
-                    temp = "执行成功：" + Querys[i];
+                    temp += "执行成功：" + Querys[i];
                     if (i + 1 < Querys.Length)
                     {
-                        temp += "\n" + temp;
+                        temp += "\n";
                     }
                 }
                 comm.Transaction.Commit();
