@@ -83,6 +83,10 @@ namespace InsertDataInBatches
             ConfigSettings.setDefaultCommonlyUsedSQLIfIsNullOrEmptyByappSettings();
             ConfigSettings.getCommonlyUsedSQLByappSettings();
             RefreshCommonlyUsedSQLCombox();
+
+            //RichTextBox增加右键菜单
+            RichTextBoxMenu richTextBoxMenu_richtxtboxInsertSQL = new RichTextBoxMenu(richtxtboxInsertSQL);
+            RichTextBoxMenu richTextBoxMenu_richtxtboxResult = new RichTextBoxMenu(richtxtboxResult);
         }
         #endregion
 
