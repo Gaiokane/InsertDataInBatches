@@ -832,6 +832,7 @@ namespace InsertDataInBatches
 
         #endregion
 
+        #region 生成设置范围内的Double的随机数 生成指定范围内随机数用到
         /// <summary>
         /// 生成设置范围内的Double的随机数
         /// eg:_random.NextDouble(1.5,2.5)
@@ -862,7 +863,9 @@ namespace InsertDataInBatches
                 return 0.0d;
             }
         }
+        #endregion
 
+        #region 获取小数点后的位数 生成指定范围内随机数用到
         /// <summary>
         /// 获取小数点后的位数
         /// </summary>
@@ -882,6 +885,7 @@ namespace InsertDataInBatches
                 return 0;
             }
         }
+        #endregion
 
         #region （该部分注释）快捷按钮插入操作 已通过下拉替换
         /*
@@ -954,9 +958,43 @@ namespace InsertDataInBatches
         }
         #endregion
 
+        #region 常用SQL插入按钮单击事件 将下拉框所选常用SQL插入到文本框中
         private void btn_CommonlyUsedSQL_Insert_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] CommonlyUsedSQL = ConfigSettings.CommonlyUsedSQL.Split(';');
+                foreach (var item in CommonlyUsedSQL)
+                {
+                    string[] CommonlyUsedSQLKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
+                    if (cmbox_CommonlyUsedSQL_List.SelectedItem.ToString() == CommonlyUsedSQLKeyValue[0])
+                    {
+                        string str = CommonlyUsedSQLKeyValue[1];
+                        richtxtboxInsertSQL.Text = str;
+                        richtxtboxInsertSQL.SelectionStart = richtxtboxInsertSQL.Text.Length;
+                        richtxtboxInsertSQL.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        #endregion
+
+        #region 常用SQL新增按钮单击事件 将SQL文本框中的语句作为值新增
+        private void btn_CommonlyUsedSQL_New_Click(object sender, EventArgs e)
         {
 
         }
+        #endregion
+
+        #region 常用SQL配置按钮单击事件 打开常用SQL配置窗口
+        private void btn_CommonlyUsedSQL_Settings_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
     }
 }

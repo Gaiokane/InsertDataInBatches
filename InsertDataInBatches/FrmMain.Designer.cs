@@ -344,6 +344,7 @@
             this.btn_CommonlyUsedSQL_Settings.TabIndex = 3;
             this.btn_CommonlyUsedSQL_Settings.Text = "配置";
             this.btn_CommonlyUsedSQL_Settings.UseVisualStyleBackColor = true;
+            this.btn_CommonlyUsedSQL_Settings.Click += new System.EventHandler(this.btn_CommonlyUsedSQL_Settings_Click);
             // 
             // btn_CommonlyUsedSQL_New
             // 
@@ -353,6 +354,7 @@
             this.btn_CommonlyUsedSQL_New.TabIndex = 2;
             this.btn_CommonlyUsedSQL_New.Text = "新增";
             this.btn_CommonlyUsedSQL_New.UseVisualStyleBackColor = true;
+            this.btn_CommonlyUsedSQL_New.Click += new System.EventHandler(this.btn_CommonlyUsedSQL_New_Click);
             // 
             // btn_CommonlyUsedSQL_Insert
             // 
