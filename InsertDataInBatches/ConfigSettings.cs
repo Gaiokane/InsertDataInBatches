@@ -10,6 +10,7 @@ namespace InsertDataInBatches
     class ConfigSettings
     {
         public static string QuickInsert, QuickInsert_IDIncrement, QuickInsert_RandomNum, QuickInsert_NewID, QuickInsert_NewDateTime;
+        public static string CommonlyUsedSQL, CommonlyUsedSQL_Default;
         public static string ConfigPath = "./InsertDataInBatches.exe";
 
         #region 获取配置文件中快捷插入配置
@@ -215,6 +216,34 @@ namespace InsertDataInBatches
             catch (Exception ex)
             {
                 return ex.Message;
+            }
+        }
+        #endregion
+
+        #region 获取配置文件中常用SQL配置
+        /// <summary>
+        /// 获取配置文件中常用SQL配置
+        /// </summary>
+        public static void getCommonlyUsedSQLByappSettings()
+        {
+            CommonlyUsedSQL = RWConfig.GetappSettingsValue("CommonlyUsedSQL", ConfigPath);
+            CommonlyUsedSQL_Default = RWConfig.GetappSettingsValue("CommonlyUsedSQL_Default", ConfigPath);
+        }
+        #endregion
+
+        #region 如果配置文件中无常用SQL配置，则新建配置，值默认
+        /// <summary>
+        /// 如果配置文件中无常用SQL配置，则新建配置，值默认
+        /// </summary>
+        public static void setDefaultCommonlyUsedSQLIfIsNullOrEmptyByappSettings()
+        {
+            if (string.IsNullOrEmpty(CommonlyUsedSQL))
+            {
+                RWConfig.SetappSettingsValue("CommonlyUsedSQL", "CommonlyUsedSQL_Default", ConfigPath);
+            }
+            if (string.IsNullOrEmpty(CommonlyUsedSQL_Default))
+            {
+                RWConfig.SetappSettingsValue("CommonlyUsedSQL_Default", "常用SQL名;select * from xxx", ConfigPath);
             }
         }
         #endregion

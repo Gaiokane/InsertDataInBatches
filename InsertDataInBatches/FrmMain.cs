@@ -72,27 +72,56 @@ namespace InsertDataInBatches
             //richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('{{id:7}}'){{id:7}}";
             richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('test{{id:7}}'){{timed+777:2020-04-04 11:47:07}}";
 
+            //快捷插入配置
             ConfigSettings.getQuickInsertSettingsByappSettings();
             ConfigSettings.setDefaultQuickInsertSettingsIfIsNullOrEmptyByappSettings();
             ConfigSettings.getQuickInsertSettingsByappSettings();
-
             RefreshQuickInsertCombox();
+
+            //常用SQL配置
+            ConfigSettings.getCommonlyUsedSQLByappSettings();
+            ConfigSettings.setDefaultCommonlyUsedSQLIfIsNullOrEmptyByappSettings();
+            ConfigSettings.getCommonlyUsedSQLByappSettings();
+            RefreshCommonlyUsedSQLCombox();
         }
         #endregion
 
         #region 快捷插入配置下拉框重新获取数据
         public void RefreshQuickInsertCombox()
         {
-            string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
             cmbox_QuickInsert_List.Items.Clear();
-            foreach (var item in QuickInsert)
+            string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
+            if (string.IsNullOrEmpty(QuickInsert[0]) == false)
             {
-                string[] QuickInsertKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
-                cmbox_QuickInsert_List.Items.Add(QuickInsertKeyValue[0]);
+                foreach (var item in QuickInsert)
+                {
+                    string[] QuickInsertKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
+                    cmbox_QuickInsert_List.Items.Add(QuickInsertKeyValue[0]);
+                }
+                if (cmbox_QuickInsert_List.Items.Count > 0)
+                {
+                    cmbox_QuickInsert_List.SelectedIndex = 0;
+                }
             }
-            if (cmbox_QuickInsert_List.Items.Count > 0)
+        }
+        #endregion
+
+        #region 常用SQL下拉框重新获取数据
+        public void RefreshCommonlyUsedSQLCombox()
+        {
+            cmbox_CommonlyUsedSQL_List.Items.Clear();
+            string[] CommonlyUsedSQL = ConfigSettings.CommonlyUsedSQL.Split(';');
+            if (string.IsNullOrEmpty(CommonlyUsedSQL[0]) == false)
             {
-                cmbox_QuickInsert_List.SelectedIndex = 0;
+                foreach (var item in CommonlyUsedSQL)
+                {
+                    string[] CommonlyUsedSQLKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
+                    cmbox_CommonlyUsedSQL_List.Items.Add(CommonlyUsedSQLKeyValue[0]);
+                }
+                if (cmbox_CommonlyUsedSQL_List.Items.Count > 0)
+                {
+                    cmbox_CommonlyUsedSQL_List.SelectedIndex = 0;
+                }
             }
         }
         #endregion
@@ -920,5 +949,10 @@ namespace InsertDataInBatches
             }
         }
         #endregion
+
+        private void btn_CommonlyUsedSQL_Insert_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
