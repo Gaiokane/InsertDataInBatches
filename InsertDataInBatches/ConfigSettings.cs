@@ -169,15 +169,24 @@ namespace InsertDataInBatches
                 else
                 {
                     string[] str = getQuickInsertSettingsAllCodes();
-                    QuickInsert = RWConfig.GetappSettingsValue("QuickInsert", ConfigPath);
-
                     foreach (var item in str)
                     {
                         if (item == Code)
                         {
-                            return "已存在相同快捷插入配置编码，请确认！";
+                            return "在快捷插入配置编码中已存在相同编码，请确认！";
                         }
                     }
+
+                    str = getCommonlyUsedSQLAllCodes();
+                    foreach (var item in str)
+                    {
+                        if (item == Code)
+                        {
+                            return "在常用SQL配置编码中已存在相同编码，请确认！";
+                        }
+                    }
+
+                    QuickInsert = RWConfig.GetappSettingsValue("QuickInsert", ConfigPath);
                     RWConfig.SetappSettingsValue(Code, Name + ";" + Value, ConfigPath);
                     RWConfig.SetappSettingsValue("QuickInsert", QuickInsert + ";" + Code, ConfigPath);
                     return "新增成功";
@@ -244,6 +253,106 @@ namespace InsertDataInBatches
             if (string.IsNullOrEmpty(CommonlyUsedSQL_Default))
             {
                 RWConfig.SetappSettingsValue("CommonlyUsedSQL_Default", "常用SQL名;select * from xxx", ConfigPath);
+            }
+        }
+        #endregion
+
+        #region 新增常用SQL配置
+        /// <summary>
+        /// 新增常用SQL配置
+        /// </summary>
+        /// <param name="Code">常用SQL编码</param>
+        /// <param name="Name">常用SQL名称</param>
+        /// <param name="Value">常用SQL语句</param>
+        /// <returns>string：新增成功/新增失败/新增项已存在，新增失败/报错信息</returns>
+        public static string setCommonlyUsedSQLCodeNameValue(string Code, string Name, string Value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Value))
+                {
+                    return "常用SQL编码/名称/语句不能为空！";
+                }
+                else
+                {
+                    string[] str = getQuickInsertSettingsAllCodes();
+                    foreach (var item in str)
+                    {
+                        if (item == Code)
+                        {
+                            return "在快捷插入配置编码中已存在相同编码，请确认！";
+                        }
+                    }
+
+                    str = getCommonlyUsedSQLAllCodes();
+                    foreach (var item in str)
+                    {
+                        if (item == Code)
+                        {
+                            return "在常用SQL配置编码中已存在相同编码，请确认！";
+                        }
+                    }
+
+                    CommonlyUsedSQL = RWConfig.GetappSettingsValue("CommonlyUsedSQL", ConfigPath);
+                    RWConfig.SetappSettingsValue(Code, Name + ";" + Value, ConfigPath);
+                    RWConfig.SetappSettingsValue("CommonlyUsedSQL", CommonlyUsedSQL + ";" + Code, ConfigPath);
+                    return "新增成功";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
+
+        #region 获取配置文件中常用SQL配置所有配置编码
+        /// <summary>
+        /// 获取配置文件中常用SQL配置所有配置编码
+        /// </summary>
+        public static string[] getCommonlyUsedSQLAllCodes()
+        {
+            string[] result = { };
+            CommonlyUsedSQL = RWConfig.GetappSettingsValue("CommonlyUsedSQL", ConfigPath);
+            if (string.IsNullOrEmpty(CommonlyUsedSQL))
+            {
+                setDefaultCommonlyUsedSQLIfIsNullOrEmptyByappSettings();
+                getCommonlyUsedSQLByappSettings();
+            }
+            else
+            {
+                result = CommonlyUsedSQL.Split(';');
+            }
+            return result;
+        }
+        #endregion
+
+        #region 修改常用SQL配置
+        /// <summary>
+        /// 修改常用SQL配置
+        /// </summary>
+        /// <param name="Code">常用SQL编码</param>
+        /// <param name="Name">常用SQL名称</param>
+        /// <param name="Value">常用SQL语句</param>
+        /// <returns>string：修改成功/修改失败/报错信息</returns>
+        public static string editCommonlyUsedSQLCodeNameValue(string Code, string Name, string Value)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Value))
+                {
+                    return "常用SQL编码/名称/语句不能为空！";
+                }
+                else
+                {
+
+                    RWConfig.SetappSettingsValue(Code, Name + ";" + Value, ConfigPath);
+                    return "修改成功";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
         }
         #endregion

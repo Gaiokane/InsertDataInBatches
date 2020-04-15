@@ -20,8 +20,37 @@ namespace InsertDataInBatches
             InitializeComponent();
         }
 
+        #region 窗体加载事件 新增：三文本框为空，编辑：三文本框取所选行记录、编码不能修改
+        private void FrmQuickInsertConfigNewEdit_Load(object sender, EventArgs e)
+        {
+            if (type == 0)//新增
+            {
+                txtbox_Code.Text = code;
+                txtbox_Name.Text = name;
+                txtbox_Value.Text = value;
+            }
+            else
+            {
+                if (type == 1)//编辑
+                {
+                    txtbox_Code.Text = code;
+                    txtbox_Name.Text = name;
+                    txtbox_Value.Text = value;
+                    txtbox_Code.Enabled = false;
+                }
+                else
+                {
+                    MessageBox.Show("出错！");
+                    this.Close();
+                }
+            }
+        }
+        #endregion
+
+        #region 保存按钮单击事件 新增/编辑
         private void btn_Save_Click(object sender, EventArgs e)
         {
+            #region 新增
             if (type == 0)//新增
             {
                 if (string.IsNullOrEmpty(txtbox_Code.Text) || string.IsNullOrWhiteSpace(txtbox_Code.Text))
@@ -66,8 +95,11 @@ namespace InsertDataInBatches
                     }
                 }
             }
+            #endregion
+            #region 非新增
             else
             {
+                #region 编辑
                 if (type == 1)//编辑
                 {
                     if (string.IsNullOrEmpty(txtbox_Code.Text) || string.IsNullOrWhiteSpace(txtbox_Code.Text))
@@ -109,45 +141,21 @@ namespace InsertDataInBatches
                         }
                     }
                 }
+                #endregion
                 else
                 {
                     MessageBox.Show("出错！");
                     this.Close();
                 }
             }
+            #endregion
         }
+        #endregion
 
         #region 取消按钮单击事件 窗口关闭
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-        #endregion
-
-        #region 窗体加载事件 新增：三文本框为空，编辑：三文本框取所选行记录、编码不能修改
-        private void FrmQuickInsertConfigNewEdit_Load(object sender, EventArgs e)
-        {
-            //txtbox_Value.Text = "{{timed+777:2020-12-31 23:59:59}}";
-
-            if (type == 0)//新增
-            {
-
-            }
-            else
-            {
-                if (type == 1)//编辑
-                {
-                    txtbox_Code.Text = code;
-                    txtbox_Name.Text = name;
-                    txtbox_Value.Text = value;
-                    txtbox_Code.Enabled = false;
-                }
-                else
-                {
-                    MessageBox.Show("出错！");
-                    this.Close();
-                }
-            }
         }
         #endregion
 

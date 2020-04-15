@@ -101,6 +101,8 @@
             this.Name = "FrmCommonlyUsedSQLConfig";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "常用SQL配置";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmCommonlyUsedSQLConfig_FormClosed);
+            this.Load += new System.EventHandler(this.FrmCommonlyUsedSQLConfig_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

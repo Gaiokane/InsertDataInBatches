@@ -94,7 +94,8 @@ namespace InsertDataInBatches
         public void RefreshQuickInsertCombox()
         {
             cmbox_QuickInsert_List.Items.Clear();
-            string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
+            //string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
+            string[] QuickInsert = ConfigSettings.getQuickInsertSettingsAllCodes();
             if (string.IsNullOrEmpty(QuickInsert[0]) == false)
             {
                 foreach (var item in QuickInsert)
@@ -114,7 +115,8 @@ namespace InsertDataInBatches
         public void RefreshCommonlyUsedSQLCombox()
         {
             cmbox_CommonlyUsedSQL_List.Items.Clear();
-            string[] CommonlyUsedSQL = ConfigSettings.CommonlyUsedSQL.Split(';');
+            //string[] CommonlyUsedSQL = ConfigSettings.CommonlyUsedSQL.Split(';');
+            string[] CommonlyUsedSQL = ConfigSettings.getCommonlyUsedSQLAllCodes();
             if (string.IsNullOrEmpty(CommonlyUsedSQL[0]) == false)
             {
                 foreach (var item in CommonlyUsedSQL)
@@ -986,14 +988,35 @@ namespace InsertDataInBatches
         #region 常用SQL新增按钮单击事件 将SQL文本框中的语句作为值新增
         private void btn_CommonlyUsedSQL_New_Click(object sender, EventArgs e)
         {
+            //设置只能打开一个，配合FrmCommonlyUsedSQLConfigNewEdit中的GetFrmQuickInsertConfig()设置
+            FrmCommonlyUsedSQLConfigNewEdit.GetFrmCommonlyUsedSQLConfigNewEdit().Activate();
 
+            //接收FrmCommonlyUsedSQLConfigNewEdit返回的DialogResult，刷新右侧常用按钮功能Text
+            FrmCommonlyUsedSQLConfigNewEdit fcuscne = new FrmCommonlyUsedSQLConfigNewEdit();
+
+            fcuscne.Text = "新增快捷插入配置";
+            fcuscne.type = 0;//(type 0：新增，1：编辑)
+            fcuscne.value = richtxtboxInsertSQL.Text.Trim();
+
+            if (fcuscne.ShowDialog() == DialogResult.OK)
+            {
+                RefreshCommonlyUsedSQLCombox();
+            }
         }
         #endregion
 
         #region 常用SQL配置按钮单击事件 打开常用SQL配置窗口
         private void btn_CommonlyUsedSQL_Settings_Click(object sender, EventArgs e)
         {
+            //设置只能打开一个，配合FrmCommonlyUsedSQLConfig中的GetFrmQuickInsertConfig()设置
+            FrmCommonlyUsedSQLConfig.GetFrmCommonlyUsedSQLConfig().Activate();
 
+            //接收FrmCommonlyUsedSQLConfig返回的DialogResult，刷新右侧常用按钮功能Text
+            FrmCommonlyUsedSQLConfig fcusc = new FrmCommonlyUsedSQLConfig();
+            if (fcusc.ShowDialog() == DialogResult.OK)
+            {
+                RefreshCommonlyUsedSQLCombox();
+            }
         }
         #endregion
     }

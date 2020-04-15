@@ -46,6 +46,7 @@
             this.btn_Cancel.TabIndex = 15;
             this.btn_Cancel.Text = "取消";
             this.btn_Cancel.UseVisualStyleBackColor = true;
+            this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
             // 
             // btn_Save
             // 
@@ -55,6 +56,7 @@
             this.btn_Save.TabIndex = 14;
             this.btn_Save.Text = "保存";
             this.btn_Save.UseVisualStyleBackColor = true;
+            this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
             // 
             // txtbox_Value
             // 
@@ -120,6 +122,8 @@
             this.Name = "FrmCommonlyUsedSQLConfigNewEdit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "新增/编辑，代码控制";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmCommonlyUsedSQLConfigNewEdit_FormClosed);
+            this.Load += new System.EventHandler(this.FrmCommonlyUsedSQLConfigNewEdit_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
