@@ -27,7 +27,7 @@ namespace InsertDataInBatches
             {
                 txtbox_Code.Text = code;
                 txtbox_Name.Text = name;
-                txtbox_Value.Text = value;
+                richtxtbox_Value.Text = value;
             }
             else
             {
@@ -35,7 +35,7 @@ namespace InsertDataInBatches
                 {
                     txtbox_Code.Text = code;
                     txtbox_Name.Text = name;
-                    txtbox_Value.Text = value;
+                    richtxtbox_Value.Text = value;
                     txtbox_Code.Enabled = false;
                 }
                 else
@@ -67,16 +67,16 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(txtbox_Value.Text) || string.IsNullOrWhiteSpace(txtbox_Value.Text))
+                        if (string.IsNullOrEmpty(richtxtbox_Value.Text) || string.IsNullOrWhiteSpace(richtxtbox_Value.Text))
                         {
                             MessageBox.Show("常用SQL语句不能为空！");
-                            txtbox_Value.Focus();
+                            richtxtbox_Value.Focus();
                         }
                         else
                         {
                             code = txtbox_Code.Text.Trim();
                             name = txtbox_Name.Text.Trim();
-                            value = txtbox_Value.Text.Trim();
+                            value = richtxtbox_Value.Text.Trim();
 
                             string result = ConfigSettings.setCommonlyUsedSQLCodeNameValue(code, name, value);
 
@@ -114,7 +114,7 @@ namespace InsertDataInBatches
                         }
                         else
                         {
-                            if (string.IsNullOrEmpty(txtbox_Value.Text) || string.IsNullOrWhiteSpace(txtbox_Value.Text))
+                            if (string.IsNullOrEmpty(richtxtbox_Value.Text) || string.IsNullOrWhiteSpace(richtxtbox_Value.Text))
                             {
                                 MessageBox.Show("常用SQL语句不能为空！");
                             }
@@ -122,7 +122,7 @@ namespace InsertDataInBatches
                             {
                                 code = txtbox_Code.Text.Trim();
                                 name = txtbox_Name.Text.Trim();
-                                value = txtbox_Value.Text.Trim();
+                                value = richtxtbox_Value.Text.Trim();
 
                                 string result = ConfigSettings.editCommonlyUsedSQLCodeNameValue(code, name, value);
 

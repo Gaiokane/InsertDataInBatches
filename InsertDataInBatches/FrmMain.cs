@@ -994,7 +994,7 @@ namespace InsertDataInBatches
             //接收FrmCommonlyUsedSQLConfigNewEdit返回的DialogResult，刷新右侧常用按钮功能Text
             FrmCommonlyUsedSQLConfigNewEdit fcuscne = new FrmCommonlyUsedSQLConfigNewEdit();
 
-            fcuscne.Text = "新增快捷插入配置";
+            fcuscne.Text = "新增常用SQL";
             fcuscne.type = 0;//(type 0：新增，1：编辑)
             fcuscne.value = richtxtboxInsertSQL.Text.Trim();
 

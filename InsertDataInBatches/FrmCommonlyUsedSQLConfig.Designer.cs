@@ -41,18 +41,20 @@
             this.FCUSC_Del.Location = new System.Drawing.Point(255, 12);
             this.FCUSC_Del.Name = "FCUSC_Del";
             this.FCUSC_Del.Size = new System.Drawing.Size(75, 23);
-            this.FCUSC_Del.TabIndex = 8;
+            this.FCUSC_Del.TabIndex = 3;
             this.FCUSC_Del.Text = "删除";
             this.FCUSC_Del.UseVisualStyleBackColor = true;
+            this.FCUSC_Del.Click += new System.EventHandler(this.FCUSC_Del_Click);
             // 
             // FCUSC_Refresh
             // 
             this.FCUSC_Refresh.Location = new System.Drawing.Point(12, 12);
             this.FCUSC_Refresh.Name = "FCUSC_Refresh";
             this.FCUSC_Refresh.Size = new System.Drawing.Size(75, 23);
-            this.FCUSC_Refresh.TabIndex = 5;
+            this.FCUSC_Refresh.TabIndex = 0;
             this.FCUSC_Refresh.Text = "刷新";
             this.FCUSC_Refresh.UseVisualStyleBackColor = true;
+            this.FCUSC_Refresh.Click += new System.EventHandler(this.FCUSC_Refresh_Click);
             // 
             // dataGridView1
             // 
@@ -68,25 +70,28 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(500, 200);
-            this.dataGridView1.TabIndex = 9;
+            this.dataGridView1.TabIndex = 4;
+            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
             // FCUSC_Edit
             // 
             this.FCUSC_Edit.Location = new System.Drawing.Point(174, 12);
             this.FCUSC_Edit.Name = "FCUSC_Edit";
             this.FCUSC_Edit.Size = new System.Drawing.Size(75, 23);
-            this.FCUSC_Edit.TabIndex = 7;
+            this.FCUSC_Edit.TabIndex = 2;
             this.FCUSC_Edit.Text = "编辑";
             this.FCUSC_Edit.UseVisualStyleBackColor = true;
+            this.FCUSC_Edit.Click += new System.EventHandler(this.FCUSC_Edit_Click);
             // 
             // FCUSC_New
             // 
             this.FCUSC_New.Location = new System.Drawing.Point(93, 12);
             this.FCUSC_New.Name = "FCUSC_New";
             this.FCUSC_New.Size = new System.Drawing.Size(75, 23);
-            this.FCUSC_New.TabIndex = 6;
+            this.FCUSC_New.TabIndex = 1;
             this.FCUSC_New.Text = "新增";
             this.FCUSC_New.UseVisualStyleBackColor = true;
+            this.FCUSC_New.Click += new System.EventHandler(this.FCUSC_New_Click);
             // 
             // FrmCommonlyUsedSQLConfig
             // 

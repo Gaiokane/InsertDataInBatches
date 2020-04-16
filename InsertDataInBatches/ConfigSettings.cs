@@ -356,5 +356,57 @@ namespace InsertDataInBatches
             }
         }
         #endregion
+
+        #region 根据常用SQL编码获取常用SQL名称、语句
+        /// <summary>
+        /// 根据常用SQL编码获取常用SQL名称、语句
+        /// </summary>
+        public static string[] getCommonlyUsedSQLNameValueByCode(string CommonlyUsedSQLCode)
+        {
+            string[] result = { };
+            string str = RWConfig.GetappSettingsValue(CommonlyUsedSQLCode, ConfigPath);
+            result = str.Split(';');
+            return result;
+        }
+        #endregion
+
+        #region 根据常用SQL编码删除常用SQL
+        /// <summary>
+        /// 根据常用SQL编码删除常用SQL
+        /// </summary>
+        /// <param name="CommonlyUsedSQLCode">常用SQL编码</param>
+        /// <returns>string：删除成功/删除失败/没有匹配项/报错信息</returns>
+        public static string delCommonlyUsedSQLCodeNameValue(string CommonlyUsedSQLCode)
+        {
+            try
+            {
+                string[] str = getCommonlyUsedSQLAllCodes();
+                foreach (var item in str)
+                {
+                    if (item == CommonlyUsedSQLCode)
+                    {
+                        if (RWConfig.DelappSettingsValue(CommonlyUsedSQLCode, ConfigPath) == true)
+                        {
+                            List<string> list = str.ToList();
+                            list.Remove(item);
+                            str = list.ToArray();
+                            string result = String.Join(";", str);
+                            RWConfig.SetappSettingsValue("CommonlyUsedSQL", result, ConfigPath);
+                            return CommonlyUsedSQLCode + " 删除成功！";
+                        }
+                        else
+                        {
+                            return CommonlyUsedSQLCode + " 删除失败！";
+                        }
+                    }
+                }
+                return "没有匹配项！";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        #endregion
     }
 }
