@@ -408,5 +408,45 @@ namespace InsertDataInBatches
             }
         }
         #endregion
+
+        #region 设置最后连接字符串
+        /// <summary>
+        /// 设置最后连接字符串
+        /// </summary>
+        /// <param name="sqlType">数据库类型 0=mssql 1=mysql</param>
+        /// <param name="Host">数据库地址</param>
+        /// <param name="isPort">是否需要端口</param>
+        /// <param name="Port">端口号</param>
+        /// <param name="Database">数据库名</param>
+        /// <param name="Username">用户名</param>
+        /// <param name="Password">密码</param>
+        /// <returns></returns>
+        public static bool setLastConnectionStrings(int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password)
+        {
+            string value = sqlType + ";" + Host + ";" + isPort + ";" + Port + ";" + Database + ";" + Username + ";" + Password;
+            if (sqlType == 0 || sqlType == 1)//0=mssql，1=mysql
+            {
+                RWConfig.SetappSettingsValue("LastConnectionStrings", value, ConfigPath);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
+
+        #region 获取最后连接字符串
+        /// <summary>
+        /// 获取最后连接字符串
+        /// </summary>
+        /// <returns>数组 string[] sqlType, int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password</returns>
+        public static string[] getLastConnectionStrings()
+        {
+            string temp = RWConfig.GetappSettingsValue("LastConnectionStrings", ConfigPath);
+            string[] result = temp.Split(';');
+            return result;
+        }
+        #endregion
     }
 }

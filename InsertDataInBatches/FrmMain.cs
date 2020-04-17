@@ -60,13 +60,58 @@ namespace InsertDataInBatches
         {
             //MessageBox.Show(getDotLength(1.1).ToString());
 
-            radiobtnMYSQL.Checked = true;
+            setTestConn();
 
-            txtboxHost.Text = "127.0.0.1";
-            txtboxPort.Text = "3306";
-            txtboxDatabase.Text = "pagination";
-            txtboxUsername.Text = "qkk";
-            txtboxPassword.Text = "qkk";
+            #region 读取并设置上一次数据库连接
+            string[] LastConnectionStrings = ConfigSettings.getLastConnectionStrings();
+            if (LastConnectionStrings.Length != 7)
+            {
+                ConfigSettings.setLastConnectionStrings(1, "127.0.0.1", false, "3306", "pagination", "qkk", "qkk");
+                MessageBox.Show("最新数据库连接值不正确，已重置为默认值，请重新运行该程序！");
+                Application.Exit();
+            }
+            else
+            {
+                bool isPort = false;
+                if (LastConnectionStrings[2] == "True")
+                {
+                    isPort = true;
+                }
+                else if (LastConnectionStrings[2] == "False")
+                {
+                    isPort = false;
+                }
+                else
+                {
+                    isPort = false;
+                }
+                //int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password
+                if (LastConnectionStrings[0] == "0")
+                {
+                    radiobtnMSSQL.Checked = true;
+                    txtboxHost.Text = LastConnectionStrings[1];
+                    chkboxPort.Checked = isPort;
+                    txtboxPort.Text = LastConnectionStrings[3];
+                    txtboxDatabase.Text = LastConnectionStrings[4];
+                    txtboxUsername.Text = LastConnectionStrings[5];
+                    txtboxPassword.Text = LastConnectionStrings[6];
+                }
+                else if (LastConnectionStrings[0] == "1")
+                {
+                    radiobtnMYSQL.Checked = true;
+                    txtboxHost.Text = LastConnectionStrings[1];
+                    chkboxPort.Checked = isPort;
+                    txtboxPort.Text = LastConnectionStrings[3];
+                    txtboxDatabase.Text = LastConnectionStrings[4];
+                    txtboxUsername.Text = LastConnectionStrings[5];
+                    txtboxPassword.Text = LastConnectionStrings[6];
+                }
+                else
+                {
+                    setTestConn();
+                }
+            }
+            #endregion
 
             txtboxNumberOfExecutions.Text = "2";
             //richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('{{id:7}}'){{id:7}}";
@@ -87,6 +132,18 @@ namespace InsertDataInBatches
             //RichTextBox增加右键菜单
             RichTextBoxMenu richTextBoxMenu_richtxtboxInsertSQL = new RichTextBoxMenu(richtxtboxInsertSQL);
             RichTextBoxMenu richTextBoxMenu_richtxtboxResult = new RichTextBoxMenu(richtxtboxResult);
+        }
+        #endregion
+
+        #region 设置测试用默认数据库连接
+        private void setTestConn()
+        {
+            radiobtnMYSQL.Checked = true;
+            txtboxHost.Text = "127.0.0.1";
+            txtboxPort.Text = "3306";
+            txtboxDatabase.Text = "pagination";
+            txtboxUsername.Text = "qkk";
+            txtboxPassword.Text = "qkk";
         }
         #endregion
 
@@ -200,6 +257,12 @@ namespace InsertDataInBatches
                         txtboxUsername.Enabled = false;
                         txtboxPassword.Enabled = false;
                     }
+
+                    //设置上一次连接字符串
+                    if (ConfigSettings.setLastConnectionStrings(0,host,chkboxPort.Checked,port,database,username,password)==false)
+                    {
+                        MessageBox.Show("更新最后连接字符串出错！");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -237,6 +300,12 @@ namespace InsertDataInBatches
                         txtboxDatabase.Enabled = false;
                         txtboxUsername.Enabled = false;
                         txtboxPassword.Enabled = false;
+                    }
+
+                    //设置上一次连接字符串
+                    if (ConfigSettings.setLastConnectionStrings(1, host, chkboxPort.Checked, port, database, username, password) == false)
+                    {
+                        MessageBox.Show("更新最后连接字符串出错！");
                     }
                 }
                 catch (Exception ex)
