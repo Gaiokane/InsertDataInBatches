@@ -75,6 +75,8 @@ namespace InsertDataInBatches
         #region 窗体加载事件，dg配置默认表头、宽度，加载快捷插入配置数据
         private void FrmQuickInsertConfig_Load(object sender, EventArgs e)
         {
+            this.Icon = Properties.Resources._2020041708370323_easyicon_net_128;
+
             dataGridView1.Columns.Add("QuickInsertModelCode", "快捷插入模块编码");
             dataGridView1.Columns.Add("QuickInsertModelName", "快捷插入模块名称");
             dataGridView1.Columns.Add("QuickInsertModelValue", "快捷插入模块值");

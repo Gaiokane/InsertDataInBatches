@@ -75,6 +75,8 @@ namespace InsertDataInBatches
         #region 窗体加载事件，dg配置默认表头、宽度，加载常用SQL数据
         private void FrmCommonlyUsedSQLConfig_Load(object sender, EventArgs e)
         {
+            this.Icon = Properties.Resources._2020041708370323_easyicon_net_128;
+
             dataGridView1.Columns.Add("CommonlyUsedSQLCode", "常用SQL编码");
             dataGridView1.Columns.Add("CommonlyUsedSQLName", "常用SQL名称");
             dataGridView1.Columns.Add("CommonlyUsedSQLValue", "常用SQL语句");

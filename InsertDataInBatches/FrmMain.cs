@@ -58,6 +58,14 @@ namespace InsertDataInBatches
         #region 窗体加载事件
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            /*
+             * 解决方案资源管理器
+             * Properties->Resources.resx打开
+             * 添加资源->添加现有文件
+             * 添加完后使用以下代码调用
+             */
+            this.Icon = Properties.Resources._20200417083355795_easyicon_net_128;
+
             //MessageBox.Show(getDotLength(1.1).ToString());
 
             setTestConn();
