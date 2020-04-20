@@ -59,6 +59,22 @@ namespace InsertDataInBatches
         private void FrmMain_Load(object sender, EventArgs e)
         {
             /*
+             * 登录成功后根据所选数据库类型，先查询是否有过，有的话+=，没有新增
+             * <add key="MSSQL_Host" value="192.168.1.1;192.168.1.1\SQL2012" />
+             * <add key="MySQL_Host" value="127.0.0.1" />
+             * 登录成功后根据所选数据库类型，先查询是否有值，有的话+=，没有新增
+             * <add key="MSSQL_DB_192.168.1.1" value="DB1;DB2" />
+             * <add key="MySQL_DB_127.0.0.1" value="DB1" />
+             * 登录成功后根据所选数据库类型，先查询是否有值，有的话+=，没有新增
+             * <add key="MSSQL_Host_192.168.1.1" value="False;1433;testdb;q;qq" />
+             * <add key="MySQL_Host_127.0.0.1" value="False;3306;systemstatus;qkk;qkk" />
+             * 
+             * 根据所选radiobtn，点击host文本框显示MSSQL_Host/MySQL_Host下的所有连接过的记录
+             * 根据所选host，isport、port、username、password分别显示对应记录
+             * 根据所选host，点击database文本框显示对应host下连接过的数据库记录
+             */
+
+            /*
              * 解决方案资源管理器
              * Properties->Resources.resx打开
              * 添加资源->添加现有文件
