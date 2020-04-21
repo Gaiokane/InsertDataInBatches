@@ -73,7 +73,7 @@ namespace InsertDataInBatches
              * 根据所选host，isport、port、username、password分别显示对应记录
              * 根据所选host，点击database文本框显示对应host下连接过的数据库记录
              */
-
+            //MessageBox.Show(ConfigSettings.getSameValueLenth("MySQL_Host", "1").ToString());
             /*
              * 解决方案资源管理器
              * Properties->Resources.resx打开
@@ -156,8 +156,15 @@ namespace InsertDataInBatches
             //RichTextBox增加右键菜单
             RichTextBoxMenu richTextBoxMenu_richtxtboxInsertSQL = new RichTextBoxMenu(richtxtboxInsertSQL);
             RichTextBoxMenu richTextBoxMenu_richtxtboxResult = new RichTextBoxMenu(richtxtboxResult);
+
+            RefreshConnectionHistory();
         }
         #endregion
+
+        private void RefreshConnectionHistory()
+        {
+
+        }
 
         #region 设置测试用默认数据库连接
         private void setTestConn()
@@ -283,9 +290,15 @@ namespace InsertDataInBatches
                     }
 
                     //设置上一次连接字符串
-                    if (ConfigSettings.setLastConnectionStrings(0,host,chkboxPort.Checked,port,database,username,password)==false)
+                    if (ConfigSettings.setLastConnectionStrings(0, host, chkboxPort.Checked, port, database, username, password) == false)
                     {
                         MessageBox.Show("更新最后连接字符串出错！");
+                    }
+
+                    //保存连接成功的记录
+                    if (ConfigSettings.saveConnectionString(0, host, chkboxPort.Checked, port, database, username, password) == false)
+                    {
+                        MessageBox.Show("保存连接记录出错！");
                     }
                 }
                 catch (Exception ex)
@@ -331,6 +344,12 @@ namespace InsertDataInBatches
                     {
                         MessageBox.Show("更新最后连接字符串出错！");
                     }
+
+                    //保存连接成功的记录
+                    if (ConfigSettings.saveConnectionString(1, host, chkboxPort.Checked, port, database, username, password) == false)
+                    {
+                        MessageBox.Show("保存连接记录出错！");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -344,33 +363,40 @@ namespace InsertDataInBatches
         #region 数据库_断开按钮单击事件
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
-            if (radiobtnMSSQL.Checked == true)
+            if (labConnectStatus.Text == "状态：已断开")
             {
-                mssqlconn.Close();
-                labConnectStatus.Text = "状态：已断开";
-                btnConnect.Enabled = true;
-                radiobtnMSSQL.Enabled = true;
-                radiobtnMYSQL.Enabled = true;
-                txtboxHost.Enabled = true;
-                chkboxPort.Enabled = true;
-                txtboxPort.Enabled = true;
-                txtboxDatabase.Enabled = true;
-                txtboxUsername.Enabled = true;
-                txtboxPassword.Enabled = true;
+
             }
-            if (radiobtnMYSQL.Checked == true)
+            else
             {
-                mysqlconn.Close();
-                labConnectStatus.Text = "状态：已断开";
-                btnConnect.Enabled = true;
-                radiobtnMSSQL.Enabled = true;
-                radiobtnMYSQL.Enabled = true;
-                txtboxHost.Enabled = true;
-                chkboxPort.Enabled = true;
-                txtboxPort.Enabled = true;
-                txtboxDatabase.Enabled = true;
-                txtboxUsername.Enabled = true;
-                txtboxPassword.Enabled = true;
+                if (radiobtnMSSQL.Checked == true)
+                {
+                    mssqlconn.Close();
+                    labConnectStatus.Text = "状态：已断开";
+                    btnConnect.Enabled = true;
+                    radiobtnMSSQL.Enabled = true;
+                    radiobtnMYSQL.Enabled = true;
+                    txtboxHost.Enabled = true;
+                    chkboxPort.Enabled = true;
+                    txtboxPort.Enabled = true;
+                    txtboxDatabase.Enabled = true;
+                    txtboxUsername.Enabled = true;
+                    txtboxPassword.Enabled = true;
+                }
+                if (radiobtnMYSQL.Checked == true)
+                {
+                    mysqlconn.Close();
+                    labConnectStatus.Text = "状态：已断开";
+                    btnConnect.Enabled = true;
+                    radiobtnMSSQL.Enabled = true;
+                    radiobtnMYSQL.Enabled = true;
+                    txtboxHost.Enabled = true;
+                    chkboxPort.Enabled = true;
+                    txtboxPort.Enabled = true;
+                    txtboxDatabase.Enabled = true;
+                    txtboxUsername.Enabled = true;
+                    txtboxPassword.Enabled = true;
+                }
             }
         }
         #endregion
