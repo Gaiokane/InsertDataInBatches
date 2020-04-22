@@ -60,6 +60,7 @@
             this.btn_CommonlyUsedSQL_New = new System.Windows.Forms.Button();
             this.btn_CommonlyUsedSQL_Insert = new System.Windows.Forms.Button();
             this.cmbox_CommonlyUsedSQL_List = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupbox_DataBase.SuspendLayout();
             this.groupbox_QuickInsert.SuspendLayout();
             this.groupbox_CommonlyUsedSQL.SuspendLayout();
@@ -67,6 +68,7 @@
             // 
             // groupbox_DataBase
             // 
+            this.groupbox_DataBase.Controls.Add(this.comboBox1);
             this.groupbox_DataBase.Controls.Add(this.chkboxPort);
             this.groupbox_DataBase.Controls.Add(this.txtboxPort);
             this.groupbox_DataBase.Controls.Add(this.btnDisconnect);
@@ -375,6 +377,17 @@
             this.cmbox_CommonlyUsedSQL_List.Size = new System.Drawing.Size(144, 20);
             this.cmbox_CommonlyUsedSQL_List.TabIndex = 0;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(369, 16);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 20);
+            this.comboBox1.TabIndex = 17;
+            this.comboBox1.DropDown += new System.EventHandler(this.comboBox1_DropDown);
+            this.comboBox1.TextUpdate += new System.EventHandler(this.comboBox1_TextUpdate);
+            this.comboBox1.DropDownClosed += new System.EventHandler(this.comboBox1_DropDownClosed);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -437,6 +450,7 @@
         private System.Windows.Forms.Button btn_CommonlyUsedSQL_New;
         private System.Windows.Forms.Button btn_CommonlyUsedSQL_Insert;
         private System.Windows.Forms.Button btn_CommonlyUsedSQL_Settings;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

@@ -157,13 +157,102 @@ namespace InsertDataInBatches
             RichTextBoxMenu richTextBoxMenu_richtxtboxInsertSQL = new RichTextBoxMenu(richtxtboxInsertSQL);
             RichTextBoxMenu richTextBoxMenu_richtxtboxResult = new RichTextBoxMenu(richtxtboxResult);
 
-            RefreshConnectionHistory();
+            //RefreshConnectionHistory();
         }
         #endregion
 
+        private void comboBox1_DropDownClosed(object sender, EventArgs e)
+        {
+            //MessageBox.Show("11");
+            RefreshConnectionHistory();
+        }
+
+        private void comboBox1_TextUpdate(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!comboBox1.DroppedDown)
+                {
+                    comboBox1.DroppedDown = true;
+                    Cursor.Current = Cursors.Default;
+                }
+                //RefreshConnectionHistory();
+                //MessageBox.Show(comboBox1.Text);
+                find(comboBox1.Text);
+                //comboBox1.SelectionStart = comboBox1.Text.Length;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void comboBox1_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                //RefreshConnectionHistory();
+
+                find(comboBox1.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void find(string str)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(str))
+                {
+                    RefreshConnectionHistory();
+                }
+                else
+                {
+                    string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
+                    string[] result = connectionItem.Select(x => x.Contains(str) ? x : "").ToArray();
+                    if (string.IsNullOrEmpty(result[0]))
+                    {
+                        comboBox1.Items.Clear();
+                    }
+                    else
+                    {
+                        comboBox1.Items.Clear();
+                        foreach (var item in result)
+                        {
+                            if (!string.IsNullOrEmpty(item))
+                            {
+                                comboBox1.Items.Add(item);
+                            }
+                        }
+                    }
+                }
+                comboBox1.SelectionStart = comboBox1.Text.Length;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void RefreshConnectionHistory()
         {
-
+            try
+            {
+                string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
+                comboBox1.Items.Clear();
+                foreach (var item in connectionItem)
+                {
+                    comboBox1.Items.Add(item);
+                }
+                comboBox1.SelectionStart = comboBox1.Text.Length;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         #region 设置测试用默认数据库连接
