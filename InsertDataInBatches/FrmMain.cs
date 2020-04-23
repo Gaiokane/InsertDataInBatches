@@ -157,19 +157,110 @@ namespace InsertDataInBatches
             RichTextBoxMenu richTextBoxMenu_richtxtboxInsertSQL = new RichTextBoxMenu(richtxtboxInsertSQL);
             RichTextBoxMenu richTextBoxMenu_richtxtboxResult = new RichTextBoxMenu(richtxtboxResult);
 
-            //RefreshConnectionHistory();
+            RefreshConnectionHistory();
+
+
+            /*string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(connectionItem);
+            comboBox1.SelectedIndex = -1;
+            /*foreach (var item in connectionItem)
+            {
+                comboBox1.Items.Add(item);
+            }/*
+            comboBox1.SelectionStart = comboBox1.Text.Length;*/
+
+
+
+
         }
         #endregion
 
         private void comboBox1_DropDownClosed(object sender, EventArgs e)
         {
+            //当下拉框没值时，下拉框关闭时会报错，赋值就行
+
             //MessageBox.Show("11");
-            RefreshConnectionHistory();
+            if (comboBox1.Items.Count==0)
+            {
+                RefreshConnectionHistory();
+            }
         }
 
         private void comboBox1_TextUpdate(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(comboBox1.Text))
+            {
+                RefreshConnectionHistory();
+                //自动弹出下拉框
+                comboBox1.DroppedDown = true;
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+            }
+            else
+            {
+                comboBox1.Items.Clear();
+                //自动弹出下拉框
+                comboBox1.DroppedDown = true;
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+                string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
+                List<string> listNew = new List<string>();
+                //遍历全部备查数据
+                foreach (var item in connectionItem)
+                {
+                    if (item.Contains(comboBox1.Text))
+                    {
+                        //符合，插入ListNew
+                        listNew.Add(item);
+                    }
+                }
+                //combobox添加已经查到的关键词
+                comboBox1.Items.AddRange(listNew.ToArray());
+                //设置光标位置，否则光标位置始终保持在第一列，造成输入关键词的倒序排列
+                comboBox1.SelectionStart = comboBox1.Text.Length;
+            }
+
+            /*string s = comboBox1.Text;              //获取输入内容
+
+            string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
+            
+            //提前下拉，以显示搜索结果（必须要在添加项之前下拉，否则会将第一项自动添加到编辑框内 覆盖掉输入的内容）
+            comboBox1.DroppedDown = true;      //显示下拉列表，但是显示后鼠标指针就不见了
+            Cursor.Current = Cursors.Default;                  //将指针显示出来
+
+           //在表中已录入名字中寻找包含输入内容的项  有则添加到comboBox项中
             try
+            {
+                foreach (string str in connectionItem)
+                {
+                    if (s.Length > 0)
+                    {
+                        if (str.Contains(s))
+                        {
+                            if (comboBox1.Items.IndexOf(str) < 0) //如果当前下拉表中没有该字符串的话则添加，否则不添加
+                                comboBox1.Items.Add(str);
+                        }
+                        else
+                        {
+                            if (comboBox1.Items.IndexOf(str) >= 0)
+                                comboBox1.Items.Remove(str);
+                        }
+                    }
+                    else
+                    {
+                        comboBox1.DroppedDown = false;
+                        comboBox1.Items.Clear();
+                    }
+                }
+            }
+            catch (ArgumentOutOfRangeException ex)     //清空输入框时经常会出现异常，暂时不知道怎么解决，捕获后可以正常，不处理也行
+            {
+                //textBoxInfo.AppendText("Exception: " + ex.ToString());
+            }*/
+
+
+            /*try
             {
                 if (!comboBox1.DroppedDown)
                 {
@@ -184,26 +275,62 @@ namespace InsertDataInBatches
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
+            }*/
         }
 
         private void comboBox1_DropDown(object sender, EventArgs e)
         {
-            try
+
+            if (string.IsNullOrEmpty(comboBox1.Text))
+            {
+                RefreshConnectionHistory();
+                //自动弹出下拉框
+                //comboBox1.DroppedDown = true;
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+            }
+            else
+            {
+                //输入不匹配项，关闭下拉框，打开下拉框应根据输入的值模糊搜索，当前显示全部
+
+                /*comboBox1.Items.Clear();
+                //自动弹出下拉框
+                //comboBox1.DroppedDown = true;
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+                string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
+                List<string> listNew = new List<string>();
+                //遍历全部备查数据
+                foreach (var item in connectionItem)
+                {
+                    if (item.Contains(comboBox1.Text))
+                    {
+                        //符合，插入ListNew
+                        listNew.Add(item);
+                    }
+                }
+                //combobox添加已经查到的关键词
+                comboBox1.Items.AddRange(listNew.ToArray());
+                //设置光标位置，否则光标位置始终保持在第一列，造成输入关键词的倒序排列
+                comboBox1.SelectionStart = comboBox1.Text.Length;*/
+            }
+
+            /*try
             {
                 //RefreshConnectionHistory();
 
-                find(comboBox1.Text);
+                //find(comboBox1.Text);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
+            }*/
         }
 
         private void find(string str)
         {
-            try
+
+            /*try
             {
                 if (string.IsNullOrEmpty(str))
                 {
@@ -234,7 +361,7 @@ namespace InsertDataInBatches
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
+            }*/
         }
 
         private void RefreshConnectionHistory()
@@ -243,10 +370,7 @@ namespace InsertDataInBatches
             {
                 string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
                 comboBox1.Items.Clear();
-                foreach (var item in connectionItem)
-                {
-                    comboBox1.Items.Add(item);
-                }
+                comboBox1.Items.AddRange(connectionItem);
                 comboBox1.SelectionStart = comboBox1.Text.Length;
             }
             catch (Exception ex)
