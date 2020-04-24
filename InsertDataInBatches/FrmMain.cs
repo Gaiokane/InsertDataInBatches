@@ -181,7 +181,7 @@ namespace InsertDataInBatches
             //当下拉框没值时，下拉框关闭时会报错，赋值就行
 
             //MessageBox.Show("11");
-            if (comboBox1.Items.Count==0)
+            if (comboBox1.Items.Count == 0)
             {
                 RefreshConnectionHistory();
             }
@@ -189,6 +189,7 @@ namespace InsertDataInBatches
 
         private void comboBox1_TextUpdate(object sender, EventArgs e)
         {
+            //MessageBox.Show("update");
             if (string.IsNullOrEmpty(comboBox1.Text))
             {
                 RefreshConnectionHistory();
@@ -199,7 +200,9 @@ namespace InsertDataInBatches
             }
             else
             {
-                comboBox1.Items.Clear();
+                comboBox1_DropDown(sender, e);
+                comboBox1.DroppedDown = true;
+                /*comboBox1.Items.Clear();
                 //自动弹出下拉框
                 comboBox1.DroppedDown = true;
                 //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
@@ -218,7 +221,7 @@ namespace InsertDataInBatches
                 //combobox添加已经查到的关键词
                 comboBox1.Items.AddRange(listNew.ToArray());
                 //设置光标位置，否则光标位置始终保持在第一列，造成输入关键词的倒序排列
-                comboBox1.SelectionStart = comboBox1.Text.Length;
+                comboBox1.SelectionStart = comboBox1.Text.Length;*/
             }
 
             /*string s = comboBox1.Text;              //获取输入内容
@@ -280,7 +283,7 @@ namespace InsertDataInBatches
 
         private void comboBox1_DropDown(object sender, EventArgs e)
         {
-
+            //MessageBox.Show("下拉:"+ comboBox1.Text);
             if (string.IsNullOrEmpty(comboBox1.Text))
             {
                 RefreshConnectionHistory();
@@ -291,6 +294,26 @@ namespace InsertDataInBatches
             }
             else
             {
+                comboBox1.Items.Clear();
+                //自动弹出下拉框
+                //comboBox1.DroppedDown = true;
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+                string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
+                List<string> listNew = new List<string>();
+                //遍历全部备查数据
+                foreach (var item in connectionItem)
+                {
+                    if (item.Contains(comboBox1.Text))
+                    {
+                        //符合，插入ListNew
+                        listNew.Add(item);
+                    }
+                }
+                //combobox添加已经查到的关键词
+                comboBox1.Items.AddRange(listNew.ToArray());
+                //设置光标位置，否则光标位置始终保持在第一列，造成输入关键词的倒序排列
+                comboBox1.SelectionStart = comboBox1.Text.Length;
                 //输入不匹配项，关闭下拉框，打开下拉框应根据输入的值模糊搜索，当前显示全部
 
                 /*comboBox1.Items.Clear();
