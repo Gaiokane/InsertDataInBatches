@@ -50,6 +50,8 @@ namespace InsertDataInBatches
 
         string[] sqlQuerys;
 
+        string s;
+
         public FrmMain()
         {
             InitializeComponent();
@@ -161,6 +163,8 @@ namespace InsertDataInBatches
 
         private void comboBox1_TextUpdate(object sender, EventArgs e)
         {
+            s = comboBox1.Text;
+
             if (string.IsNullOrEmpty(comboBox1.Text))
             {
                 RefreshConnectionHistory();
@@ -171,22 +175,17 @@ namespace InsertDataInBatches
             }
             else
             {
-                comboBox1_DropDown(sender, e);
-                comboBox1.DroppedDown = true;
-            }
-        }
+                //comboBox1_DropDown(sender, e);
+                /*if (comboBox1.DroppedDown == false)
+                {
+                    comboBox1.DroppedDown = true;
+                }*/
+                //comboBox1.SelectedIndex = -1;
 
-        private void comboBox1_DropDown(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(comboBox1.Text))
-            {
-                RefreshConnectionHistory();
-                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
-                Cursor = Cursors.Default;
-            }
-            else
-            {
                 comboBox1.Items.Clear();
+                comboBox1.DroppedDown = true;
+
+
                 //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
                 Cursor = Cursors.Default;
                 string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
@@ -200,11 +199,55 @@ namespace InsertDataInBatches
                         listNew.Add(item);
                     }
                 }
+                //MessageBox.Show(listNew.Count.ToString());
                 //combobox添加已经查到的关键词
                 comboBox1.Items.AddRange(listNew.ToArray());
                 //设置光标位置，否则光标位置始终保持在第一列，造成输入关键词的倒序排列
                 comboBox1.SelectionStart = comboBox1.Text.Length;
-                //输入不匹配项，关闭下拉框，打开下拉框应根据输入的值模糊搜索，当前显示全部
+
+
+            }
+        }
+
+        private void comboBox1_DropDown(object sender, EventArgs e)
+        {
+            //string s = comboBox1.Text;
+            if (string.IsNullOrEmpty(comboBox1.Text))
+            {
+                RefreshConnectionHistory();
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+            }
+            else
+            {
+                //MessageBox.Show(comboBox1.Text);
+                //comboBox1.Text = "";
+                /*//comboBox1.SelectedIndex = -1;
+                comboBox1.Items.Clear();
+
+                //comboBox1.Text = s;
+                comboBox1.SelectionStart = comboBox1.Text.Length;*/
+
+
+                /*comboBox1.Items.Clear();
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+                string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host");
+                List<string> listNew = new List<string>();
+                //遍历全部备查数据
+                foreach (var item in connectionItem)
+                {
+                    if (item.Contains(comboBox1.Text))
+                    {
+                        //符合，插入ListNew
+                        listNew.Add(item);
+                    }
+                }
+                //MessageBox.Show(listNew.Count.ToString());
+                //combobox添加已经查到的关键词
+                comboBox1.Items.AddRange(listNew.ToArray());
+                //设置光标位置，否则光标位置始终保持在第一列，造成输入关键词的倒序排列
+                comboBox1.SelectionStart = comboBox1.Text.Length;*/
             }
         }
 
@@ -214,6 +257,21 @@ namespace InsertDataInBatches
             if (comboBox1.Items.Count == 0)
             {
                 RefreshConnectionHistory();
+            }
+            else
+            {
+                foreach (string item in comboBox1.Items)
+                {
+                    if (s == item)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        comboBox1.Text = s;
+                        comboBox1.SelectionStart = comboBox1.Text.Length;
+                    }
+                }
             }
         }
 
