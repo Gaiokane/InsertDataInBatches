@@ -161,22 +161,25 @@ namespace InsertDataInBatches
         }
         #endregion
 
-        private void comboBox1_TextUpdate(object sender, EventArgs e)
+        #region Host下拉框模糊搜索
+        #region Host下拉框文本变动事件 模糊搜索
+        private void comBoxHost_TextUpdate(object sender, EventArgs e)
         {
-            comBoxText = comboBox1.Text;
+            comBoxText = comBoxHost.Text;
 
-            if (string.IsNullOrEmpty(comboBox1.Text))
+            if (string.IsNullOrEmpty(comBoxHost.Text))
             {
-                RefreshConnectionHistory();
+                //RefreshConnectionHistory();
+                RefreshComBoxFuzzySearch("MySQL_Host", comBoxHost);
                 //自动弹出下拉框
-                comboBox1.DroppedDown = true;
+                comBoxHost.DroppedDown = true;
                 //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
                 Cursor = Cursors.Default;
             }
             else
             {
-                comboBox1.Items.Clear();
-                comboBox1.DroppedDown = true;
+                comBoxHost.Items.Clear();
+                comBoxHost.DroppedDown = true;
 
                 //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
                 Cursor = Cursors.Default;
@@ -185,40 +188,155 @@ namespace InsertDataInBatches
                 //遍历全部备查数据
                 foreach (var item in connectionItem)
                 {
-                    if (item.Contains(comboBox1.Text))
+                    if (item.Contains(comBoxHost.Text))
                     {
                         //符合，插入ListNew
                         listNew.Add(item);
                     }
                 }
                 //combobox添加已经查到的关键词
-                comboBox1.Items.AddRange(listNew.ToArray());
+                comBoxHost.Items.AddRange(listNew.ToArray());
                 //设置光标位置，否则光标位置始终保持在第一列，造成输入关键词的倒序排列
-                comboBox1.SelectionStart = comboBox1.Text.Length;
+                comBoxHost.SelectionStart = comBoxHost.Text.Length;
             }
         }
+        #endregion
 
-        private void comboBox1_DropDown(object sender, EventArgs e)
+        #region Host下拉框 下拉时如果文本框无数据 重新绑定下拉列表数据
+        private void comBoxHost_DropDown(object sender, EventArgs e)
         {
             //string s = comboBox1.Text;
-            if (string.IsNullOrEmpty(comboBox1.Text))
+            if (string.IsNullOrEmpty(comBoxHost.Text))
             {
-                RefreshConnectionHistory();
+                //RefreshConnectionHistory();
+                RefreshComBoxFuzzySearch("MySQL_Host", comBoxHost);
                 //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
                 Cursor = Cursors.Default;
             }
         }
+        #endregion
 
-        private void comboBox1_DropDownClosed(object sender, EventArgs e)
+        #region Host下拉框 下拉列表关闭时 如果列表无数据 重新绑定 不然报错InvalidArgument=“0”的值对于“index”无效/处理输入内容在列表中有模糊项时会自动置为模糊项的问题
+        private void comBoxHost_DropDownClosed(object sender, EventArgs e)
         {
+            /*MessageBox.Show("comBoxText：" + comBoxText + "\n" +
+                "comBoxHost.Text：" + comBoxHost.Text + "\n" +
+                "comBoxHost.SelectedItem：" + comBoxHost.SelectedItem + "\n" +
+                "comBoxHost.SelectedText：" + comBoxHost.SelectedText + "\n" +
+                "comBoxHost.SelectedValue：" + comBoxHost.SelectedValue + "\n");*/
             //当下拉框没值时，下拉框关闭时会报错，赋值就行
-            if (comboBox1.Items.Count == 0)
+            if (comBoxHost.Items.Count == 0)
             {
-                RefreshConnectionHistory();
+                //RefreshConnectionHistory();
+                RefreshComBoxFuzzySearch("MySQL_Host", comBoxHost);
             }
             else
             {
-                foreach (string item in comboBox1.Items)
+                foreach (string item in comBoxHost.Items)
+                {
+                    if (comBoxHost.SelectedItem != null)
+                    {
+                        //if (comBoxText == item)
+                        if (comBoxHost.SelectedItem.ToString() == item)
+                        {
+                            string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_Host_" + comBoxHost.SelectedItem);
+                            if (Convert.ToBoolean(connectionItem[0]) == true)
+                            {
+                                chkboxPort.Checked = true;
+                            }
+                            else
+                            {
+                                chkboxPort.Checked = false;
+                            }
+                            txtboxPort.Text = connectionItem[1];
+                            txtboxUsername.Text = connectionItem[2];
+                            txtboxPassword.Text = connectionItem[3];
+                            break;
+                        }
+                        else
+                        {
+                            comBoxHost.Text = comBoxText;
+                            comBoxHost.SelectionStart = comBoxHost.Text.Length;
+                        }
+                    }
+                    else
+                    {
+                        comBoxHost.Text = comBoxText;
+                        comBoxHost.SelectionStart = comBoxHost.Text.Length;
+                    }
+                }
+            }
+        }
+        #endregion
+        #endregion
+
+        #region Database下拉框模糊搜索
+        #region Database下拉框文本变动事件 模糊搜索
+        private void comBoxDatabase_TextUpdate(object sender, EventArgs e)
+        {
+            comBoxText = comBoxDatabase.Text;
+
+            if (string.IsNullOrEmpty(comBoxDatabase.Text))
+            {
+                //RefreshConnectionHistory();
+                RefreshComBoxFuzzySearch("MySQL_DB_"+comBoxHost.Text, comBoxDatabase);
+                //自动弹出下拉框
+                comBoxDatabase.DroppedDown = true;
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+            }
+            else
+            {
+                comBoxDatabase.Items.Clear();
+                comBoxDatabase.DroppedDown = true;
+
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+                string[] connectionItem = ConfigSettings.getConfigValueByKey("MySQL_DB_" + comBoxHost.Text);
+                List<string> listNew = new List<string>();
+                //遍历全部备查数据
+                foreach (var item in connectionItem)
+                {
+                    if (item.Contains(comBoxDatabase.Text))
+                    {
+                        //符合，插入ListNew
+                        listNew.Add(item);
+                    }
+                }
+                //combobox添加已经查到的关键词
+                comBoxDatabase.Items.AddRange(listNew.ToArray());
+                //设置光标位置，否则光标位置始终保持在第一列，造成输入关键词的倒序排列
+                comBoxDatabase.SelectionStart = comBoxDatabase.Text.Length;
+            }
+        }
+        #endregion
+
+        #region Database下拉框 下拉时如果文本框无数据 重新绑定下拉列表数据
+        private void comBoxDatabase_DropDown(object sender, EventArgs e)
+        {
+            //string s = comboBox1.Text;
+            if (string.IsNullOrEmpty(comBoxDatabase.Text))
+            {
+                //RefreshConnectionHistory();
+                RefreshComBoxFuzzySearch("MySQL_DB_" + comBoxHost.Text, comBoxDatabase);
+                //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
+                Cursor = Cursors.Default;
+            }
+        }
+        #endregion
+
+        #region Database下拉框 下拉列表关闭时 如果列表无数据 重新绑定 不然报错InvalidArgument=“0”的值对于“index”无效/处理输入内容在列表中有模糊项时会自动置为模糊项的问题
+        private void comBoxDatabase_DropDownClosed(object sender, EventArgs e)
+        {
+            //当下拉框没值时，下拉框关闭时会报错，赋值就行
+            if (comBoxDatabase.Items.Count == 0)
+            {
+                //RefreshConnectionHistory();
+                RefreshComBoxFuzzySearch("MySQL_DB_" + comBoxHost.Text, comBoxDatabase);
+            }
+            else
+            {
+                foreach (string item in comBoxDatabase.Items)
                 {
                     if (comBoxText == item)
                     {
@@ -226,13 +344,37 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        comboBox1.Text = comBoxText;
-                        comboBox1.SelectionStart = comboBox1.Text.Length;
+                        comBoxDatabase.Text = comBoxText;
+                        comBoxDatabase.SelectionStart = comBoxDatabase.Text.Length;
                     }
                 }
             }
         }
+        #endregion
+        #endregion
 
+        #region 刷新下拉框模糊搜索数据
+        /// <summary>
+        /// 刷新下拉框模糊搜索数据
+        /// </summary>
+        /// <param name="configKey">配置文件中的key</param>
+        /// <param name="comboBox">下拉框名字</param>
+        private void RefreshComBoxFuzzySearch(string configKey, ComboBox comboBox)
+        {
+            try
+            {
+                string[] connectionItem = ConfigSettings.getConfigValueByKey(configKey);
+                comboBox.Items.Clear();
+                comboBox.Items.AddRange(connectionItem);
+                comboBox.SelectionStart = comboBox.Text.Length;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        /*单独写成方法
         private void RefreshConnectionHistory()
         {
             try
@@ -246,7 +388,8 @@ namespace InsertDataInBatches
             {
                 MessageBox.Show(ex.Message);
             }
-        }
+        }*/
+        #endregion
 
         #region 设置测试用默认数据库连接
         private void setTestConn()

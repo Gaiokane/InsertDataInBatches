@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             this.groupbox_DataBase = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comBoxDatabase = new System.Windows.Forms.ComboBox();
+            this.comBoxHost = new System.Windows.Forms.ComboBox();
             this.chkboxPort = new System.Windows.Forms.CheckBox();
             this.txtboxPort = new System.Windows.Forms.TextBox();
             this.btnDisconnect = new System.Windows.Forms.Button();
@@ -68,7 +69,8 @@
             // 
             // groupbox_DataBase
             // 
-            this.groupbox_DataBase.Controls.Add(this.comboBox1);
+            this.groupbox_DataBase.Controls.Add(this.comBoxDatabase);
+            this.groupbox_DataBase.Controls.Add(this.comBoxHost);
             this.groupbox_DataBase.Controls.Add(this.chkboxPort);
             this.groupbox_DataBase.Controls.Add(this.txtboxPort);
             this.groupbox_DataBase.Controls.Add(this.btnDisconnect);
@@ -91,16 +93,27 @@
             this.groupbox_DataBase.TabStop = false;
             this.groupbox_DataBase.Text = "数据库";
             // 
-            // comboBox1
+            // comBoxDatabase
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(369, 16);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 20);
-            this.comboBox1.TabIndex = 17;
-            this.comboBox1.DropDown += new System.EventHandler(this.comboBox1_DropDown);
-            this.comboBox1.TextUpdate += new System.EventHandler(this.comboBox1_TextUpdate);
-            this.comboBox1.DropDownClosed += new System.EventHandler(this.comboBox1_DropDownClosed);
+            this.comBoxDatabase.FormattingEnabled = true;
+            this.comBoxDatabase.Location = new System.Drawing.Point(496, 16);
+            this.comBoxDatabase.Name = "comBoxDatabase";
+            this.comBoxDatabase.Size = new System.Drawing.Size(121, 20);
+            this.comBoxDatabase.TabIndex = 18;
+            this.comBoxDatabase.DropDown += new System.EventHandler(this.comBoxDatabase_DropDown);
+            this.comBoxDatabase.TextUpdate += new System.EventHandler(this.comBoxDatabase_TextUpdate);
+            this.comBoxDatabase.DropDownClosed += new System.EventHandler(this.comBoxDatabase_DropDownClosed);
+            // 
+            // comBoxHost
+            // 
+            this.comBoxHost.FormattingEnabled = true;
+            this.comBoxHost.Location = new System.Drawing.Point(369, 16);
+            this.comBoxHost.Name = "comBoxHost";
+            this.comBoxHost.Size = new System.Drawing.Size(121, 20);
+            this.comBoxHost.TabIndex = 17;
+            this.comBoxHost.DropDown += new System.EventHandler(this.comBoxHost_DropDown);
+            this.comBoxHost.TextUpdate += new System.EventHandler(this.comBoxHost_TextUpdate);
+            this.comBoxHost.DropDownClosed += new System.EventHandler(this.comBoxHost_DropDownClosed);
             // 
             // chkboxPort
             // 
@@ -450,7 +463,8 @@
         private System.Windows.Forms.Button btn_CommonlyUsedSQL_New;
         private System.Windows.Forms.Button btn_CommonlyUsedSQL_Insert;
         private System.Windows.Forms.Button btn_CommonlyUsedSQL_Settings;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comBoxHost;
+        private System.Windows.Forms.ComboBox comBoxDatabase;
     }
 }
 
