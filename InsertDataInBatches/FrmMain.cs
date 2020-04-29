@@ -16,6 +16,15 @@ namespace InsertDataInBatches
 {
     public partial class FrmMain : Form
     {
+        /*
+         * 新增快捷插入步骤：
+         * 1.新增匹配正则
+         * 2.btnStartInserting_Click中添加 判断是否有匹配项 有调用替换方法
+         * 3.新增替换方法
+         */
+
+
+
         /* 先把输入的SQL按照执行次数转成数组
          * 对数组中的每个元素判断是否有指定格式的字符串
          * -有就执行相应的逻辑操作：替换，累加等
@@ -36,6 +45,8 @@ namespace InsertDataInBatches
         Regex rgGetRandomRange = new Regex("(?<={{\\[)(\\d+)(\\.\\d+)?-(\\d+)(\\.\\d+)?(?=]}})");//{{[1.22-22]}}取[]中的随机范围
 
         Regex rgGetNewID = new Regex("{{newid}}");//{{newid}}取整块
+
+        Regex rgGetSameNewID = new Regex("{{samenewid}}");//{{samenewid}}取整块
 
         /* 此块同rgGetDateTimeAll
          * Regex rgGetDateTimeDayAll = new Regex("{{timed(\\+|\\-)\\d:\\d{4}-(0?[1-9]|1[0-2])-((0?[1-9])|((1|2)[0-9])|30|31) (((0|1)[0-9])|(2[0-3])):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])}}");//{{timed+-7:2020-03-29 20:00:00}}取整块 日
@@ -279,7 +290,7 @@ namespace InsertDataInBatches
             if (string.IsNullOrEmpty(comBoxDatabase.Text))
             {
                 //RefreshConnectionHistory();
-                RefreshComBoxFuzzySearch("MySQL_DB_"+comBoxHost.Text, comBoxDatabase);
+                RefreshComBoxFuzzySearch("MySQL_DB_" + comBoxHost.Text, comBoxDatabase);
                 //自动弹出下拉框
                 comBoxDatabase.DroppedDown = true;
                 //保持鼠标指针原来状态，有时候鼠标指针会被下拉框覆盖，所以要进行一次设置。
@@ -748,6 +759,19 @@ namespace InsertDataInBatches
                     }
                     #endregion
 
+                    #region 判断是否有匹配{{samenewid}}
+                    //判断是否有匹配{{samenewid}}
+                    if (rgGetSameNewID.IsMatch(sqlQuerys[0]))
+                    {
+                        //MessageBox.Show("true");
+                        getSameNewID(sqlQuerys);
+                    }
+                    else
+                    {
+                        MessageBox.Show("没有匹配项{{samenewid}}");
+                    }
+                    #endregion
+
                     #region 判断是否有匹配{{time(d|h|m|s)(+|-)7:datetime}}
                     //判断是否有匹配{{time(d|h|m|s)(+|-)7:datetime}}
                     if (rgGetDateTimeAll.IsMatch(sqlQuerys[0]))
@@ -781,10 +805,26 @@ namespace InsertDataInBatches
                             if (result > 0)
                             {
                                 richtxtboxResult.Text += "\n插入成功，插入结束";
+
+                                //滚动到底部
+                                //让文本框获取焦点 
+                                richtxtboxResult.Focus();
+                                //设置光标的位置到文本尾 
+                                richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
+                                //滚动到控件光标处 
+                                richtxtboxResult.ScrollToCaret();
                             }
                             else
                             {
                                 richtxtboxResult.Text += "\n插入失败，插入结束";
+
+                                //滚动到底部
+                                //让文本框获取焦点 
+                                richtxtboxResult.Focus();
+                                //设置光标的位置到文本尾 
+                                richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
+                                //滚动到控件光标处 
+                                richtxtboxResult.ScrollToCaret();
                             }
                         }
                         catch (Exception ex)
@@ -803,10 +843,26 @@ namespace InsertDataInBatches
                             if (result > 0)
                             {
                                 richtxtboxResult.Text += "\n插入成功，插入结束";
+
+                                //滚动到底部
+                                //让文本框获取焦点 
+                                richtxtboxResult.Focus();
+                                //设置光标的位置到文本尾 
+                                richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
+                                //滚动到控件光标处 
+                                richtxtboxResult.ScrollToCaret();
                             }
                             else
                             {
                                 richtxtboxResult.Text += "\n插入失败，插入结束";
+
+                                //滚动到底部
+                                //让文本框获取焦点 
+                                richtxtboxResult.Focus();
+                                //设置光标的位置到文本尾 
+                                richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
+                                //滚动到控件光标处 
+                                richtxtboxResult.ScrollToCaret();
                             }
                         }
                         catch (Exception ex)
@@ -916,7 +972,30 @@ namespace InsertDataInBatches
                     sourceSQL[i] = rgGetNewID.Replace(sourceSQL[i], Guid.NewGuid().ToString(), 1);
                 }
             }
+            return sourceSQL;
+        }
+        #endregion
 
+        #region 将{{samenewid}}替换为uuid
+        /// <summary>
+        /// 将{{samenewid}}替换为uuid
+        /// </summary>
+        /// <param name="sourceSQL">原始SQL数组</param>
+        /// <returns>替换完的数组</returns>
+        private string[] getSameNewID(string[] sourceSQL)
+        {
+            Match matchrgGetSameNewID;
+            while (rgGetSameNewID.Match(sourceSQL[0]).Success == true)
+            {
+                for (int i = 0; i < sourceSQL.Length; i++)
+                {
+                    matchrgGetSameNewID = rgGetSameNewID.Match(sourceSQL[i]);//{{samenewid}}取整块
+                    //用这条，替换的时候 如果有相同匹配对象，会全部替换成同一个值
+                    sourceSQL[i] = sourceSQL[i].Replace(matchrgGetSameNewID.Groups[0].Value, Guid.NewGuid().ToString());
+                    //用这条，仅替换第一个匹配对象
+                    //sourceSQL[i] = rgGetSameNewID.Replace(sourceSQL[i], Guid.NewGuid().ToString(), 1);
+                }
+            }
             return sourceSQL;
         }
         #endregion
