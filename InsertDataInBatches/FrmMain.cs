@@ -39,7 +39,7 @@ namespace InsertDataInBatches
         //MySqlCommand mysqlcmd = new MySqlCommand();
 
         Regex rgGetID = new Regex("{{id:\\d\\d*}}");//{{id:7}}取整块
-        Regex rgGetNum = new Regex("(?<={{id:).*?(?=}})");//{{id:7}}取冒号后的数字
+        Regex rgGetNum = new Regex("(?<={{id:)\\d*?(?=}})");//{{id:7}}取冒号后的数字
 
         Regex rgGetRandom = new Regex("{{\\[(\\d+)(\\.\\d+)?-(\\d+)(\\.\\d+)?]}}");//{{[1.22-22]}}取整块
         Regex rgGetRandomRange = new Regex("(?<={{\\[)(\\d+)(\\.\\d+)?-(\\d+)(\\.\\d+)?(?=]}})");//{{[1.22-22]}}取[]中的随机范围
@@ -720,6 +720,8 @@ namespace InsertDataInBatches
                         sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
                     }
 
+                    string noMatch = "";
+
                     #region 判断是否有匹配{{id:x}}
                     //判断是否有匹配{{id:x}}
                     if (rgGetID.IsMatch(sqlQuerys[0]))
@@ -729,7 +731,8 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        MessageBox.Show("没有匹配项{{id:x}}");
+                        //MessageBox.Show("没有匹配项{{id:x}}");
+                        noMatch += "没有匹配项{{id:x}}\n";
                     }
                     #endregion
 
@@ -742,7 +745,8 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        MessageBox.Show("没有匹配项{{[x-y]}}");
+                        //MessageBox.Show("没有匹配项{{[x-y]}}");
+                        noMatch += "没有匹配项{{[x-y]}}\n";
                     }
                     #endregion
 
@@ -755,7 +759,8 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        MessageBox.Show("没有匹配项{{newid}}");
+                        //MessageBox.Show("没有匹配项{{newid}}");
+                        noMatch += "没有匹配项{{newid}}\n";
                     }
                     #endregion
 
@@ -768,7 +773,8 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        MessageBox.Show("没有匹配项{{samenewid}}");
+                        //MessageBox.Show("没有匹配项{{samenewid}}");
+                        noMatch += "没有匹配项{{samenewid}}\n";
                     }
                     #endregion
 
@@ -781,19 +787,22 @@ namespace InsertDataInBatches
                     }
                     else
                     {
-                        MessageBox.Show("没有匹配项{{time(d|h|m|s)(+|-)7:datetime}}");
+                        //MessageBox.Show("没有匹配项{{time(d|h|m|s)(+|-)7:datetime}}");
+                        noMatch += "没有匹配项{{time(d|h|m|s)(+|-)7:datetime}}\n";
                     }
                     #endregion
 
-
-
-                    //遍历数组
-                    string q = ""; ;
-                    foreach (var item in sqlQuerys)
+                    if (DialogResult.OK == MessageBox.Show(noMatch + "\n是否预览全部SQL？", "提示", MessageBoxButtons.OKCancel))
                     {
-                        q += item + "\n";
+                        //MessageBox.Show("OK");
+                        //遍历数组
+                        string q = ""; ;
+                        foreach (var item in sqlQuerys)
+                        {
+                            q += item + "\n";
+                        }
+                        MessageBox.Show(q);
                     }
-                    MessageBox.Show(q);
 
                     #region 使用MSSQL
                     if (radiobtnMSSQL.Checked == true)
