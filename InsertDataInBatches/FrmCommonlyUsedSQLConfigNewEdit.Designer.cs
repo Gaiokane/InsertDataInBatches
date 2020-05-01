@@ -40,6 +40,7 @@
             // 
             // btn_Cancel
             // 
+            this.btn_Cancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_Cancel.Location = new System.Drawing.Point(199, 126);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Size = new System.Drawing.Size(75, 23);
@@ -50,6 +51,7 @@
             // 
             // btn_Save
             // 
+            this.btn_Save.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btn_Save.Location = new System.Drawing.Point(118, 126);
             this.btn_Save.Name = "btn_Save";
             this.btn_Save.Size = new System.Drawing.Size(75, 23);
@@ -60,6 +62,8 @@
             // 
             // txtbox_Name
             // 
+            this.txtbox_Name.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtbox_Name.Location = new System.Drawing.Point(101, 39);
             this.txtbox_Name.Name = "txtbox_Name";
             this.txtbox_Name.Size = new System.Drawing.Size(280, 21);
@@ -67,6 +71,8 @@
             // 
             // txtbox_Code
             // 
+            this.txtbox_Code.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtbox_Code.Location = new System.Drawing.Point(101, 12);
             this.txtbox_Code.Name = "txtbox_Code";
             this.txtbox_Code.Size = new System.Drawing.Size(280, 21);
@@ -101,6 +107,9 @@
             // 
             // richtxtbox_Value
             // 
+            this.richtxtbox_Value.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richtxtbox_Value.Location = new System.Drawing.Point(101, 66);
             this.richtxtbox_Value.Name = "richtxtbox_Value";
             this.richtxtbox_Value.Size = new System.Drawing.Size(280, 54);

@@ -250,9 +250,12 @@
             // 
             // richtxtboxInsertSQL
             // 
+            this.richtxtboxInsertSQL.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richtxtboxInsertSQL.Location = new System.Drawing.Point(12, 113);
             this.richtxtboxInsertSQL.Name = "richtxtboxInsertSQL";
-            this.richtxtboxInsertSQL.Size = new System.Drawing.Size(732, 100);
+            this.richtxtboxInsertSQL.Size = new System.Drawing.Size(732, 137);
             this.richtxtboxInsertSQL.TabIndex = 1;
             this.richtxtboxInsertSQL.Text = "";
             // 
@@ -267,14 +270,17 @@
             // 
             // richtxtboxResult
             // 
-            this.richtxtboxResult.Location = new System.Drawing.Point(12, 231);
+            this.richtxtboxResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richtxtboxResult.Location = new System.Drawing.Point(12, 268);
             this.richtxtboxResult.Name = "richtxtboxResult";
-            this.richtxtboxResult.Size = new System.Drawing.Size(732, 207);
+            this.richtxtboxResult.Size = new System.Drawing.Size(732, 170);
             this.richtxtboxResult.TabIndex = 1;
             this.richtxtboxResult.Text = "";
             // 
             // labNumberOfExecutions
             // 
+            this.labNumberOfExecutions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labNumberOfExecutions.AutoSize = true;
             this.labNumberOfExecutions.Location = new System.Drawing.Point(750, 113);
             this.labNumberOfExecutions.Name = "labNumberOfExecutions";
@@ -284,6 +290,7 @@
             // 
             // txtboxNumberOfExecutions
             // 
+            this.txtboxNumberOfExecutions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtboxNumberOfExecutions.Location = new System.Drawing.Point(750, 128);
             this.txtboxNumberOfExecutions.Name = "txtboxNumberOfExecutions";
             this.txtboxNumberOfExecutions.Size = new System.Drawing.Size(100, 21);
@@ -291,6 +298,7 @@
             // 
             // btnStartInserting
             // 
+            this.btnStartInserting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartInserting.Location = new System.Drawing.Point(750, 155);
             this.btnStartInserting.Name = "btnStartInserting";
             this.btnStartInserting.Size = new System.Drawing.Size(75, 23);
@@ -301,8 +309,9 @@
             // 
             // labResult
             // 
+            this.labResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labResult.AutoSize = true;
-            this.labResult.Location = new System.Drawing.Point(10, 216);
+            this.labResult.Location = new System.Drawing.Point(12, 253);
             this.labResult.Name = "labResult";
             this.labResult.Size = new System.Drawing.Size(65, 12);
             this.labResult.TabIndex = 6;
@@ -310,6 +319,7 @@
             // 
             // groupbox_QuickInsert
             // 
+            this.groupbox_QuickInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupbox_QuickInsert.Controls.Add(this.btn_QuickInsert_Insert);
             this.groupbox_QuickInsert.Controls.Add(this.btn_QuickInsert_Settings);
             this.groupbox_QuickInsert.Controls.Add(this.cmbox_QuickInsert_List);
@@ -351,6 +361,7 @@
             // 
             // groupbox_CommonlyUsedSQL
             // 
+            this.groupbox_CommonlyUsedSQL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupbox_CommonlyUsedSQL.Controls.Add(this.btn_CommonlyUsedSQL_Settings);
             this.groupbox_CommonlyUsedSQL.Controls.Add(this.btn_CommonlyUsedSQL_New);
             this.groupbox_CommonlyUsedSQL.Controls.Add(this.btn_CommonlyUsedSQL_Insert);

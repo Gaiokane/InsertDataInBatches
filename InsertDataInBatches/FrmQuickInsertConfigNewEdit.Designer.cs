@@ -60,6 +60,8 @@
             // 
             // txtbox_Value
             // 
+            this.txtbox_Value.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtbox_Value.Location = new System.Drawing.Point(131, 66);
             this.txtbox_Value.Name = "txtbox_Value";
             this.txtbox_Value.Size = new System.Drawing.Size(250, 21);
@@ -67,6 +69,8 @@
             // 
             // txtbox_Name
             // 
+            this.txtbox_Name.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtbox_Name.Location = new System.Drawing.Point(131, 39);
             this.txtbox_Name.Name = "txtbox_Name";
             this.txtbox_Name.Size = new System.Drawing.Size(250, 21);
@@ -74,6 +78,8 @@
             // 
             // txtbox_Code
             // 
+            this.txtbox_Code.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtbox_Code.Location = new System.Drawing.Point(131, 12);
             this.txtbox_Code.Name = "txtbox_Code";
             this.txtbox_Code.Size = new System.Drawing.Size(250, 21);
