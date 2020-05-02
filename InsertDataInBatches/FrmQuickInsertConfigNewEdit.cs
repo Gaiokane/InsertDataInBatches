@@ -183,5 +183,25 @@ namespace InsertDataInBatches
             this.DialogResult = DialogResult.OK;
         }
         #endregion
+
+        #region 按ESC关闭窗体
+        //重写ProcessCmdKey的方法
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
+        {
+            int WM_KEYDOWN = 256;
+            int WM_SYSKEYDOWN = 260;
+
+            if (msg.Msg == WM_KEYDOWN | msg.Msg == WM_SYSKEYDOWN)
+            {
+                switch (keyData)
+                {
+                    case Keys.Escape:
+                        this.Close();//esc关闭窗体
+                        break;
+                }
+            }
+            return false;
+        }
+        #endregion
     }
 }
