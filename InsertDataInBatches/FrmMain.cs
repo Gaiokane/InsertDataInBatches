@@ -27,8 +27,8 @@ namespace InsertDataInBatches
          * 待优化/修改/新增部分：
          * 1.主窗体下拉框文字大小
          * 2.常用SQL点击插入（误操作）后撤销功能，当前只有修改后能进行撤销
-         * 3.增加提示 是否确定执行（预览SQL发现有错可以取消）
-         * 4.多条sql以;结尾时，保存为常用SQL后，只能获取到第一条
+         * 3.多条sql以;结尾时，保存为常用SQL后，只能获取到第一条
+         * 4.
          */
 
         /* 
@@ -811,82 +811,90 @@ namespace InsertDataInBatches
                         MessageBox.Show(q);
                     }
 
-                    #region 使用MSSQL
-                    if (radiobtnMSSQL.Checked == true)
+                    //二次确认 预览SQL发现有错可以取消
+                    if (DialogResult.OK == MessageBox.Show("是否执行？", "提示", MessageBoxButtons.OKCancel))
                     {
-                        try
+                        #region 使用MSSQL
+                        if (radiobtnMSSQL.Checked == true)
                         {
-                            richtxtboxResult.Text = "";
-                            int result = getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn);
-                            if (result > 0)
+                            try
                             {
-                                richtxtboxResult.Text += "\n插入成功，插入结束";
+                                richtxtboxResult.Text = "";
+                                int result = getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn);
+                                if (result > 0)
+                                {
+                                    richtxtboxResult.Text += "\n插入成功，插入结束";
 
-                                //滚动到底部
-                                //让文本框获取焦点 
-                                richtxtboxResult.Focus();
-                                //设置光标的位置到文本尾 
-                                richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
-                                //滚动到控件光标处 
-                                richtxtboxResult.ScrollToCaret();
+                                    //滚动到底部
+                                    //让文本框获取焦点 
+                                    richtxtboxResult.Focus();
+                                    //设置光标的位置到文本尾 
+                                    richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
+                                    //滚动到控件光标处 
+                                    richtxtboxResult.ScrollToCaret();
+                                }
+                                else
+                                {
+                                    richtxtboxResult.Text += "\n插入失败，插入结束";
+
+                                    //滚动到底部
+                                    //让文本框获取焦点 
+                                    richtxtboxResult.Focus();
+                                    //设置光标的位置到文本尾 
+                                    richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
+                                    //滚动到控件光标处 
+                                    richtxtboxResult.ScrollToCaret();
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                richtxtboxResult.Text += "\n插入失败，插入结束";
-
-                                //滚动到底部
-                                //让文本框获取焦点 
-                                richtxtboxResult.Focus();
-                                //设置光标的位置到文本尾 
-                                richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
-                                //滚动到控件光标处 
-                                richtxtboxResult.ScrollToCaret();
+                                MessageBox.Show(ex.Message);
                             }
                         }
-                        catch (Exception ex)
+                        #endregion
+                        #region 使用MYSQL
+                        if (radiobtnMYSQL.Checked == true)
                         {
-                            MessageBox.Show(ex.Message);
+                            try
+                            {
+                                richtxtboxResult.Text = "";
+                                int result = getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn);
+                                if (result > 0)
+                                {
+                                    richtxtboxResult.Text += "\n插入成功，插入结束";
+
+                                    //滚动到底部
+                                    //让文本框获取焦点 
+                                    richtxtboxResult.Focus();
+                                    //设置光标的位置到文本尾 
+                                    richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
+                                    //滚动到控件光标处 
+                                    richtxtboxResult.ScrollToCaret();
+                                }
+                                else
+                                {
+                                    richtxtboxResult.Text += "\n插入失败，插入结束";
+
+                                    //滚动到底部
+                                    //让文本框获取焦点 
+                                    richtxtboxResult.Focus();
+                                    //设置光标的位置到文本尾 
+                                    richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
+                                    //滚动到控件光标处 
+                                    richtxtboxResult.ScrollToCaret();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
                         }
+                        #endregion
                     }
-                    #endregion
-                    #region 使用MYSQL
-                    if (radiobtnMYSQL.Checked == true)
+                    else
                     {
-                        try
-                        {
-                            richtxtboxResult.Text = "";
-                            int result = getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn);
-                            if (result > 0)
-                            {
-                                richtxtboxResult.Text += "\n插入成功，插入结束";
-
-                                //滚动到底部
-                                //让文本框获取焦点 
-                                richtxtboxResult.Focus();
-                                //设置光标的位置到文本尾 
-                                richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
-                                //滚动到控件光标处 
-                                richtxtboxResult.ScrollToCaret();
-                            }
-                            else
-                            {
-                                richtxtboxResult.Text += "\n插入失败，插入结束";
-
-                                //滚动到底部
-                                //让文本框获取焦点 
-                                richtxtboxResult.Focus();
-                                //设置光标的位置到文本尾 
-                                richtxtboxResult.Select(richtxtboxResult.TextLength, 0);
-                                //滚动到控件光标处 
-                                richtxtboxResult.ScrollToCaret();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message);
-                        }
+                        richtxtboxResult.Text = "取消插入！";
                     }
-                    #endregion
                 }
             }
         }
