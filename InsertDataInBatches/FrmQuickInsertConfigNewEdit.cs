@@ -25,6 +25,7 @@ namespace InsertDataInBatches
         {
             if (type == 0)//新增
             {
+                code = "QuickInsert_";
                 txtbox_Code.Text = code;
                 txtbox_Name.Text = name;
                 txtbox_Value.Text = value;

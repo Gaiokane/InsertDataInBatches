@@ -25,6 +25,7 @@ namespace InsertDataInBatches
         {
             if (type == 0)//新增
             {
+                code = "CommonlyUsedSQL_";
                 txtbox_Code.Text = code;
                 txtbox_Name.Text = name;
                 richtxtbox_Value.Text = value;
