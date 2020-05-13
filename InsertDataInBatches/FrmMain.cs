@@ -799,20 +799,21 @@ namespace InsertDataInBatches
                     }
                     #endregion
 
+                    //遍历数组 并复制到剪切板
+                    string q = "";
+                    foreach (var item in sqlQuerys)
+                    {
+                        q += item + "\n";
+                    }
+                    Clipboard.SetText(q);
+
                     if (DialogResult.OK == MessageBox.Show(noMatch + "\n是否预览全部SQL？", "提示", MessageBoxButtons.OKCancel))
                     {
-                        //MessageBox.Show("OK");
-                        //遍历数组
-                        string q = ""; ;
-                        foreach (var item in sqlQuerys)
-                        {
-                            q += item + "\n";
-                        }
                         MessageBox.Show(q);
                     }
 
                     //二次确认 预览SQL发现有错可以取消
-                    if (DialogResult.OK == MessageBox.Show("是否执行？", "提示", MessageBoxButtons.OKCancel))
+                    if (DialogResult.OK == MessageBox.Show("SQL已复制到剪切板\n"+"是否执行？", "提示", MessageBoxButtons.OKCancel))
                     {
                         #region 使用MSSQL
                         if (radiobtnMSSQL.Checked == true)
