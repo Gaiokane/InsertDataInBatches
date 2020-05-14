@@ -27,8 +27,9 @@ namespace InsertDataInBatches
          * 待优化/修改/新增部分：
          * 1.主窗体下拉框文字大小
          * 2.常用SQL点击插入（误操作）后撤销功能，当前只有修改后能进行撤销
-         * 3.多条sql以;结尾时，保存为常用SQL后，只能获取到第一条（常用SQL，取值时，判断以;分割后数组长度，大于默认长度就把剩余的都拼一起）
-         * 4.增加连接记录（数据库地址、数据库等）维护页面
+         * 3.增加连接记录（数据库地址、数据库等）维护页面
+         * 4.快捷插入配置列表中加入使用说明
+         * 5.
          */
 
         /* 
@@ -813,7 +814,7 @@ namespace InsertDataInBatches
                     }
 
                     //二次确认 预览SQL发现有错可以取消
-                    if (DialogResult.OK == MessageBox.Show("SQL已复制到剪切板\n"+"是否执行？", "提示", MessageBoxButtons.OKCancel))
+                    if (DialogResult.OK == MessageBox.Show("SQL已复制到剪切板\n" + "是否执行？", "提示", MessageBoxButtons.OKCancel))
                     {
                         #region 使用MSSQL
                         if (radiobtnMSSQL.Checked == true)
@@ -1419,7 +1420,38 @@ namespace InsertDataInBatches
                     string[] CommonlyUsedSQLKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
                     if (cmbox_CommonlyUsedSQL_List.SelectedItem.ToString() == CommonlyUsedSQLKeyValue[0])
                     {
+                        /*//多条sql以;结尾时，只能获取到第一条，换方法判断，如下
                         string str = CommonlyUsedSQLKeyValue[1];
+                        richtxtboxInsertSQL.Text = str;
+                        richtxtboxInsertSQL.SelectionStart = richtxtboxInsertSQL.Text.Length;
+                        richtxtboxInsertSQL.Focus();
+                        */
+
+                        //数组转list，去除元素中结尾是空的元素
+                        List<string> list = CommonlyUsedSQLKeyValue.ToList();
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            if (string.IsNullOrEmpty(list[list.Count - 1]))
+                            {
+                                list.RemoveAt(list.Count - 1);
+                            }
+                        }
+                        CommonlyUsedSQLKeyValue = list.ToArray();
+
+                        //数组长度>2说明不止一条sql，以;拼接多条sql
+                        string str = "";
+                        if (CommonlyUsedSQLKeyValue.Length > 2)
+                        {
+                            for (int i = 0; i < CommonlyUsedSQLKeyValue.Length - 1; i++)
+                            {
+                                str += CommonlyUsedSQLKeyValue[i + 1] + ";";
+                            }
+                        }
+                        else
+                        {
+                            str = CommonlyUsedSQLKeyValue[1];
+                        }
+
                         richtxtboxInsertSQL.Text = str;
                         richtxtboxInsertSQL.SelectionStart = richtxtboxInsertSQL.Text.Length;
                         richtxtboxInsertSQL.Focus();

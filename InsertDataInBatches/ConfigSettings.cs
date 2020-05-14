@@ -366,6 +366,16 @@ namespace InsertDataInBatches
             string[] result = { };
             string str = RWConfig.GetappSettingsValue(CommonlyUsedSQLCode, ConfigPath);
             result = str.Split(';');
+            //数组转list，去除元素中结尾是空的元素
+            List<string> list = result.ToList();
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (string.IsNullOrEmpty(list[list.Count - 1]))
+                {
+                    list.RemoveAt(list.Count - 1);
+                }
+            }
+            result = list.ToArray();
             return result;
         }
         #endregion

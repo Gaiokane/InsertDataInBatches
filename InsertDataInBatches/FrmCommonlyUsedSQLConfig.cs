@@ -103,7 +103,22 @@ namespace InsertDataInBatches
                     int index = dataGridView1.Rows.Add();
                     dataGridView1.Rows[index].Cells["CommonlyUsedSQLCode"].Value = item;
                     dataGridView1.Rows[index].Cells["CommonlyUsedSQLName"].Value = str[0];
-                    dataGridView1.Rows[index].Cells["CommonlyUsedSQLValue"].Value = str[1];
+                    //多条sql以;结尾时，只能获取到第一条，换方法判断，如下下行
+                    //dataGridView1.Rows[index].Cells["CommonlyUsedSQLValue"].Value = str[1];
+                    //数组长度>2说明不止一条sql，以;拼接多条sql
+                    string cache = "";
+                    if (str.Length > 2)
+                    {
+                        for (int i = 0; i < str.Length - 1; i++)
+                        {
+                            cache += str[i+1]+";";
+                        }
+                    }
+                    else
+                    {
+                        cache = str[1];
+                    }
+                    dataGridView1.Rows[index].Cells["CommonlyUsedSQLValue"].Value = cache;
                 }
             }
             catch (Exception ex)
