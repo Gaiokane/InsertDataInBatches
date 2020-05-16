@@ -36,24 +36,26 @@
             this.lab_Value = new System.Windows.Forms.Label();
             this.lab_Name = new System.Windows.Forms.Label();
             this.lab_Code = new System.Windows.Forms.Label();
+            this.richtxtbox_Instruction = new System.Windows.Forms.RichTextBox();
+            this.lab_Instruction = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btn_Cancel
             // 
-            this.btn_Cancel.Location = new System.Drawing.Point(199, 93);
+            this.btn_Cancel.Location = new System.Drawing.Point(199, 153);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.btn_Cancel.TabIndex = 7;
+            this.btn_Cancel.TabIndex = 9;
             this.btn_Cancel.Text = "取消";
             this.btn_Cancel.UseVisualStyleBackColor = true;
             this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
             // 
             // btn_Save
             // 
-            this.btn_Save.Location = new System.Drawing.Point(118, 93);
+            this.btn_Save.Location = new System.Drawing.Point(118, 153);
             this.btn_Save.Name = "btn_Save";
             this.btn_Save.Size = new System.Drawing.Size(75, 23);
-            this.btn_Save.TabIndex = 6;
+            this.btn_Save.TabIndex = 8;
             this.btn_Save.Text = "保存";
             this.btn_Save.UseVisualStyleBackColor = true;
             this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
@@ -112,11 +114,32 @@
             this.lab_Code.TabIndex = 0;
             this.lab_Code.Text = "快捷插入模块编码：";
             // 
+            // richtxtbox_Instruction
+            // 
+            this.richtxtbox_Instruction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richtxtbox_Instruction.Location = new System.Drawing.Point(131, 93);
+            this.richtxtbox_Instruction.Name = "richtxtbox_Instruction";
+            this.richtxtbox_Instruction.Size = new System.Drawing.Size(250, 54);
+            this.richtxtbox_Instruction.TabIndex = 7;
+            this.richtxtbox_Instruction.Text = "";
+            // 
+            // lab_Instruction
+            // 
+            this.lab_Instruction.AutoSize = true;
+            this.lab_Instruction.Location = new System.Drawing.Point(12, 96);
+            this.lab_Instruction.Name = "lab_Instruction";
+            this.lab_Instruction.Size = new System.Drawing.Size(113, 12);
+            this.lab_Instruction.TabIndex = 6;
+            this.lab_Instruction.Text = "快捷插入使用说明：";
+            // 
             // FrmQuickInsertConfigNewEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(393, 128);
+            this.ClientSize = new System.Drawing.Size(393, 188);
+            this.Controls.Add(this.lab_Instruction);
+            this.Controls.Add(this.richtxtbox_Instruction);
             this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.txtbox_Value);
@@ -145,5 +168,7 @@
         private System.Windows.Forms.Label lab_Value;
         private System.Windows.Forms.Label lab_Name;
         private System.Windows.Forms.Label lab_Code;
+        private System.Windows.Forms.RichTextBox richtxtbox_Instruction;
+        private System.Windows.Forms.Label lab_Instruction;
     }
 }

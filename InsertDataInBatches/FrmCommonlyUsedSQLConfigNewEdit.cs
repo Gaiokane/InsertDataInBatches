@@ -108,18 +108,21 @@ namespace InsertDataInBatches
                     if (string.IsNullOrEmpty(txtbox_Code.Text) || string.IsNullOrWhiteSpace(txtbox_Code.Text))
                     {
                         MessageBox.Show("常用SQL编码不能为空！");
+                        txtbox_Code.Focus();
                     }
                     else
                     {
                         if (string.IsNullOrEmpty(txtbox_Name.Text) || string.IsNullOrWhiteSpace(txtbox_Name.Text))
                         {
                             MessageBox.Show("常用SQL名称不能为空！");
+                            txtbox_Name.Focus();
                         }
                         else
                         {
                             if (string.IsNullOrEmpty(richtxtbox_Value.Text) || string.IsNullOrWhiteSpace(richtxtbox_Value.Text))
                             {
                                 MessageBox.Show("常用SQL语句不能为空！");
+                                richtxtbox_Value.Focus();
                             }
                             else
                             {

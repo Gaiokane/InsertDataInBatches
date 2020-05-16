@@ -9,7 +9,7 @@ namespace InsertDataInBatches
 {
     class ConfigSettings
     {
-        public static string QuickInsert, QuickInsert_IDIncrement, QuickInsert_RandomNum, QuickInsert_NewID, QuickInsert_NewDateTime;
+        public static string QuickInsert, QuickInsert_IDIncrement, QuickInsert_RandomNum, QuickInsert_NewID, QuickInsert_NewDateTime, QuickInsert_SameNewID;
         public static string CommonlyUsedSQL, CommonlyUsedSQL_Default;
         public static string ConfigPath = "./InsertDataInBatches.exe";
 
@@ -24,6 +24,7 @@ namespace InsertDataInBatches
             QuickInsert_RandomNum = RWConfig.GetappSettingsValue("QuickInsert_RandomNum", ConfigPath);
             QuickInsert_NewID = RWConfig.GetappSettingsValue("QuickInsert_NewID", ConfigPath);
             QuickInsert_NewDateTime = RWConfig.GetappSettingsValue("QuickInsert_NewDateTime", ConfigPath);
+            QuickInsert_SameNewID = RWConfig.GetappSettingsValue("QuickInsert_SameNewID", ConfigPath);
         }
         #endregion
 
@@ -35,23 +36,27 @@ namespace InsertDataInBatches
         {
             if (string.IsNullOrEmpty(QuickInsert))
             {
-                RWConfig.SetappSettingsValue("QuickInsert", "QuickInsert_IDIncrement;QuickInsert_RandomNum;QuickInsert_NewID;QuickInsert_NewDateTime", ConfigPath);
+                RWConfig.SetappSettingsValue("QuickInsert", "QuickInsert_IDIncrement;QuickInsert_RandomNum;QuickInsert_NewID;QuickInsert_NewDateTime;QuickInsert_SameNewID", ConfigPath);
             }
             if (string.IsNullOrEmpty(QuickInsert_IDIncrement))
             {
-                RWConfig.SetappSettingsValue("QuickInsert_IDIncrement", "指定id递增;{{id:x}}", ConfigPath);
+                RWConfig.SetappSettingsValue("QuickInsert_IDIncrement", "指定id递增;{{id:x}};x替换为开始的序号，从x开始生成（包含x）", ConfigPath);
             }
             if (string.IsNullOrEmpty(QuickInsert_RandomNum))
             {
-                RWConfig.SetappSettingsValue("QuickInsert_RandomNum", "指定范围随机数;{{[1-2]}}", ConfigPath);
+                RWConfig.SetappSettingsValue("QuickInsert_RandomNum", "指定范围随机数;{{[1-2]}};-左边开始&#xA;-右边结束&#xA;不带小数点生成的随机数也不带", ConfigPath);
             }
             if (string.IsNullOrEmpty(QuickInsert_NewID))
             {
-                RWConfig.SetappSettingsValue("QuickInsert_NewID", "生成newid/uuid;{{newid}}", ConfigPath);
+                RWConfig.SetappSettingsValue("QuickInsert_NewID", "生成newid/uuid;{{newid}};有匹配项就替换为新uuid", ConfigPath);
             }
             if (string.IsNullOrEmpty(QuickInsert_NewDateTime))
             {
-                RWConfig.SetappSettingsValue("QuickInsert_NewDateTime", "指定时间递增;{{timed+x:yyyy-MM-dd HH:mm:ss}}", ConfigPath);
+                RWConfig.SetappSettingsValue("QuickInsert_NewDateTime", "指定时间递增;{{timed+x:yyyy-MM-dd HH:mm:ss}};+左边为时间类型（d|h|m|s 对应 日|时|分|秒）&#xA;+右边为递增/递减值", ConfigPath);
+            }
+            if (string.IsNullOrEmpty(QuickInsert_SameNewID))
+            {
+                RWConfig.SetappSettingsValue("QuickInsert_SameNewID", "生成相同newid/uuid;{{samenewid}};一次执行多条sql，使用相同uuid", ConfigPath);
             }
         }
         #endregion
@@ -158,13 +163,13 @@ namespace InsertDataInBatches
         /// <param name="Name">快捷插入配置名称</param>
         /// <param name="Value">快捷插入配置值</param>
         /// <returns>string：新增成功/新增失败/新增项已存在，新增失败/报错信息</returns>
-        public static string setQuickInsertModelCodeNameValue(string Code, string Name, string Value)
+        public static string setQuickInsertModelCodeNameValue(string Code, string Name, string Value, string Instruction)
         {
             try
             {
-                if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Value))
+                if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Value) || string.IsNullOrEmpty(Instruction))
                 {
-                    return "快捷插入配置编码/名称/值不能为空！";
+                    return "快捷插入配置编码/名称/值/使用说明不能为空！";
                 }
                 else
                 {
@@ -187,7 +192,7 @@ namespace InsertDataInBatches
                     }
 
                     QuickInsert = RWConfig.GetappSettingsValue("QuickInsert", ConfigPath);
-                    RWConfig.SetappSettingsValue(Code, Name + ";" + Value, ConfigPath);
+                    RWConfig.SetappSettingsValue(Code, Name + ";" + Value + ";" + Instruction, ConfigPath);
                     RWConfig.SetappSettingsValue("QuickInsert", QuickInsert + ";" + Code, ConfigPath);
                     return "新增成功";
                 }
@@ -207,18 +212,18 @@ namespace InsertDataInBatches
         /// <param name="Name">快捷插入配置名称</param>
         /// <param name="Value">快捷插入配置值</param>
         /// <returns>string：修改成功/修改失败/报错信息</returns>
-        public static string editQuickInsertModelCodeNameValue(string Code, string Name, string Value)
+        public static string editQuickInsertModelCodeNameValue(string Code, string Name, string Value, string Instruction)
         {
             try
             {
-                if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Value))
+                if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Value) || string.IsNullOrEmpty(Instruction))
                 {
-                    return "快捷插入配置编码/名称/值不能为空！";
+                    return "快捷插入配置编码/名称/值/使用说明不能为空！";
                 }
                 else
                 {
 
-                    RWConfig.SetappSettingsValue(Code, Name + ";" + Value, ConfigPath);
+                    RWConfig.SetappSettingsValue(Code, Name + ";" + Value + ";" + Instruction, ConfigPath);
                     return "修改成功";
                 }
             }

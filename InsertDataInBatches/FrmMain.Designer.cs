@@ -62,6 +62,7 @@
             this.btn_CommonlyUsedSQL_New = new System.Windows.Forms.Button();
             this.btn_CommonlyUsedSQL_Insert = new System.Windows.Forms.Button();
             this.cmbox_CommonlyUsedSQL_List = new System.Windows.Forms.ComboBox();
+            this.btn_QuickInsert_Instruction = new System.Windows.Forms.Button();
             this.groupbox_DataBase.SuspendLayout();
             this.groupbox_QuickInsert.SuspendLayout();
             this.groupbox_CommonlyUsedSQL.SuspendLayout();
@@ -320,6 +321,7 @@
             // groupbox_QuickInsert
             // 
             this.groupbox_QuickInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupbox_QuickInsert.Controls.Add(this.btn_QuickInsert_Instruction);
             this.groupbox_QuickInsert.Controls.Add(this.btn_QuickInsert_Insert);
             this.groupbox_QuickInsert.Controls.Add(this.btn_QuickInsert_Settings);
             this.groupbox_QuickInsert.Controls.Add(this.cmbox_QuickInsert_List);
@@ -412,6 +414,16 @@
             this.cmbox_CommonlyUsedSQL_List.Size = new System.Drawing.Size(144, 20);
             this.cmbox_CommonlyUsedSQL_List.TabIndex = 0;
             // 
+            // btn_QuickInsert_Instruction
+            // 
+            this.btn_QuickInsert_Instruction.Location = new System.Drawing.Point(110, 47);
+            this.btn_QuickInsert_Instruction.Name = "btn_QuickInsert_Instruction";
+            this.btn_QuickInsert_Instruction.Size = new System.Drawing.Size(40, 23);
+            this.btn_QuickInsert_Instruction.TabIndex = 3;
+            this.btn_QuickInsert_Instruction.Text = "说明";
+            this.btn_QuickInsert_Instruction.UseVisualStyleBackColor = true;
+            this.btn_QuickInsert_Instruction.Click += new System.EventHandler(this.btn_QuickInsert_Instruction_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -476,6 +488,7 @@
         private System.Windows.Forms.Button btn_CommonlyUsedSQL_Settings;
         private System.Windows.Forms.ComboBox comBoxHost;
         private System.Windows.Forms.ComboBox comBoxDatabase;
+        private System.Windows.Forms.Button btn_QuickInsert_Instruction;
     }
 }
 

@@ -21,6 +21,7 @@ namespace InsertDataInBatches
          * 1.新增匹配正则
          * 2.btnStartInserting_Click中添加 判断是否有匹配项 有调用替换方法
          * 3.新增替换方法
+         * 4.ConfigSettings中getQuickInsertSettingsByappSettings/setDefaultQuickInsertSettingsIfIsNullOrEmptyByappSettings增加默认配置
          */
 
         /*
@@ -28,7 +29,7 @@ namespace InsertDataInBatches
          * 1.主窗体下拉框文字大小
          * 2.常用SQL点击插入（误操作）后撤销功能，当前只有修改后能进行撤销
          * 3.增加连接记录（数据库地址、数据库等）维护页面
-         * 4.快捷插入配置列表中加入使用说明
+         * 4.
          * 5.
          */
 
@@ -1496,6 +1497,29 @@ namespace InsertDataInBatches
             if (fcusc.ShowDialog() == DialogResult.OK)
             {
                 RefreshCommonlyUsedSQLCombox();
+            }
+        }
+        #endregion
+
+        #region 快捷插入配置说明按钮单击事件 弹窗显示所选快捷插入配置的使用说明
+        private void btn_QuickInsert_Instruction_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] QuickInsert = ConfigSettings.QuickInsert.Split(';');
+                foreach (var item in QuickInsert)
+                {
+                    string[] QuickInsertKeyValue = RWConfig.GetappSettingsValue(item, ConfigSettings.ConfigPath).Split(';');
+                    if (cmbox_QuickInsert_List.SelectedItem.ToString() == QuickInsertKeyValue[0])
+                    {
+                        string str = QuickInsertKeyValue[0] + "\n" + QuickInsertKeyValue[1] + "\n\n" + QuickInsertKeyValue[2];
+                        MessageBox.Show(str, "快捷插入使用说明", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion

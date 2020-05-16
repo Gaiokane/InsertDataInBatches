@@ -80,10 +80,12 @@ namespace InsertDataInBatches
             dataGridView1.Columns.Add("QuickInsertModelCode", "快捷插入模块编码");
             dataGridView1.Columns.Add("QuickInsertModelName", "快捷插入模块名称");
             dataGridView1.Columns.Add("QuickInsertModelValue", "快捷插入模块值");
+            dataGridView1.Columns.Add("QuickInsertModelInstruction", "快捷插入使用说明");
 
             dataGridView1.Columns["QuickInsertModelCode"].Width = 160;
             dataGridView1.Columns["QuickInsertModelName"].Width = 130;
             dataGridView1.Columns["QuickInsertModelValue"].Width = 200;
+            dataGridView1.Columns["QuickInsertModelInstruction"].Width = 200;
 
             RefreshDG();
         }
@@ -104,6 +106,7 @@ namespace InsertDataInBatches
                     dataGridView1.Rows[index].Cells["QuickInsertModelCode"].Value = item;
                     dataGridView1.Rows[index].Cells["QuickInsertModelName"].Value = str[0];
                     dataGridView1.Rows[index].Cells["QuickInsertModelValue"].Value = str[1];
+                    dataGridView1.Rows[index].Cells["QuickInsertModelInstruction"].Value = str[2];
                 }
 
                 //二维数组
@@ -205,6 +208,7 @@ namespace InsertDataInBatches
                     fqicne.code = dataGridView1.SelectedCells[0].Value.ToString();
                     fqicne.name = dataGridView1.SelectedCells[1].Value.ToString();
                     fqicne.value = dataGridView1.SelectedCells[2].Value.ToString();
+                    fqicne.instruction = dataGridView1.SelectedCells[3].Value.ToString();
                     //fqic.Show();
 
                     //接收FrmQuickInsertConfig返回的DialogResult，刷新右侧常用按钮功能Text
