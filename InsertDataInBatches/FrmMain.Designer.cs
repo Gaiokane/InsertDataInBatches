@@ -54,6 +54,7 @@
             this.btnStartInserting = new System.Windows.Forms.Button();
             this.labResult = new System.Windows.Forms.Label();
             this.groupbox_QuickInsert = new System.Windows.Forms.GroupBox();
+            this.btn_QuickInsert_Instruction = new System.Windows.Forms.Button();
             this.btn_QuickInsert_Insert = new System.Windows.Forms.Button();
             this.btn_QuickInsert_Settings = new System.Windows.Forms.Button();
             this.cmbox_QuickInsert_List = new System.Windows.Forms.ComboBox();
@@ -62,7 +63,6 @@
             this.btn_CommonlyUsedSQL_New = new System.Windows.Forms.Button();
             this.btn_CommonlyUsedSQL_Insert = new System.Windows.Forms.Button();
             this.cmbox_CommonlyUsedSQL_List = new System.Windows.Forms.ComboBox();
-            this.btn_QuickInsert_Instruction = new System.Windows.Forms.Button();
             this.groupbox_DataBase.SuspendLayout();
             this.groupbox_QuickInsert.SuspendLayout();
             this.groupbox_CommonlyUsedSQL.SuspendLayout();
@@ -332,6 +332,16 @@
             this.groupbox_QuickInsert.TabStop = false;
             this.groupbox_QuickInsert.Text = "快捷插入";
             // 
+            // btn_QuickInsert_Instruction
+            // 
+            this.btn_QuickInsert_Instruction.Location = new System.Drawing.Point(110, 47);
+            this.btn_QuickInsert_Instruction.Name = "btn_QuickInsert_Instruction";
+            this.btn_QuickInsert_Instruction.Size = new System.Drawing.Size(40, 23);
+            this.btn_QuickInsert_Instruction.TabIndex = 3;
+            this.btn_QuickInsert_Instruction.Text = "说明";
+            this.btn_QuickInsert_Instruction.UseVisualStyleBackColor = true;
+            this.btn_QuickInsert_Instruction.Click += new System.EventHandler(this.btn_QuickInsert_Instruction_Click);
+            // 
             // btn_QuickInsert_Insert
             // 
             this.btn_QuickInsert_Insert.Location = new System.Drawing.Point(110, 18);
@@ -355,10 +365,11 @@
             // cmbox_QuickInsert_List
             // 
             this.cmbox_QuickInsert_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbox_QuickInsert_List.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbox_QuickInsert_List.FormattingEnabled = true;
             this.cmbox_QuickInsert_List.Location = new System.Drawing.Point(6, 20);
             this.cmbox_QuickInsert_List.Name = "cmbox_QuickInsert_List";
-            this.cmbox_QuickInsert_List.Size = new System.Drawing.Size(98, 20);
+            this.cmbox_QuickInsert_List.Size = new System.Drawing.Size(98, 22);
             this.cmbox_QuickInsert_List.TabIndex = 0;
             // 
             // groupbox_CommonlyUsedSQL
@@ -408,21 +419,12 @@
             // cmbox_CommonlyUsedSQL_List
             // 
             this.cmbox_CommonlyUsedSQL_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbox_CommonlyUsedSQL_List.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cmbox_CommonlyUsedSQL_List.FormattingEnabled = true;
             this.cmbox_CommonlyUsedSQL_List.Location = new System.Drawing.Point(6, 20);
             this.cmbox_CommonlyUsedSQL_List.Name = "cmbox_CommonlyUsedSQL_List";
-            this.cmbox_CommonlyUsedSQL_List.Size = new System.Drawing.Size(144, 20);
+            this.cmbox_CommonlyUsedSQL_List.Size = new System.Drawing.Size(144, 22);
             this.cmbox_CommonlyUsedSQL_List.TabIndex = 0;
-            // 
-            // btn_QuickInsert_Instruction
-            // 
-            this.btn_QuickInsert_Instruction.Location = new System.Drawing.Point(110, 47);
-            this.btn_QuickInsert_Instruction.Name = "btn_QuickInsert_Instruction";
-            this.btn_QuickInsert_Instruction.Size = new System.Drawing.Size(40, 23);
-            this.btn_QuickInsert_Instruction.TabIndex = 3;
-            this.btn_QuickInsert_Instruction.Text = "说明";
-            this.btn_QuickInsert_Instruction.UseVisualStyleBackColor = true;
-            this.btn_QuickInsert_Instruction.Click += new System.EventHandler(this.btn_QuickInsert_Instruction_Click);
             // 
             // FrmMain
             // 
