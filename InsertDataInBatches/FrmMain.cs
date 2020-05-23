@@ -26,11 +26,10 @@ namespace InsertDataInBatches
 
         /*
          * 待优化/修改/新增部分：
-         * 1.主窗体下拉框列表内容显示不全
-         * 2.常用SQL点击插入（误操作）后撤销功能，当前只有修改后能进行撤销
-         * 3.增加连接记录（数据库地址、数据库等）维护页面
+         * 1.常用SQL点击插入（误操作）后撤销功能，当前只有修改后能进行撤销
+         * 2.增加连接记录（数据库地址、数据库等）维护页面
+         * 3.
          * 4.
-         * 5.
          */
 
         /* 
@@ -1524,4 +1523,54 @@ namespace InsertDataInBatches
         }
         #endregion
     }
+
+    #region 继承ComboBox，新增自定义控件，在用户每次打开下拉列表的时候，让控件自动调整下拉列表的宽度
+    //https://blog.csdn.net/CSDN131137/article/details/103392275
+    class MyComboBox : ComboBox
+    {
+        protected override void OnDropDown(EventArgs e)
+        {
+            base.OnDropDown(e);
+            AdjustComboBoxDropDownListWidth();  //调整comboBox的下拉列表的大小
+        }
+
+        private void AdjustComboBoxDropDownListWidth()
+        {
+            Graphics g = null;
+            Font font = null;
+            try
+            {
+                int width = this.Width;
+                g = this.CreateGraphics();
+                font = this.Font;
+
+                //checks if a scrollbar will be displayed.
+                //If yes, then get its width to adjust the size of the drop down list.
+                int vertScrollBarWidth =
+                    (this.Items.Count > this.MaxDropDownItems)
+                    ? SystemInformation.VerticalScrollBarWidth : 0;
+
+                int newWidth;
+                foreach (object s in this.Items)  //Loop through list items and check size of each items.
+                {
+                    if (s != null)
+                    {
+                        newWidth = (int)g.MeasureString(s.ToString().Trim(), font).Width
+                        + vertScrollBarWidth;
+                        if (width < newWidth)
+                            width = newWidth;   //set the width of the drop down list to the width of the largest item.
+                    }
+                }
+                this.DropDownWidth = width;
+            }
+            catch
+            { }
+            finally
+            {
+                if (g != null)
+                    g.Dispose();
+            }
+        }
+    }
+    #endregion
 }
