@@ -28,7 +28,7 @@ namespace InsertDataInBatches
          * 待优化/修改/新增部分：
          * 1.常用SQL点击插入（误操作）后撤销功能，当前只有修改后能进行撤销
          * 2.增加连接记录（数据库地址、数据库等）维护页面
-         * 3.
+         * 3.若配置文件中 快捷插入配置/常用SQL value为“;”，程序运行后下拉框会为空
          * 4.
          */
 
@@ -40,6 +40,7 @@ namespace InsertDataInBatches
          * 多种情况写多个方法
          * ......
          */
+
         SqlConnection mssqlconn;
         SqlCommand mssqlcmd = new SqlCommand();
 
@@ -101,6 +102,7 @@ namespace InsertDataInBatches
              * 添加资源->添加现有文件
              * 添加完后使用以下代码调用
              */
+
             this.Icon = Properties.Resources._20200417083355795_easyicon_net_128;
 
             //MessageBox.Show(getDotLength(1.1).ToString());

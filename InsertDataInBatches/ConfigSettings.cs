@@ -58,6 +58,32 @@ namespace InsertDataInBatches
             {
                 RWConfig.SetappSettingsValue("QuickInsert_SameNewID", "生成相同newid/uuid;{{samenewid}};一次执行多条sql，使用相同uuid", ConfigPath);
             }
+
+            //快捷插入中缺失默认配置会自动新增
+            getQuickInsertSettingsByappSettings();
+            string append = "";
+            string[] arrayQuickInsert = QuickInsert.Split(';');
+            if (Array.IndexOf(arrayQuickInsert, "QuickInsert_IDIncrement") == -1)
+            {
+                append += ";QuickInsert_IDIncrement";
+            }
+            if (Array.IndexOf(arrayQuickInsert, "QuickInsert_RandomNum") == -1)
+            {
+                append += ";QuickInsert_RandomNum";
+            }
+            if (Array.IndexOf(arrayQuickInsert, "QuickInsert_NewID") == -1)
+            {
+                append += ";QuickInsert_NewID";
+            }
+            if (Array.IndexOf(arrayQuickInsert, "QuickInsert_NewDateTime") == -1)
+            {
+                append += ";QuickInsert_NewDateTime";
+            }
+            if (Array.IndexOf(arrayQuickInsert, "QuickInsert_SameNewID") == -1)
+            {
+                append += ";QuickInsert_SameNewID";
+            }
+            RWConfig.SetappSettingsValue("QuickInsert", QuickInsert + append, ConfigPath);
         }
         #endregion
 
