@@ -40,7 +40,8 @@ namespace InsertDataInBatches
                     txtbox_Name.Text = name;
                     txtbox_Value.Text = value;
                     richtxtbox_Instruction.Text = instruction;
-                    txtbox_Code.Enabled = false;
+                    txtbox_Code.ReadOnly = true;
+                    txtbox_Name.Select();
                     this.Icon = Properties.Resources._20200417084103500_easyicon_net_128;
                 }
                 else
