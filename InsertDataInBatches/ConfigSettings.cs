@@ -9,7 +9,7 @@ namespace InsertDataInBatches
 {
     class ConfigSettings
     {
-        public static string QuickInsert, QuickInsert_IDIncrement, QuickInsert_RandomNum, QuickInsert_NewID, QuickInsert_NewDateTime, QuickInsert_SameNewID;
+        public static string QuickInsert, QuickInsert_IDIncrement, QuickInsert_RandomNum, QuickInsert_NewID, QuickInsert_NewDateTime, QuickInsert_SameNewID, QuickInsert_RandomStr;
         public static string CommonlyUsedSQL, CommonlyUsedSQL_Default;
         public static string ConfigPath = "./InsertDataInBatches.exe";
 
@@ -25,6 +25,7 @@ namespace InsertDataInBatches
             QuickInsert_NewID = RWConfig.GetappSettingsValue("QuickInsert_NewID", ConfigPath);
             QuickInsert_NewDateTime = RWConfig.GetappSettingsValue("QuickInsert_NewDateTime", ConfigPath);
             QuickInsert_SameNewID = RWConfig.GetappSettingsValue("QuickInsert_SameNewID", ConfigPath);
+            QuickInsert_RandomStr = RWConfig.GetappSettingsValue("QuickInsert_RandomStr", ConfigPath);
         }
         #endregion
 
@@ -58,6 +59,10 @@ namespace InsertDataInBatches
             {
                 RWConfig.SetappSettingsValue("QuickInsert_SameNewID", "生成相同newid/uuid;{{samenewid}};一次执行多条sql，使用相同uuid", ConfigPath);
             }
+            if (string.IsNullOrEmpty(QuickInsert_RandomStr))
+            {
+                RWConfig.SetappSettingsValue("QuickInsert_RandomStr", "在指定元素中随机选择一项;{{[x；y；z...]}};x、y、z为指定元素，\n能在元素中随机选择一项，\n请将；换成英文分号", ConfigPath);
+            }
 
             //快捷插入中缺失默认配置会自动新增
             getQuickInsertSettingsByappSettings();
@@ -82,6 +87,10 @@ namespace InsertDataInBatches
             if (Array.IndexOf(arrayQuickInsert, "QuickInsert_SameNewID") == -1)
             {
                 append += ";QuickInsert_SameNewID";
+            }
+            if (Array.IndexOf(arrayQuickInsert, "QuickInsert_RandomStr") == -1)
+            {
+                append += ";QuickInsert_RandomStr";
             }
             RWConfig.SetappSettingsValue("QuickInsert", QuickInsert + append, ConfigPath);
         }

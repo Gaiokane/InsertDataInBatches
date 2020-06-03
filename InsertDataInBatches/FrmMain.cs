@@ -19,7 +19,7 @@ namespace InsertDataInBatches
         /*
          * 新增快捷插入步骤：
          * 1.新增匹配正则
-         * 2.btnStartInserting_Click中添加 判断是否有匹配项 有调用替换方法
+         * 2.btnStartInserting_Click 中添加 判断是否有匹配项 有调用替换方法
          * 3.新增替换方法
          * 4.ConfigSettings中getQuickInsertSettingsByappSettings/setDefaultQuickInsertSettingsIfIsNullOrEmptyByappSettings增加默认配置
          */
@@ -68,8 +68,8 @@ namespace InsertDataInBatches
         Regex rgGetDateTimeDiff = new Regex("(d|h|m|s)(\\+|\\-)\\d*");//{{timed+-7:2020-03-29 20:00:00}}取(d|h|m|s)(+|-)数字
         Regex rgGetDateTime = new Regex("\\d{4}-(0?[1-9]|1[0-2])-((0?[1-9])|((1|2)[0-9])|30|31) (((0|1)[0-9])|(2[0-3])):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])");//{{timed+-7:2020-03-29 20:00:00}}取时间
 
-        Regex rgGetRandomStr = new Regex("{{\\[(.*?);(.*?)\\]}}");//{{[1;q;！;牛批;1qQ@去]}}取整块
-        Regex rgGetRandomStrRange = new Regex("(?<={{\\[)(.*?);(.*?)?(?=\\]}})");//{{[1;q;！;牛批;1qQ@去]}}取{{[]}}中间部分
+        Regex rgGetRandomStr = new Regex("{{\\[(.*?);(.*?)\\]}}");//{{[x;y;z...]}}取整块
+        Regex rgGetRandomStrRange = new Regex("(?<={{\\[)(.*?);(.*?)?(?=\\]}})");//{{[x;y;z...]}}取{{[]}}中间部分
 
         string[] sqlQuerys;
 
@@ -805,6 +805,20 @@ namespace InsertDataInBatches
                     }
                     #endregion
 
+                    #region 判断是否有匹配{{[x;y;z...]}}
+                    //判断是否有匹配{{[x;y;z...]}}
+                    if (rgGetRandomStr.IsMatch(sqlQuerys[0]))
+                    {
+                        //MessageBox.Show("true");
+                        getRandomStr(sqlQuerys);
+                    }
+                    else
+                    {
+                        //MessageBox.Show("没有匹配项{{[x;y;z]}}");
+                        noMatch += "没有匹配项{{[x;y;z...]}}\n";
+                    }
+                    #endregion
+
                     //遍历数组 并复制到剪切板
                     string q = "";
                     foreach (var item in sqlQuerys)
@@ -1161,6 +1175,60 @@ namespace InsertDataInBatches
 
             return result;
         }*/
+        #endregion
+
+        #region 在{{[x;y;z...]}}中随机选择一项
+        /// <summary>
+        /// 在{{[x;y;z...]}}中随机选择一项
+        /// </summary>
+        /// <param name="sourceSQL">原始SQL数组</param>
+        /// <returns>替换完的数组</returns>
+        private string[] getRandomStr(string[] sourceSQL)
+        {
+            Match matchrgGetRandomStr;
+            Match matchrgGetRandomStrRange;
+            Random random = new Random();//建在循环内随机值都是一样的，建在外面没问题
+            while (rgGetRandomStr.Match(sourceSQL[0]).Success == true)
+            {
+                for (int i = 0; i < sourceSQL.Length; i++)
+                {
+                    matchrgGetRandomStr = rgGetRandomStr.Match(sourceSQL[i]);//{{[x;y;z...]}}取整块
+                    matchrgGetRandomStrRange = rgGetRandomStrRange.Match(sourceSQL[i]);//{{[x;y;z...]}}取{{[]}}中间部分
+                    string RandomStrRange = matchrgGetRandomStrRange.Groups[0].Value;
+                    string[] Range = RandomStrRange.Split(';');
+                    List<string> list = Range.ToList();
+                    /*foreach (var item in list)
+                    {
+                        if (string.IsNullOrEmpty(item))
+                        {
+                            list.Remove(item);
+                        }
+                    }*/
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        if (string.IsNullOrEmpty(list[j]) || string.IsNullOrWhiteSpace(list[j]))
+                        {
+                            list.Remove(list[j]);
+                            j -= 1;
+                        }
+                    }
+                    Range = list.ToArray();
+                    //获取Range长度，产生随机数，取对应值进行替换
+                    /*
+                    string str = "";
+                    foreach (var item in Range)
+                    {
+                        str += item + "\n";
+                    }
+                    MessageBox.Show("Range：\n" + str);*/
+                    //MessageBox.Show("Range Length：" + Range.Length);
+                    int randnum = Convert.ToInt32(NextDouble(random, 1, Range.Length)) - 1;
+                    //MessageBox.Show("randnum：" + NextDouble(r, 1, Range.Length).ToString());
+                    sourceSQL[i] = rgGetRandomStr.Replace(sourceSQL[i], Range[randnum], 1);
+                }
+            }
+            return sourceSQL;
+        }
         #endregion
 
         #region 判断是否连接数据库
