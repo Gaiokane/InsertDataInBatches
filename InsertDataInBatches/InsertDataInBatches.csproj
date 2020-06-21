@@ -70,6 +70,12 @@
     <Compile Include="FrmCommonlyUsedSQLConfigNewEdit.Designer.cs">
       <DependentUpon>FrmCommonlyUsedSQLConfigNewEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmDatabasesNameList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDatabasesNameList.Designer.cs">
+      <DependentUpon>FrmDatabasesNameList.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCommonlyUsedSQLConfigNewEdit.resx">
       <DependentUpon>FrmCommonlyUsedSQLConfigNewEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDatabasesNameList.resx">
+      <DependentUpon>FrmDatabasesNameList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>

@@ -30,6 +30,7 @@ namespace InsertDataInBatches
          * 2.增加连接记录（数据库地址、数据库等）维护页面
          * 3.若配置文件中 快捷插入配置/常用SQL value为“;”，程序运行后下拉框会为空（当前使用；代替;快捷插入配置：在指定元素中随机选择一项）
          * 4.多线程插数据
+         * 5.数据库文本框后增加显示数据库按钮“[...]”，去master表中读服务器上数据库（sql/mysql），做个treeview
          */
 
         /* 
@@ -40,6 +41,8 @@ namespace InsertDataInBatches
          * 多种情况写多个方法
          * ......
          */
+
+        string host, port, database, username, password, sqlconn;
 
         SqlConnection mssqlconn;
         SqlCommand mssqlcmd = new SqlCommand();
@@ -501,111 +504,151 @@ namespace InsertDataInBatches
         #region 数据库_连接按钮单击事件
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            string host = txtboxHost.Text.Trim();
-            string port = txtboxPort.Text.Trim();
-            string database = txtboxDatabase.Text.Trim();
-            string username = txtboxUsername.Text.Trim();
-            string password = txtboxPassword.Text.Trim();
-
-            #region 使用MSSQL
-            if (radiobtnMSSQL.Checked == true)
+            if (string.IsNullOrEmpty(txtboxHost.Text))
             {
-                string sqlconn = string.Empty;
-                if (chkboxPort.Checked == true)//指定端口
+                MessageBox.Show("Host不能为空！");
+                txtboxHost.Focus();
+            }
+            else
+            {
+                if (chkboxPort.Checked == true && string.IsNullOrEmpty(txtboxPort.Text))
                 {
-                    sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                    MessageBox.Show("Port不能为空！");
+                    txtboxPort.Focus();
                 }
-                else//不指定端口
+                else
                 {
-                    sqlconn = "server=" + host + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
-                }
-                try
-                {
-                    mssqlconn = new SqlConnection(sqlconn);
-                    mssqlconn.Open();
-                    //MessageBox.Show(mssqlconn.State.ToString());//Open
-                    if (mssqlconn.State == ConnectionState.Open)
+                    if (string.IsNullOrEmpty(txtboxDatabase.Text))
                     {
-                        labConnectStatus.Text = "状态：已连接";
-                        btnConnect.Enabled = false;
-                        radiobtnMSSQL.Enabled = false;
-                        radiobtnMYSQL.Enabled = false;
-                        txtboxHost.Enabled = false;
-                        chkboxPort.Enabled = false;
-                        txtboxPort.Enabled = false;
-                        txtboxDatabase.Enabled = false;
-                        txtboxUsername.Enabled = false;
-                        txtboxPassword.Enabled = false;
+                        MessageBox.Show("Database不能为空！");
+                        txtboxDatabase.Focus();
                     }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(txtboxUsername.Text))
+                        {
+                            MessageBox.Show("Username不能为空！");
+                            txtboxUsername.Focus();
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(txtboxPassword.Text))
+                            {
+                                MessageBox.Show("Password不能为空！");
+                                txtboxPassword.Focus();
+                            }
+                            else
+                            {
+                                host = txtboxHost.Text.Trim();
+                                port = txtboxPort.Text.Trim();
+                                database = txtboxDatabase.Text.Trim();
+                                username = txtboxUsername.Text.Trim();
+                                password = txtboxPassword.Text.Trim();
 
-                    //设置上一次连接字符串
-                    if (ConfigSettings.setLastConnectionStrings(0, host, chkboxPort.Checked, port, database, username, password) == false)
-                    {
-                        MessageBox.Show("更新最后连接字符串出错！");
-                    }
+                                #region 使用MSSQL
+                                if (radiobtnMSSQL.Checked == true)
+                                {
+                                    sqlconn = string.Empty;
+                                    if (chkboxPort.Checked == true)//指定端口
+                                    {
+                                        sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                                    }
+                                    else//不指定端口
+                                    {
+                                        sqlconn = "server=" + host + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                                    }
+                                    try
+                                    {
+                                        mssqlconn = new SqlConnection(sqlconn);
+                                        mssqlconn.Open();
+                                        //MessageBox.Show(mssqlconn.State.ToString());//Open
+                                        if (mssqlconn.State == ConnectionState.Open)
+                                        {
+                                            labConnectStatus.Text = "状态：已连接";
+                                            btnConnect.Enabled = false;
+                                            radiobtnMSSQL.Enabled = false;
+                                            radiobtnMYSQL.Enabled = false;
+                                            txtboxHost.Enabled = false;
+                                            chkboxPort.Enabled = false;
+                                            txtboxPort.Enabled = false;
+                                            txtboxDatabase.Enabled = false;
+                                            txtboxUsername.Enabled = false;
+                                            txtboxPassword.Enabled = false;
+                                        }
 
-                    //保存连接成功的记录
-                    if (ConfigSettings.saveConnectionString(0, host, chkboxPort.Checked, port, database, username, password) == false)
-                    {
-                        MessageBox.Show("保存连接记录出错！");
+                                        //设置上一次连接字符串
+                                        if (ConfigSettings.setLastConnectionStrings(0, host, chkboxPort.Checked, port, database, username, password) == false)
+                                        {
+                                            MessageBox.Show("更新最后连接字符串出错！");
+                                        }
+
+                                        //保存连接成功的记录
+                                        if (ConfigSettings.saveConnectionString(0, host, chkboxPort.Checked, port, database, username, password) == false)
+                                        {
+                                            MessageBox.Show("保存连接记录出错！");
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.Message);
+                                    }
+                                }
+                                #endregion
+                                #region 使用MYSQL
+                                if (radiobtnMYSQL.Checked == true)
+                                {
+                                    sqlconn = string.Empty;
+                                    if (chkboxPort.Checked == true)//指定端口
+                                    {
+                                        sqlconn = "Host = " + host + "; Port = " + port + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
+                                    }
+                                    else//不指定端口
+                                    {
+                                        sqlconn = "Host = " + host + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
+                                    }
+                                    try
+                                    {
+                                        mysqlconn = new MySqlConnection(sqlconn);
+                                        mysqlconn.Open();
+                                        //MessageBox.Show(mysqlconn.ConnectionTimeout.ToString());
+                                        //MessageBox.Show(mysqlconn.State.ToString());//Open
+                                        if (mysqlconn.State == ConnectionState.Open)
+                                        {
+                                            labConnectStatus.Text = "状态：已连接";
+                                            btnConnect.Enabled = false;
+                                            radiobtnMSSQL.Enabled = false;
+                                            radiobtnMYSQL.Enabled = false;
+                                            txtboxHost.Enabled = false;
+                                            chkboxPort.Enabled = false;
+                                            txtboxPort.Enabled = false;
+                                            txtboxDatabase.Enabled = false;
+                                            txtboxUsername.Enabled = false;
+                                            txtboxPassword.Enabled = false;
+                                        }
+
+                                        //设置上一次连接字符串
+                                        if (ConfigSettings.setLastConnectionStrings(1, host, chkboxPort.Checked, port, database, username, password) == false)
+                                        {
+                                            MessageBox.Show("更新最后连接字符串出错！");
+                                        }
+
+                                        //保存连接成功的记录
+                                        if (ConfigSettings.saveConnectionString(1, host, chkboxPort.Checked, port, database, username, password) == false)
+                                        {
+                                            MessageBox.Show("保存连接记录出错！");
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.Message);
+                                    }
+                                }
+                                #endregion
+                            }
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
                 }
             }
-            #endregion
-            #region 使用MYSQL
-            if (radiobtnMYSQL.Checked == true)
-            {
-                string sqlconn = string.Empty;
-                if (chkboxPort.Checked == true)//指定端口
-                {
-                    sqlconn = "Host = " + host + "; Port = " + port + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
-                }
-                else//不指定端口
-                {
-                    sqlconn = "Host = " + host + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
-                }
-                try
-                {
-                    mysqlconn = new MySqlConnection(sqlconn);
-                    mysqlconn.Open();
-                    //MessageBox.Show(mysqlconn.ConnectionTimeout.ToString());
-                    //MessageBox.Show(mysqlconn.State.ToString());//Open
-                    if (mysqlconn.State == ConnectionState.Open)
-                    {
-                        labConnectStatus.Text = "状态：已连接";
-                        btnConnect.Enabled = false;
-                        radiobtnMSSQL.Enabled = false;
-                        radiobtnMYSQL.Enabled = false;
-                        txtboxHost.Enabled = false;
-                        chkboxPort.Enabled = false;
-                        txtboxPort.Enabled = false;
-                        txtboxDatabase.Enabled = false;
-                        txtboxUsername.Enabled = false;
-                        txtboxPassword.Enabled = false;
-                    }
-
-                    //设置上一次连接字符串
-                    if (ConfigSettings.setLastConnectionStrings(1, host, chkboxPort.Checked, port, database, username, password) == false)
-                    {
-                        MessageBox.Show("更新最后连接字符串出错！");
-                    }
-
-                    //保存连接成功的记录
-                    if (ConfigSettings.saveConnectionString(1, host, chkboxPort.Checked, port, database, username, password) == false)
-                    {
-                        MessageBox.Show("保存连接记录出错！");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            #endregion
         }
         #endregion
 
@@ -674,6 +717,120 @@ namespace InsertDataInBatches
                 txtboxUsername.Text = "qkk";
                 txtboxPassword.Text = "qkk";
                 richtxtboxInsertSQL.Text = "INSERT INTO `pagination`.`info`(`xxx`) VALUES ('test{{id:7}}');";
+            }
+        }
+        #endregion
+
+        #region 数据库_获取数据库列表按钮单击事件 获取服务器数据库名列表，双击可以快速填充到Database文本框中
+        private void btnShowDatabases_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtboxHost.Text))
+            {
+                MessageBox.Show("Host不能为空！");
+                txtboxHost.Focus();
+            }
+            else
+            {
+                if (chkboxPort.Checked == true && string.IsNullOrEmpty(txtboxPort.Text))
+                {
+                    MessageBox.Show("Port不能为空！");
+                    txtboxPort.Focus();
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(txtboxDatabase.Text))
+                    {
+                        MessageBox.Show("Database不能为空！");
+                        txtboxDatabase.Focus();
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(txtboxUsername.Text))
+                        {
+                            MessageBox.Show("Username不能为空！");
+                            txtboxUsername.Focus();
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(txtboxPassword.Text))
+                            {
+                                MessageBox.Show("Password不能为空！");
+                                txtboxPassword.Focus();
+                            }
+                            else
+                            {
+                                host = txtboxHost.Text.Trim();
+                                port = txtboxPort.Text.Trim();
+                                username = txtboxUsername.Text.Trim();
+                                password = txtboxPassword.Text.Trim();
+
+                                #region 使用MSSQL
+                                if (radiobtnMSSQL.Checked == true)
+                                {
+                                    sqlconn = string.Empty;
+                                    database = "master";
+                                    if (chkboxPort.Checked == true)//指定端口
+                                    {
+                                        sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                                    }
+                                    else//不指定端口
+                                    {
+                                        sqlconn = "server=" + host + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                                    }
+                                    try
+                                    {
+                                        mssqlconn = new SqlConnection(sqlconn);
+                                        mssqlconn.Open();
+                                        if (mssqlconn.State == ConnectionState.Open)
+                                        {
+                                            FrmDatabasesNameList fdnl = new FrmDatabasesNameList();
+                                            fdnl.txtboxdatabase = txtboxDatabase;
+                                            fdnl.Show();
+                                            mssqlconn.Close();
+                                        }
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.Message);
+                                    }
+                                }
+                                #endregion
+                                #region 使用MYSQL
+                                if (radiobtnMYSQL.Checked == true)
+                                {
+                                    sqlconn = string.Empty;
+                                    database = "information_schema";
+                                    if (chkboxPort.Checked == true)//指定端口
+                                    {
+                                        sqlconn = "Host = " + host + "; Port = " + port + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
+                                    }
+                                    else//不指定端口
+                                    {
+                                        sqlconn = "Host = " + host + "; Database = " + database + "; Username = " + username + "; Password = " + password + "";
+                                    }
+                                    try
+                                    {
+                                        mysqlconn = new MySqlConnection(sqlconn);
+                                        mysqlconn.Open();
+                                        if (mysqlconn.State == ConnectionState.Open)
+                                        {
+                                            FrmDatabasesNameList fdnl = new FrmDatabasesNameList();
+                                            fdnl.txtboxdatabase = txtboxDatabase;
+                                            fdnl.Show();
+                                            mysqlconn.Close();
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.Message);
+                                    }
+                                }
+                                #endregion
+                            }
+                        }
+                    }
+                }
             }
         }
         #endregion
