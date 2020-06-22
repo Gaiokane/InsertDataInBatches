@@ -111,7 +111,7 @@ namespace InsertDataInBatches
                     {
                         for (int i = 0; i < str.Length - 1; i++)
                         {
-                            cache += str[i+1]+";";
+                            cache += str[i + 1] + ";";
                         }
                     }
                     else

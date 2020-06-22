@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupbox_DataBase = new System.Windows.Forms.GroupBox();
+            this.btnShowDatabases = new System.Windows.Forms.Button();
             this.comBoxDatabase = new System.Windows.Forms.ComboBox();
             this.comBoxHost = new System.Windows.Forms.ComboBox();
             this.chkboxPort = new System.Windows.Forms.CheckBox();
@@ -54,16 +55,15 @@
             this.btnStartInserting = new System.Windows.Forms.Button();
             this.labResult = new System.Windows.Forms.Label();
             this.groupbox_QuickInsert = new System.Windows.Forms.GroupBox();
-            this.cmbox_QuickInsert_List = new InsertDataInBatches.MyComboBox();
             this.btn_QuickInsert_Instruction = new System.Windows.Forms.Button();
             this.btn_QuickInsert_Insert = new System.Windows.Forms.Button();
             this.btn_QuickInsert_Settings = new System.Windows.Forms.Button();
             this.groupbox_CommonlyUsedSQL = new System.Windows.Forms.GroupBox();
-            this.cmbox_CommonlyUsedSQL_List = new InsertDataInBatches.MyComboBox();
             this.btn_CommonlyUsedSQL_Settings = new System.Windows.Forms.Button();
             this.btn_CommonlyUsedSQL_New = new System.Windows.Forms.Button();
             this.btn_CommonlyUsedSQL_Insert = new System.Windows.Forms.Button();
-            this.btnShowDatabases = new System.Windows.Forms.Button();
+            this.cmbox_CommonlyUsedSQL_List = new InsertDataInBatches.MyComboBox();
+            this.cmbox_QuickInsert_List = new InsertDataInBatches.MyComboBox();
             this.groupbox_DataBase.SuspendLayout();
             this.groupbox_QuickInsert.SuspendLayout();
             this.groupbox_CommonlyUsedSQL.SuspendLayout();
@@ -95,6 +95,16 @@
             this.groupbox_DataBase.TabIndex = 0;
             this.groupbox_DataBase.TabStop = false;
             this.groupbox_DataBase.Text = "数据库";
+            // 
+            // btnShowDatabases
+            // 
+            this.btnShowDatabases.Location = new System.Drawing.Point(518, 45);
+            this.btnShowDatabases.Name = "btnShowDatabases";
+            this.btnShowDatabases.Size = new System.Drawing.Size(31, 23);
+            this.btnShowDatabases.TabIndex = 19;
+            this.btnShowDatabases.Text = "...";
+            this.btnShowDatabases.UseVisualStyleBackColor = true;
+            this.btnShowDatabases.Click += new System.EventHandler(this.btnShowDatabases_Click);
             // 
             // comBoxDatabase
             // 
@@ -334,16 +344,6 @@
             this.groupbox_QuickInsert.TabStop = false;
             this.groupbox_QuickInsert.Text = "快捷插入";
             // 
-            // cmbox_QuickInsert_List
-            // 
-            this.cmbox_QuickInsert_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbox_QuickInsert_List.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cmbox_QuickInsert_List.FormattingEnabled = true;
-            this.cmbox_QuickInsert_List.Location = new System.Drawing.Point(6, 18);
-            this.cmbox_QuickInsert_List.Name = "cmbox_QuickInsert_List";
-            this.cmbox_QuickInsert_List.Size = new System.Drawing.Size(98, 22);
-            this.cmbox_QuickInsert_List.TabIndex = 0;
-            // 
             // btn_QuickInsert_Instruction
             // 
             this.btn_QuickInsert_Instruction.Location = new System.Drawing.Point(110, 47);
@@ -388,16 +388,6 @@
             this.groupbox_CommonlyUsedSQL.TabStop = false;
             this.groupbox_CommonlyUsedSQL.Text = "常用SQL";
             // 
-            // cmbox_CommonlyUsedSQL_List
-            // 
-            this.cmbox_CommonlyUsedSQL_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbox_CommonlyUsedSQL_List.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cmbox_CommonlyUsedSQL_List.FormattingEnabled = true;
-            this.cmbox_CommonlyUsedSQL_List.Location = new System.Drawing.Point(6, 18);
-            this.cmbox_CommonlyUsedSQL_List.Name = "cmbox_CommonlyUsedSQL_List";
-            this.cmbox_CommonlyUsedSQL_List.Size = new System.Drawing.Size(144, 22);
-            this.cmbox_CommonlyUsedSQL_List.TabIndex = 0;
-            // 
             // btn_CommonlyUsedSQL_Settings
             // 
             this.btn_CommonlyUsedSQL_Settings.Location = new System.Drawing.Point(110, 46);
@@ -428,15 +418,25 @@
             this.btn_CommonlyUsedSQL_Insert.UseVisualStyleBackColor = true;
             this.btn_CommonlyUsedSQL_Insert.Click += new System.EventHandler(this.btn_CommonlyUsedSQL_Insert_Click);
             // 
-            // btnShowDatabases
+            // cmbox_CommonlyUsedSQL_List
             // 
-            this.btnShowDatabases.Location = new System.Drawing.Point(518, 45);
-            this.btnShowDatabases.Name = "btnShowDatabases";
-            this.btnShowDatabases.Size = new System.Drawing.Size(31, 23);
-            this.btnShowDatabases.TabIndex = 19;
-            this.btnShowDatabases.Text = "...";
-            this.btnShowDatabases.UseVisualStyleBackColor = true;
-            this.btnShowDatabases.Click += new System.EventHandler(this.btnShowDatabases_Click);
+            this.cmbox_CommonlyUsedSQL_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbox_CommonlyUsedSQL_List.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbox_CommonlyUsedSQL_List.FormattingEnabled = true;
+            this.cmbox_CommonlyUsedSQL_List.Location = new System.Drawing.Point(6, 18);
+            this.cmbox_CommonlyUsedSQL_List.Name = "cmbox_CommonlyUsedSQL_List";
+            this.cmbox_CommonlyUsedSQL_List.Size = new System.Drawing.Size(144, 22);
+            this.cmbox_CommonlyUsedSQL_List.TabIndex = 0;
+            // 
+            // cmbox_QuickInsert_List
+            // 
+            this.cmbox_QuickInsert_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbox_QuickInsert_List.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cmbox_QuickInsert_List.FormattingEnabled = true;
+            this.cmbox_QuickInsert_List.Location = new System.Drawing.Point(6, 18);
+            this.cmbox_QuickInsert_List.Name = "cmbox_QuickInsert_List";
+            this.cmbox_QuickInsert_List.Size = new System.Drawing.Size(98, 22);
+            this.cmbox_QuickInsert_List.TabIndex = 0;
             // 
             // FrmMain
             // 

@@ -33,11 +33,16 @@
             // 
             // treeView1
             // 
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.treeView1.Location = new System.Drawing.Point(12, 12);
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(260, 437);
             this.treeView1.TabIndex = 0;
             this.treeView1.DoubleClick += new System.EventHandler(this.treeView1_DoubleClick);
+            this.treeView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.treeView1_KeyPress);
             this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
             // 
             // FrmDatabasesNameList
@@ -49,8 +54,8 @@
             this.Name = "FrmDatabasesNameList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "数据库名列表";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmDatabasesNameList_FormClosed);
             this.Load += new System.EventHandler(this.FrmDatabasesNameList_Load);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FrmDatabasesNameList_KeyPress);
             this.ResumeLayout(false);
 
         }

@@ -128,7 +128,7 @@ namespace InsertDataInBatches
         /// <param name="Query"></param>
         /// <param name="SQLConn">SqlConnection连接</param>
         /// <returns></returns>
-        public DataSet getDataSetMSSQL(string Query, SqlConnection SQLConn)
+        public static DataSet getDataSetMSSQL(string Query, SqlConnection SQLConn)
         {
             DataSet ds = new DataSet();
             try
@@ -265,7 +265,7 @@ namespace InsertDataInBatches
         /// <param name="Query"></param>
         /// <param name="MySQLConn">MySqlConnection连接</param>
         /// <returns></returns>
-        public DataSet getDataSetMySQL(string Query, MySqlConnection MySQLConn)
+        public static DataSet getDataSetMySQL(string Query, MySqlConnection MySQLConn)
         {
             DataSet ds = new DataSet();
             try

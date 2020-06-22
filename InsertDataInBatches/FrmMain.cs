@@ -30,7 +30,7 @@ namespace InsertDataInBatches
          * 2.增加连接记录（数据库地址、数据库等）维护页面
          * 3.若配置文件中 快捷插入配置/常用SQL value为“;”，程序运行后下拉框会为空（当前使用；代替;快捷插入配置：在指定元素中随机选择一项）
          * 4.多线程插数据
-         * 5.数据库文本框后增加显示数据库按钮“[...]”，去master表中读服务器上数据库（sql/mysql），做个treeview
+         * 5.
          */
 
         /* 
@@ -43,6 +43,11 @@ namespace InsertDataInBatches
          */
 
         string host, port, database, username, password, sqlconn;
+
+        string sqlGetDatabasesNameListForMSSQL = "SELECT name AS DATABASE_NAME FROM sysdatabases ORDER BY name;";
+        string sqlGetDatabasesNameListForMySQL = "SELECT SCHEMA_NAME AS DATABASE_NAME FROM `information_schema`.`SCHEMATA` ORDER BY SCHEMA_NAME;";
+        DataTable dtDatabasesNameList;
+        List<string> listDatabasesName;
 
         SqlConnection mssqlconn;
         SqlCommand mssqlcmd = new SqlCommand();
@@ -574,6 +579,7 @@ namespace InsertDataInBatches
                                             txtboxDatabase.Enabled = false;
                                             txtboxUsername.Enabled = false;
                                             txtboxPassword.Enabled = false;
+                                            btnShowDatabases.Enabled = false;
                                         }
 
                                         //设置上一次连接字符串
@@ -624,6 +630,7 @@ namespace InsertDataInBatches
                                             txtboxDatabase.Enabled = false;
                                             txtboxUsername.Enabled = false;
                                             txtboxPassword.Enabled = false;
+                                            btnShowDatabases.Enabled = false;
                                         }
 
                                         //设置上一次连接字符串
@@ -674,6 +681,7 @@ namespace InsertDataInBatches
                     txtboxDatabase.Enabled = true;
                     txtboxUsername.Enabled = true;
                     txtboxPassword.Enabled = true;
+                    btnShowDatabases.Enabled = true;
                 }
                 if (radiobtnMYSQL.Checked == true)
                 {
@@ -688,6 +696,7 @@ namespace InsertDataInBatches
                     txtboxDatabase.Enabled = true;
                     txtboxUsername.Enabled = true;
                     txtboxPassword.Enabled = true;
+                    btnShowDatabases.Enabled = true;
                 }
             }
         }
@@ -784,8 +793,24 @@ namespace InsertDataInBatches
                                         if (mssqlconn.State == ConnectionState.Open)
                                         {
                                             FrmDatabasesNameList fdnl = new FrmDatabasesNameList();
+
                                             fdnl.txtboxdatabase = txtboxDatabase;
-                                            fdnl.Show();
+
+                                            //获取当前用户有权限的数据库名DataTable
+                                            dtDatabasesNameList = SqlHelper.getDataSetMSSQL(sqlGetDatabasesNameListForMSSQL, mssqlconn).Tables[0];
+                                            //将数据库名存到list
+                                            listDatabasesName = DataTableToList(dtDatabasesNameList);
+                                            fdnl.listdatabasesname = listDatabasesName;
+
+                                            //设置只能打开一个，配合FrmDatabasesNameList中的GetFrmDatabasesNameList()设置
+                                            FrmDatabasesNameList.GetFrmDatabasesNameList().Activate();
+
+                                            //接收FrmDatabasesNameList返回的DialogResult，可自定义操作
+                                            if (fdnl.ShowDialog() == DialogResult.OK)
+                                            {
+
+                                            }
+
                                             mssqlconn.Close();
                                         }
 
@@ -816,8 +841,24 @@ namespace InsertDataInBatches
                                         if (mysqlconn.State == ConnectionState.Open)
                                         {
                                             FrmDatabasesNameList fdnl = new FrmDatabasesNameList();
+
                                             fdnl.txtboxdatabase = txtboxDatabase;
-                                            fdnl.Show();
+
+                                            //获取当前用户有权限的数据库名DataTable
+                                            dtDatabasesNameList = SqlHelper.getDataSetMySQL(sqlGetDatabasesNameListForMySQL, mysqlconn).Tables[0];
+                                            //将数据库名存到list
+                                            listDatabasesName = DataTableToList(dtDatabasesNameList);
+                                            fdnl.listdatabasesname = listDatabasesName;
+
+                                            //设置只能打开一个，配合FrmDatabasesNameList中的GetFrmDatabasesNameList()设置
+                                            FrmDatabasesNameList.GetFrmDatabasesNameList().Activate();
+
+                                            //接收FrmDatabasesNameList返回的DialogResult，可自定义操作
+                                            if (fdnl.ShowDialog() == DialogResult.OK)
+                                            {
+
+                                            }
+
                                             mysqlconn.Close();
                                         }
                                     }
@@ -1750,6 +1791,24 @@ namespace InsertDataInBatches
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        #endregion
+
+        #region 获取数据库名，将DataTable中第一列的数据转为List
+        /// <summary>
+        /// 获取数据库名，将DataTable中第一列的数据转为List
+        /// </summary>
+        /// <param name="dt">传入的DataTable</param>
+        /// <returns>返回List<string></returns>
+        public static List<string> DataTableToList(DataTable dt)
+        {
+            List<string> list = new List<string>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                list.Add(dt.Rows[i][0].ToString());
+            }
+
+            return list;
         }
         #endregion
     }
