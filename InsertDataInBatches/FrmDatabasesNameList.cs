@@ -27,10 +27,7 @@ namespace InsertDataInBatches
         {
             this.Icon = Properties.Resources._20200417083355795_easyicon_net_128;
 
-            foreach (var item in listdatabasesname)
-            {
-                treeView1.Nodes.Add(item);
-            }
+            treeViewBindData();
         }
         #endregion
 
@@ -97,5 +94,50 @@ namespace InsertDataInBatches
         }
         #endregion
 
+        #region treeView加载全部数据
+        private void treeViewBindData()
+        {
+            treeView1.Nodes.Clear();
+
+            foreach (var item in listdatabasesname)
+            {
+                treeView1.Nodes.Add(item);
+            }
+        }
+        #endregion
+
+        #region 搜索按钮单击事件 支持模糊搜索
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtboxDataBaseName.Text))
+            {
+                treeViewBindData();
+            }
+            else
+            {
+                treeView1.Nodes.Clear();
+
+                foreach (var item in onFindKeyWord(txtboxDataBaseName.Text, listdatabasesname))
+                {
+                    treeView1.Nodes.Add(item);
+                }
+            }
+        }
+        #endregion
+
+        #region 模糊搜索List
+        private List<string> onFindKeyWord(string str, List<string> list)
+        {
+            List<string> m_list = new List<string>();
+            foreach (var item in list)
+            {
+                if (item.IndexOf(str) != -1)
+                {
+                    m_list.Add(item);
+                }
+            }
+            return m_list;
+        }
+        #endregion
     }
 }
