@@ -1811,6 +1811,14 @@ namespace InsertDataInBatches
             return list;
         }
         #endregion
+
+        #region 查看表结构按钮单击事件
+        private void btn_SQLTableStructure_Click(object sender, EventArgs e)
+        {
+            FrmSQLTableStructure fsqlts = new FrmSQLTableStructure();
+            fsqlts.Show();
+        }
+        #endregion
     }
 
     #region 继承ComboBox，新增自定义控件，在用户每次打开下拉列表的时候，让控件自动调整下拉列表的宽度
