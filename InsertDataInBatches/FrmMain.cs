@@ -1816,20 +1816,18 @@ namespace InsertDataInBatches
         private void btn_SQLTableStructure_Click(object sender, EventArgs e)
         {
             FrmSQLTableStructure fsqlts = new FrmSQLTableStructure();
+            fsqlts.databasename = txtboxDatabase.Text.Trim();
+
             TreeNode tn = new TreeNode();
+            tn.Text = txtboxDatabase.Text.Trim();
             tn.Nodes.Add("节点1");
+            tn.Nodes.Add("节点2");
             tn.Nodes[0].Nodes.Add("节点1的子节点1");
             tn.Nodes[0].Nodes[0].Nodes.Add("节点1的子节点1的子子节点1");
-
-            //fsqlts.tn.Nodes.Add("节点1");
-            //fsqlts.tn.Tag = 1;
-            //fsqlts.tn.Nodes[0].Nodes.Add("节点1的子节点1");
-            //fsqlts.tn.Nodes[0].Nodes[0].Nodes.Add("节点1的子节点1的子子节点1");
-
+            tn.Nodes[1].Nodes.Add("节点2的子节点1");
+            tn.Nodes[1].Nodes.Add("节点2的子节点2");
             fsqlts.tn = tn;
-            MessageBox.Show(tn.Nodes[0].Text);
-            MessageBox.Show(fsqlts.tn.Nodes[0].Text);
-            //MessageBox.Show(tn.Nodes.Count.ToString());
+
             fsqlts.Show();
         }
         #endregion
