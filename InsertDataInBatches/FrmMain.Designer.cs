@@ -421,6 +421,7 @@
             // 
             // btn_SQLTableStructure
             // 
+            this.btn_SQLTableStructure.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_SQLTableStructure.Location = new System.Drawing.Point(750, 349);
             this.btn_SQLTableStructure.Name = "btn_SQLTableStructure";
             this.btn_SQLTableStructure.Size = new System.Drawing.Size(75, 23);

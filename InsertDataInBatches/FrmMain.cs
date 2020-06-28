@@ -49,6 +49,16 @@ namespace InsertDataInBatches
         DataTable dtDatabasesNameList;
         List<string> listDatabasesName;
 
+        string sqlGetDatabaseTablesNameListForMSSQL = "SELECT 2;";
+        string sqlGetDatabaseTablesNameListForMySQL = "SELECT 2;";
+        DataTable dtDatabaseTablesNameList;
+        List<string> listDatabaseTablesName;
+
+        string sqlGetDatabaseViewsNameListForMSSQL = "SELECT 3;";
+        string sqlGetDatabaseViewsNameListForMySQL = "SELECT 3;";
+        DataTable dtDatabaseViewsNameList;
+        List<string> listDatabaseViewsName;
+
         SqlConnection mssqlconn;
         SqlCommand mssqlcmd = new SqlCommand();
 
@@ -1815,20 +1825,206 @@ namespace InsertDataInBatches
         #region 查看表结构按钮单击事件
         private void btn_SQLTableStructure_Click(object sender, EventArgs e)
         {
-            FrmSQLTableStructure fsqlts = new FrmSQLTableStructure();
-            fsqlts.databasename = txtboxDatabase.Text.Trim();
+            if (labConnectStatus.Text == "状态：已连接")
+            {
 
-            TreeNode tn = new TreeNode();
-            tn.Text = txtboxDatabase.Text.Trim();
-            tn.Nodes.Add("节点1");
-            tn.Nodes.Add("节点2");
-            tn.Nodes[0].Nodes.Add("节点1的子节点1");
-            tn.Nodes[0].Nodes[0].Nodes.Add("节点1的子节点1的子子节点1");
-            tn.Nodes[1].Nodes.Add("节点2的子节点1");
-            tn.Nodes[1].Nodes.Add("节点2的子节点2");
-            fsqlts.tn = tn;
+                //MessageBox.Show(GetsqlGetDatabaseTablesNameListForMSSQLORMySQL("MySQL", txtboxDatabase.Text.Trim()));
+                //MessageBox.Show(GetsqlGetDatabaseTablesNameListForMSSQLORMySQL("MSSQL", txtboxDatabase.Text.Trim()));
 
-            fsqlts.Show();
+                FrmSQLTableStructure fsqlts = new FrmSQLTableStructure();
+                fsqlts.databasename = txtboxDatabase.Text.Trim();
+
+                TreeNode tn = new TreeNode();
+                tn.Text = txtboxDatabase.Text.Trim();
+
+                /*节点测试
+                tn.Nodes.Add("节点1");
+                tn.Nodes.Add("节点2");
+                tn.Nodes[0].Nodes.Add("节点1的子节点1");
+                tn.Nodes[0].Nodes[0].Nodes.Add("节点1的子节点1的子子节点1");
+                tn.Nodes[1].Nodes.Add("节点2的子节点1");
+                tn.Nodes[1].Nodes.Add("节点2的子节点2");
+                */
+
+
+                #region 使用MSSQL
+                if (radiobtnMSSQL.Checked == true)
+                {
+                    sqlconn = string.Empty;
+                    database = "master";
+                    if (chkboxPort.Checked == true)//指定端口
+                    {
+                        sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                    }
+                    else//不指定端口
+                    {
+                        sqlconn = "server=" + host + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
+                    }
+                    try
+                    {
+                        mssqlconn = new SqlConnection(sqlconn);
+                        mssqlconn.Open();
+                        if (mssqlconn.State == ConnectionState.Open)
+                        {
+                            FrmDatabasesNameList fdnl = new FrmDatabasesNameList();
+
+                            fdnl.txtboxdatabase = txtboxDatabase;
+
+                            //获取当前用户有权限的数据库名DataTable
+                            dtDatabasesNameList = SqlHelper.getDataSetMSSQL(sqlGetDatabasesNameListForMSSQL, mssqlconn).Tables[0];
+                            //将数据库名存到list
+                            listDatabasesName = DataTableToList(dtDatabasesNameList);
+                            fdnl.listdatabasesname = listDatabasesName;
+
+                            //设置只能打开一个，配合FrmDatabasesNameList中的GetFrmDatabasesNameList()设置
+                            FrmDatabasesNameList.GetFrmDatabasesNameList().Activate();
+
+                            //接收FrmDatabasesNameList返回的DialogResult，可自定义操作
+                            if (fdnl.ShowDialog() == DialogResult.OK)
+                            {
+
+                            }
+
+                            mssqlconn.Close();
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+                #endregion
+                #region 使用MYSQL
+                if (radiobtnMYSQL.Checked == true)
+                {
+                    sqlGetDatabaseTablesNameListForMySQL = GetsqlGetDatabaseTablesNameListForMSSQLORMySQL("MySQL", "TABLE", txtboxDatabase.Text.Trim());
+                    sqlGetDatabaseViewsNameListForMySQL = GetsqlGetDatabaseTablesNameListForMSSQLORMySQL("MySQL", "VIEW", txtboxDatabase.Text.Trim());
+
+                    try
+                    {
+                        //mysqlconn = new MySqlConnection(sqlconn);
+                        //mysqlconn.Open();
+                        if (mysqlconn.State == ConnectionState.Open)
+                        {
+                            //获取当前数据库下的表名
+                            dtDatabaseTablesNameList = SqlHelper.getDataSetMySQL(sqlGetDatabaseTablesNameListForMySQL, mysqlconn).Tables[0];
+                            mysqlconn.Open();
+                            //将表名存到list
+                            listDatabaseTablesName = DataTableToList(dtDatabaseTablesNameList);
+                            tn.Nodes.Add("表");
+                            foreach (var item in listDatabaseTablesName)
+                            {
+                                tn.Nodes[0].Nodes.Add(item);
+                            }
+
+                            //获取当前数据库下的视图名
+                            dtDatabaseViewsNameList = SqlHelper.getDataSetMySQL(sqlGetDatabaseViewsNameListForMySQL, mysqlconn).Tables[0];
+                            mysqlconn.Open();
+                            //将表名存到list
+                            listDatabaseViewsName = DataTableToList(dtDatabaseViewsNameList);
+                            tn.Nodes.Add("视图");
+                            foreach (var item in listDatabaseViewsName)
+                            {
+                                tn.Nodes[1].Nodes.Add(item);
+                            }
+
+                            fsqlts.tn = tn;
+                            fsqlts.Show();
+
+                            //设置只能打开一个，配合FrmDatabasesNameList中的GetFrmDatabasesNameList()设置
+                            //FrmDatabasesNameList.GetFrmDatabasesNameList().Activate();
+
+                            //接收FrmDatabasesNameList返回的DialogResult，可自定义操作
+                            //if (fdnl.ShowDialog() == DialogResult.OK)
+                            //{
+                            //
+                            //}
+                        }
+                        else
+                        {
+                            mysqlconn.Open();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+                #endregion
+            }
+            else
+            {
+                MessageBox.Show("请先连接数据库！");
+                btnConnect.Focus();
+            }
+        }
+        #endregion
+
+        #region 获取MSSQL/MySQL当前所选数据库中的表名/视图名
+        /// <summary>
+        /// 获取MSSQL/MySQL当前所选数据库中的表名/视图名
+        /// </summary>
+        /// <param name="sqlType">MSSQL/MySQL</param>
+        /// <param name="Type">TABLE/VIEW</param>
+        /// <param name="DataBaseName">数据库名</param>
+        /// <returns></returns>
+        private string GetsqlGetDatabaseTablesNameListForMSSQLORMySQL(string sqlType, string Type, string DataBaseName)
+        {
+            string result = "SELECT 1;";
+
+            if (string.IsNullOrEmpty(sqlType) == false && string.IsNullOrEmpty(DataBaseName) == false)
+            {
+                //MSSQL
+                if (sqlType == "MSSQL")
+                {
+                    //表
+                    if (Type == "TABLE")
+                    {
+                        result = "MSSQL";
+                        return result;
+                    }
+                    //视图
+                    if (Type == "VIEW")
+                    {
+                        result = "VIEW";
+                        return result;
+                    }
+                    else
+                    {
+                        return result;
+                    }
+                }
+                //MySQL
+                if (sqlType == "MySQL")
+                {
+                    //表
+                    if (Type == "TABLE")
+                    {
+                        result = "SELECT TABLE_NAME FROM `information_schema`.`TABLES` WHERE TABLE_SCHEMA = '" + DataBaseName + "' AND TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_NAME;";
+                        return result;
+                    }
+                    //视图
+                    if (Type == "VIEW")
+                    {
+                        result = "SELECT TABLE_NAME FROM `information_schema`.`TABLES` WHERE TABLE_SCHEMA = '" + DataBaseName + "' AND TABLE_TYPE = 'VIEW' ORDER BY TABLE_NAME;";
+                        //result = "SELECT TABLE_NAME FROM `information_schema`.`VIEWS` WHERE TABLE_SCHEMA = '" + DataBaseName + "' ORDER BY TABLE_NAME;";
+                        return result;
+                    }
+                    else
+                    {
+                        return result;
+                    }
+                }
+                else
+                {
+                    return result;
+                }
+            }
+            else
+            {
+                return result;
+            }
         }
         #endregion
     }

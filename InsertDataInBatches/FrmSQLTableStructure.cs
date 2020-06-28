@@ -29,6 +29,7 @@ namespace InsertDataInBatches
 
             treeView1.ExpandAll();//展开所有树节点
             //treeView1.CollapseAll();//折叠所有树节点
+            treeView1.Nodes[0].EnsureVisible();//垂直滚动条在展开所有节点后回到顶端
         }
     }
 }
