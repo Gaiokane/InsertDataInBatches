@@ -1846,48 +1846,54 @@ namespace InsertDataInBatches
                 tn.Nodes[1].Nodes.Add("节点2的子节点2");
                 */
 
-
                 #region 使用MSSQL
                 if (radiobtnMSSQL.Checked == true)
                 {
-                    sqlconn = string.Empty;
-                    database = "master";
-                    if (chkboxPort.Checked == true)//指定端口
-                    {
-                        sqlconn = "server=" + host + "," + port + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
-                    }
-                    else//不指定端口
-                    {
-                        sqlconn = "server=" + host + "; database=" + database + "; uid=" + username + "; pwd=" + password + "";
-                    }
+                    sqlGetDatabaseTablesNameListForMSSQL = GetsqlGetDatabaseTablesNameListForMSSQLORMySQL("MSSQL", "TABLE", txtboxDatabase.Text.Trim());
+                    sqlGetDatabaseViewsNameListForMSSQL = GetsqlGetDatabaseTablesNameListForMSSQLORMySQL("MSSQL", "VIEW", txtboxDatabase.Text.Trim());
+
                     try
                     {
-                        mssqlconn = new SqlConnection(sqlconn);
-                        mssqlconn.Open();
                         if (mssqlconn.State == ConnectionState.Open)
                         {
-                            FrmDatabasesNameList fdnl = new FrmDatabasesNameList();
-
-                            fdnl.txtboxdatabase = txtboxDatabase;
-
-                            //获取当前用户有权限的数据库名DataTable
-                            dtDatabasesNameList = SqlHelper.getDataSetMSSQL(sqlGetDatabasesNameListForMSSQL, mssqlconn).Tables[0];
-                            //将数据库名存到list
-                            listDatabasesName = DataTableToList(dtDatabasesNameList);
-                            fdnl.listdatabasesname = listDatabasesName;
-
-                            //设置只能打开一个，配合FrmDatabasesNameList中的GetFrmDatabasesNameList()设置
-                            FrmDatabasesNameList.GetFrmDatabasesNameList().Activate();
-
-                            //接收FrmDatabasesNameList返回的DialogResult，可自定义操作
-                            if (fdnl.ShowDialog() == DialogResult.OK)
+                            //获取当前数据库下的表名
+                            dtDatabaseTablesNameList = SqlHelper.getDataSetMSSQL(sqlGetDatabaseTablesNameListForMSSQL, mssqlconn).Tables[0];
+                            mssqlconn.Open();
+                            //将表名存到list
+                            listDatabaseTablesName = DataTableToList(dtDatabaseTablesNameList);
+                            tn.Nodes.Add("表");
+                            foreach (var item in listDatabaseTablesName)
                             {
-
+                                tn.Nodes[0].Nodes.Add(item);
                             }
 
-                            mssqlconn.Close();
-                        }
+                            //获取当前数据库下的视图名
+                            dtDatabaseViewsNameList = SqlHelper.getDataSetMSSQL(sqlGetDatabaseViewsNameListForMSSQL, mssqlconn).Tables[0];
+                            mssqlconn.Open();
+                            //将表名存到list
+                            listDatabaseViewsName = DataTableToList(dtDatabaseViewsNameList);
+                            tn.Nodes.Add("视图");
+                            foreach (var item in listDatabaseViewsName)
+                            {
+                                tn.Nodes[1].Nodes.Add(item);
+                            }
 
+                            fsqlts.tn = tn;
+                            fsqlts.Show();
+
+                            //设置只能打开一个，配合FrmDatabasesNameList中的GetFrmDatabasesNameList()设置
+                            //FrmDatabasesNameList.GetFrmDatabasesNameList().Activate();
+
+                            //接收FrmDatabasesNameList返回的DialogResult，可自定义操作
+                            //if (fdnl.ShowDialog() == DialogResult.OK)
+                            //{
+                            //
+                            //}
+                        }
+                        else
+                        {
+                            mssqlconn.Open();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -1903,8 +1909,6 @@ namespace InsertDataInBatches
 
                     try
                     {
-                        //mysqlconn = new MySqlConnection(sqlconn);
-                        //mysqlconn.Open();
                         if (mysqlconn.State == ConnectionState.Open)
                         {
                             //获取当前数据库下的表名
@@ -1981,13 +1985,13 @@ namespace InsertDataInBatches
                     //表
                     if (Type == "TABLE")
                     {
-                        result = "MSSQL";
+                        result = "USE " + DataBaseName + ";SELECT name FROM sysobjects WHERE xtype = 'U' ORDER BY name;";
                         return result;
                     }
                     //视图
                     if (Type == "VIEW")
                     {
-                        result = "VIEW";
+                        result = "USE " + DataBaseName + ";SELECT name FROM sysobjects WHERE xtype = 'V' ORDER BY name;";
                         return result;
                     }
                     else
