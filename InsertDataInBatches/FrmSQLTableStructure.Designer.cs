@@ -42,6 +42,9 @@
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(260, 426);
             this.treeView1.TabIndex = 0;
+            this.treeView1.DoubleClick += new System.EventHandler(this.treeView1_DoubleClick);
+            this.treeView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.treeView1_KeyPress);
+            this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
             // 
             // dataGridView1
             // 
@@ -54,6 +57,7 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(510, 210);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataGridView1_KeyPress);
             // 
             // richTextBox1
             // 
@@ -64,6 +68,7 @@
             this.richTextBox1.Size = new System.Drawing.Size(510, 210);
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
+            this.richTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.richTextBox1_KeyPress);
             // 
             // FrmSQLTableStructure
             // 
@@ -76,6 +81,7 @@
             this.Name = "FrmSQLTableStructure";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "查看表结构";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmSQLTableStructure_FormClosed);
             this.Load += new System.EventHandler(this.FrmSQLTableStructure_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

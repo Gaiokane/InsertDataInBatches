@@ -1879,16 +1879,24 @@ namespace InsertDataInBatches
                             }
 
                             fsqlts.tn = tn;
-                            fsqlts.Show();
 
-                            //设置只能打开一个，配合FrmDatabasesNameList中的GetFrmDatabasesNameList()设置
-                            //FrmDatabasesNameList.GetFrmDatabasesNameList().Activate();
+                            //用了FrmSQLTableStructure.GetFrmSQLTableStructure().Activate();，就不能用fsqlts.Show();
+                            //fsqlts.Show();
 
-                            //接收FrmDatabasesNameList返回的DialogResult，可自定义操作
-                            //if (fdnl.ShowDialog() == DialogResult.OK)
-                            //{
-                            //
-                            //}
+                            //设置只能打开一个，配合FrmSQLTableStructure中的GetFrmSQLTableStructure()设置
+                            FrmSQLTableStructure.GetFrmSQLTableStructure().Activate();
+
+                            //接收FrmSQLTableStructure返回的DialogResult，可自定义操作
+                            if (fsqlts.ShowDialog() == DialogResult.OK)
+                            {
+                                string str = fsqlts.tablename;
+                                int index = richtxtboxInsertSQL.SelectionStart;
+                                string s = richtxtboxInsertSQL.Text;
+                                s = s.Insert(index, str);
+                                richtxtboxInsertSQL.Text = s;
+                                richtxtboxInsertSQL.SelectionStart = index + str.Length;
+                                richtxtboxInsertSQL.Focus();
+                            }
                         }
                         else
                         {
@@ -1934,16 +1942,26 @@ namespace InsertDataInBatches
                             }
 
                             fsqlts.tn = tn;
-                            fsqlts.Show();
 
-                            //设置只能打开一个，配合FrmDatabasesNameList中的GetFrmDatabasesNameList()设置
-                            //FrmDatabasesNameList.GetFrmDatabasesNameList().Activate();
+                            //用了FrmSQLTableStructure.GetFrmSQLTableStructure().Activate();，就不能用fsqlts.Show();
+                            //fsqlts.Show();
 
-                            //接收FrmDatabasesNameList返回的DialogResult，可自定义操作
-                            //if (fdnl.ShowDialog() == DialogResult.OK)
-                            //{
-                            //
-                            //}
+                            //设置只能打开一个，配合FrmSQLTableStructure中的GetFrmSQLTableStructure()设置
+                            FrmSQLTableStructure.GetFrmSQLTableStructure().Activate();
+
+                            //接收FrmSQLTableStructure返回的DialogResult，可自定义操作
+                            if (fsqlts.ShowDialog() == DialogResult.OK)
+                            {
+                                //MessageBox.Show(fsqlts.tablename);
+
+                                string str = fsqlts.tablename;
+                                int index = richtxtboxInsertSQL.SelectionStart;
+                                string s = richtxtboxInsertSQL.Text;
+                                s = s.Insert(index, str);
+                                richtxtboxInsertSQL.Text = s;
+                                richtxtboxInsertSQL.SelectionStart = index + str.Length;
+                                richtxtboxInsertSQL.Focus();
+                            }
                         }
                         else
                         {
