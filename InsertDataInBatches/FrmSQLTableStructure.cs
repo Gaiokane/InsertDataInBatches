@@ -20,6 +20,9 @@ namespace InsertDataInBatches
 
         public string tablename;
 
+        private string sqlGetTableStructureForMSSQL;
+        private string sqlGetTableStructureForMySQL;
+
         public FrmSQLTableStructure()
         {
             InitializeComponent();
@@ -49,7 +52,7 @@ namespace InsertDataInBatches
             TreeNode node = this.treeView1.GetNodeAt(pi);
             //获取深度，0：数据库名；1：表/视图；2：表名/视图名
             //MessageBox.Show(node.Level.ToString());
-            if (node.Level==2)
+            if (node.Level == 2)
             {
                 if (pi.X < node.Bounds.Left || pi.X > node.Bounds.Right)
                 {
@@ -122,6 +125,45 @@ namespace InsertDataInBatches
             if (e.KeyChar == 27)
             {
                 this.Close();
+            }
+        }
+        #endregion
+
+        #region 获取MSSQL/MySQL当前所选表的表结构消息
+        /// <summary>
+        /// 获取MSSQL/MySQL当前所选表的表结构消息
+        /// </summary>
+        /// <param name="sqlType">MSSQL/MySQL</param>
+        /// <param name="DataBaseName">数据库名</param>
+        /// <param name="TableName">表名</param>
+        /// <returns></returns>
+        private string GetsqlGetTableStructureForMSSQLORMySQL(string sqlType, string DataBaseName, string TableName)
+        {
+            string result = "SELECT 1;";
+
+            if (string.IsNullOrEmpty(sqlType) == false && string.IsNullOrEmpty(DataBaseName) == false && string.IsNullOrEmpty(TableName) == false)
+            {
+                //MSSQL
+                if (sqlType == "MSSQL")
+                {
+                    result = "SELECT 1;";
+                    return result;
+                }
+                //MySQL
+                if (sqlType == "MySQL")
+                {
+                    result = "SELECT COLUMN_NAME, COLUMN_TYPE, COLUMN_COMMENT FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + DataBaseName + "' AND TABLE_NAME = '" + TableName + "';";
+                    //SELECT COLUMN_NAME AS 字段名, COLUMN_TYPE AS 字段类型, COLUMN_COMMENT AS 字段注释 FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '" + DataBaseName + "' AND TABLE_NAME = '" + TableName + "';
+                    return result;
+                }
+                else
+                {
+                    return result;
+                }
+            }
+            else
+            {
+                return result;
             }
         }
         #endregion
