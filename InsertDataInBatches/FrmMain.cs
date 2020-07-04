@@ -1827,7 +1827,6 @@ namespace InsertDataInBatches
         {
             if (labConnectStatus.Text == "状态：已连接")
             {
-
                 //MessageBox.Show(GetsqlGetDatabaseTablesNameListForMSSQLORMySQL("MySQL", txtboxDatabase.Text.Trim()));
                 //MessageBox.Show(GetsqlGetDatabaseTablesNameListForMSSQLORMySQL("MSSQL", txtboxDatabase.Text.Trim()));
 
@@ -1854,6 +1853,11 @@ namespace InsertDataInBatches
 
                     try
                     {
+                        //处理单击树节点显示表结构后连接被关闭
+                        if (mssqlconn.State == ConnectionState.Closed)
+                        {
+                            mssqlconn.Open();
+                        }
                         if (mssqlconn.State == ConnectionState.Open)
                         {
                             //获取当前数据库下的表名
@@ -1879,6 +1883,8 @@ namespace InsertDataInBatches
                             }
 
                             fsqlts.tn = tn;
+                            fsqlts.mssqlconn = mssqlconn;
+                            fsqlts.sqltype = "MSSQL";
 
                             //用了FrmSQLTableStructure.GetFrmSQLTableStructure().Activate();，就不能用fsqlts.Show();
                             //fsqlts.Show();
@@ -1917,6 +1923,11 @@ namespace InsertDataInBatches
 
                     try
                     {
+                        //处理单击树节点显示表结构后连接被关闭
+                        if (mysqlconn.State == ConnectionState.Closed)
+                        {
+                            mysqlconn.Open();
+                        }
                         if (mysqlconn.State == ConnectionState.Open)
                         {
                             //获取当前数据库下的表名
@@ -1942,6 +1953,8 @@ namespace InsertDataInBatches
                             }
 
                             fsqlts.tn = tn;
+                            fsqlts.mysqlconn = mysqlconn;
+                            fsqlts.sqltype = "MySQL";
 
                             //用了FrmSQLTableStructure.GetFrmSQLTableStructure().Activate();，就不能用fsqlts.Show();
                             //fsqlts.Show();
