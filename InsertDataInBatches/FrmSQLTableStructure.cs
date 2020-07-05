@@ -47,6 +47,9 @@ namespace InsertDataInBatches
 
             //MessageBox.Show(databasename);
             //MessageBox.Show(treeView1.Nodes[0].Text);
+
+            //RichTextBox增加右键菜单
+            RichTextBoxMenu richTextBoxMenu_richTextBox1 = new RichTextBoxMenu(richTextBox1);
         }
 
         #region treeview获取鼠标坐标 用来判断是否选中节点
@@ -204,8 +207,12 @@ namespace InsertDataInBatches
                 }
                 else
                 {
-
+                    MessageBox.Show("出错啦");
                 }
+
+                dataGridView1.Columns[0].HeaderText = "列名";
+                dataGridView1.Columns[1].HeaderText = "类型";
+                dataGridView1.Columns[2].HeaderText = "注释";
             }
         }
         #endregion
