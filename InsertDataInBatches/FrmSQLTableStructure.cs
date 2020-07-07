@@ -160,6 +160,34 @@ namespace InsertDataInBatches
                 //MSSQL
                 if (sqlType == "MSSQL")
                 {
+                    #region 查表结构sql
+                    /*
+                     USE dbname;
+                     SELECT (case when a.colorder=1 then d.name else null end) 表名,
+                     a.colorder 字段序号,a.name 字段名,
+                     (case when COLUMNPROPERTY( a.id,a.name,'IsIdentity')=1 then '√'else '' end) 标识,
+                     (case when (SELECT count(*) FROM sysobjects
+                     WHERE (name in (SELECT name FROM sysindexes
+                     WHERE (id = a.id) AND (indid in
+                     (SELECT indid FROM sysindexkeys
+                     WHERE (id = a.id) AND (colid in
+                     (SELECT colid FROM syscolumns WHERE (id = a.id) AND (name = a.name)))))))
+                     AND (xtype = 'PK'))>0 then '√' else '' end) 主键,b.name 类型,a.length 占用字节数,
+                     COLUMNPROPERTY(a.id,a.name,'PRECISION') as 长度,
+                     isnull(COLUMNPROPERTY(a.id,a.name,'Scale'),0) as 小数位数,(case when a.isnullable=1 then '√'else '' end) 允许空,
+                     isnull(e.text,'') 默认值,isnull(g.[value], ' ') AS [说明]
+                     FROM  syscolumns a
+                     left join systypes b on a.xtype=b.xusertype
+                     inner join sysobjects d on a.id=d.id and d.xtype='U' and d.name<>'dtproperties'
+                     left join syscomments e on a.cdefault=e.id
+                     left join sys.extended_properties g on a.id=g.major_id AND a.colid=g.minor_id
+                     left join sys.extended_properties f on d.id=f.class and f.minor_id=0
+                     where b.name is not null
+                     --WHERE d.name='info' --如果只查询指定表,加上此条件
+                     order by a.id,a.colorder
+                     */
+                    #endregion
+
                     result = "USE " + databasename + "; " +
                         "SELECT (case when a.colorder=1 then d.name else null end) 表名, " +
                         "a.colorder 字段序号, a.name 字段名, " +
@@ -254,6 +282,33 @@ namespace InsertDataInBatches
                     dgBindData(sqltype, treeView1.SelectedNode.Text);
                 }
             }
+        }
+        #endregion
+
+        #region 处理点击已选择节点后重新获取所选表 表结构，并显示到dg中
+        private void treeView1_Click(object sender, EventArgs e)
+        {
+            TreeNode node = this.treeView1.GetNodeAt(pi);
+            //获取深度，0：数据库名；1：表/视图；2：表名/视图名
+            //MessageBox.Show(node.Level.ToString());
+            if (node.Level == 2)
+            {
+                if (pi.X < node.Bounds.Left || pi.X > node.Bounds.Right)
+                {
+                    //不触发事件
+
+                    return;
+                }
+                else
+                {
+                    //触发事件
+                    if (treeView1.SelectedNode.Text == node.Text)
+                    {
+                        dgBindData(sqltype, treeView1.SelectedNode.Text);
+                    }
+                }
+            }
+
         }
         #endregion
     }
