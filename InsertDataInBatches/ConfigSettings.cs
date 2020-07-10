@@ -499,6 +499,32 @@ namespace InsertDataInBatches
         }
         #endregion
 
+        #region 获取最后连接数据库类型
+        /// <summary>
+        /// 获取最后连接数据库类型
+        /// </summary>
+        /// <returns>返回数据库类型，MSSQL/MySQL</returns>
+        public static string getLastConnectionType()
+        {
+            string result = RWConfig.GetappSettingsValue("LastConnectionType", ConfigPath);
+            return result;
+        }
+        #endregion
+
+        #region 获取最后连接字符串MSSQL/MySQL
+        /// <summary>
+        /// 获取最后连接字符串MSSQL/MySQL
+        /// </summary>
+        /// <param name="sqlType">数据库类型，MSSQL/MySQL</param>
+        /// <returns>数组 string[] sqlType, int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password</returns>
+        public static string[] getLastConnectionStrings(string sqlType)
+        {
+            string temp = RWConfig.GetappSettingsValue("LastConnectionStringsFor" + sqlType, ConfigPath);
+            string[] result = temp.Split(';');
+            return result;
+        }
+        #endregion
+
         #region 根据配置文件中的Key获取对应Value
         /// <summary>
         /// 根据配置文件中的Key获取对应Value
