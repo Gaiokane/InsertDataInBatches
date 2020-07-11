@@ -30,7 +30,7 @@ namespace InsertDataInBatches
          * 2.增加连接记录（数据库地址、数据库等）维护页面
          * 3.若配置文件中 快捷插入配置/常用SQL value为“;”，程序运行后下拉框会为空（当前使用；代替;快捷插入配置：在指定元素中随机选择一项）
          * 4.多线程插数据
-         * 5.连接记录分别记录mssql、mysql最近一次连接记录
+         * 5.连接记录分别记录mssql、mysql最近一次连接记录——读取（√）、连接成功更新配置（）、无配置恢复默认（）
          */
 
         /* 
@@ -131,54 +131,139 @@ namespace InsertDataInBatches
             setTestConn();
 
             #region 读取并设置上一次数据库连接
-            string[] LastConnectionStrings = ConfigSettings.getLastConnectionStrings();
-            if (LastConnectionStrings.Length != 7)
+            #region 替换下面方法，分别读取MSSQL/MySQL最近连接记录
+            int isLastConnectionSettingError = 0;
+            string LastConnectionType = ConfigSettings.getLastConnectionType();
+            string[] LastConnectionStrings;
+            if (LastConnectionType == "MSSQL" || LastConnectionType == "MySQL")
             {
-                ConfigSettings.setLastConnectionStrings(1, "127.0.0.1", false, "3306", "pagination", "qkk", "qkk");
-                MessageBox.Show("最新数据库连接值不正确，已重置为默认值，请重新运行该程序！");
-                Application.Exit();
+                LastConnectionStrings = ConfigSettings.getLastConnectionStrings(LastConnectionType);
+                if (LastConnectionType == "MSSQL" && LastConnectionStrings.Length != 7)
+                {
+                    //MSSQL的LastConnectionStrings问题，值为2
+                    isLastConnectionSettingError += 2;
+                }
+                else if (LastConnectionType == "MySQL" && LastConnectionStrings.Length != 7)
+                {
+                    //MySQL的LastConnectionStrings问题，值为4
+                    isLastConnectionSettingError += 4;
+                }
+                else
+                {
+                    //LastConnectionType、MSSQL的LastConnectionStrings、MySQL的LastConnectionStrings均没问题
+                    bool isPort = false;
+                    if (LastConnectionStrings[2] == "True")
+                    {
+                        isPort = true;
+                    }
+                    else if (LastConnectionStrings[2] == "False")
+                    {
+                        isPort = false;
+                    }
+                    else
+                    {
+                        isPort = false;
+                    }
+                    //int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password
+                    if (LastConnectionStrings[0] == "0")
+                    {
+                        radiobtnMSSQL.Checked = true;
+                        txtboxHost.Text = LastConnectionStrings[1];
+                        chkboxPort.Checked = isPort;
+                        txtboxPort.Text = LastConnectionStrings[3];
+                        txtboxDatabase.Text = LastConnectionStrings[4];
+                        txtboxUsername.Text = LastConnectionStrings[5];
+                        txtboxPassword.Text = LastConnectionStrings[6];
+                    }
+                    else if (LastConnectionStrings[0] == "1")
+                    {
+                        radiobtnMYSQL.Checked = true;
+                        txtboxHost.Text = LastConnectionStrings[1];
+                        chkboxPort.Checked = isPort;
+                        txtboxPort.Text = LastConnectionStrings[3];
+                        txtboxDatabase.Text = LastConnectionStrings[4];
+                        txtboxUsername.Text = LastConnectionStrings[5];
+                        txtboxPassword.Text = LastConnectionStrings[6];
+                    }
+                    else
+                    {
+                        setTestConn();
+                    }
+                }
             }
             else
             {
-                bool isPort = false;
-                if (LastConnectionStrings[2] == "True")
-                {
-                    isPort = true;
-                }
-                else if (LastConnectionStrings[2] == "False")
-                {
-                    isPort = false;
-                }
-                else
-                {
-                    isPort = false;
-                }
-                //int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password
-                if (LastConnectionStrings[0] == "0")
-                {
-                    radiobtnMSSQL.Checked = true;
-                    txtboxHost.Text = LastConnectionStrings[1];
-                    chkboxPort.Checked = isPort;
-                    txtboxPort.Text = LastConnectionStrings[3];
-                    txtboxDatabase.Text = LastConnectionStrings[4];
-                    txtboxUsername.Text = LastConnectionStrings[5];
-                    txtboxPassword.Text = LastConnectionStrings[6];
-                }
-                else if (LastConnectionStrings[0] == "1")
-                {
-                    radiobtnMYSQL.Checked = true;
-                    txtboxHost.Text = LastConnectionStrings[1];
-                    chkboxPort.Checked = isPort;
-                    txtboxPort.Text = LastConnectionStrings[3];
-                    txtboxDatabase.Text = LastConnectionStrings[4];
-                    txtboxUsername.Text = LastConnectionStrings[5];
-                    txtboxPassword.Text = LastConnectionStrings[6];
-                }
-                else
-                {
-                    setTestConn();
-                }
+                //LastConnectionType问题，值为1
+                isLastConnectionSettingError += 1;
             }
+            //LastConnectionType问题，值为1
+            if (getAndOperationResult(isLastConnectionSettingError, 1) == 0)
+            {
+
+            }
+            //MSSQL的LastConnectionStrings问题，值为2
+            if (getAndOperationResult(isLastConnectionSettingError, 2) == 0)
+            {
+
+            }
+            //MySQL的LastConnectionStrings问题，值为4
+            if (getAndOperationResult(isLastConnectionSettingError, 4) == 0)
+            {
+
+            }
+            #endregion
+
+            #region （已注释，上面新方法替代）原版读取最近连接记录，只支持读取上一次连接记录，无法区分MSSQL/MySQL
+            /*
+                string[] LastConnectionStrings = ConfigSettings.getLastConnectionStrings();
+                if (LastConnectionStrings.Length != 7)
+                {
+                    ConfigSettings.setLastConnectionStrings(1, "127.0.0.1", false, "3306", "pagination", "qkk", "qkk");
+                    MessageBox.Show("最新数据库连接值不正确，已重置为默认值，请重新运行该程序！");
+                    Application.Exit();
+                }
+                else
+                {
+                    bool isPort = false;
+                    if (LastConnectionStrings[2] == "True")
+                    {
+                        isPort = true;
+                    }
+                    else if (LastConnectionStrings[2] == "False")
+                    {
+                        isPort = false;
+                    }
+                    else
+                    {
+                        isPort = false;
+                    }
+                    //int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password
+                    if (LastConnectionStrings[0] == "0")
+                    {
+                        radiobtnMSSQL.Checked = true;
+                        txtboxHost.Text = LastConnectionStrings[1];
+                        chkboxPort.Checked = isPort;
+                        txtboxPort.Text = LastConnectionStrings[3];
+                        txtboxDatabase.Text = LastConnectionStrings[4];
+                        txtboxUsername.Text = LastConnectionStrings[5];
+                        txtboxPassword.Text = LastConnectionStrings[6];
+                    }
+                    else if (LastConnectionStrings[0] == "1")
+                    {
+                        radiobtnMYSQL.Checked = true;
+                        txtboxHost.Text = LastConnectionStrings[1];
+                        chkboxPort.Checked = isPort;
+                        txtboxPort.Text = LastConnectionStrings[3];
+                        txtboxDatabase.Text = LastConnectionStrings[4];
+                        txtboxUsername.Text = LastConnectionStrings[5];
+                        txtboxPassword.Text = LastConnectionStrings[6];
+                    }
+                    else
+                    {
+                        setTestConn();
+                    }
+                }*/
+            #endregion
             #endregion
 
             txtboxNumberOfExecutions.Text = "2";
@@ -2060,6 +2145,20 @@ namespace InsertDataInBatches
             {
                 return result;
             }
+        }
+        #endregion
+
+        #region 与运算，返回结果，0 or 非0
+        /// <summary>
+        /// 与运算，返回结果，0 or 非0
+        /// </summary>
+        /// <param name="value">value & num</param>
+        /// <param name="num">value & num</param>
+        /// <returns></returns>
+        private int getAndOperationResult(int value, int num)
+        {
+            int result = value & num;
+            return result;
         }
         #endregion
     }
