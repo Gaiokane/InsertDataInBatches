@@ -459,7 +459,7 @@ namespace InsertDataInBatches
         }
         #endregion
 
-        #region 设置最后连接字符串
+        #region （已注释，原本未分开记录MSSQL/MySQL配置）设置最后连接字符串
         /// <summary>
         /// 设置最后连接字符串
         /// </summary>
@@ -471,12 +471,71 @@ namespace InsertDataInBatches
         /// <param name="Username">用户名</param>
         /// <param name="Password">密码</param>
         /// <returns></returns>
-        public static bool setLastConnectionStrings(int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password)
+        /*public static bool setLastConnectionStrings(int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password)
         {
             string value = sqlType + ";" + Host + ";" + isPort + ";" + Port + ";" + Database + ";" + Username + ";" + Password;
             if (sqlType == 0 || sqlType == 1)//0=mssql，1=mysql
             {
                 RWConfig.SetappSettingsValue("LastConnectionStrings", value, ConfigPath);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }*/
+        #endregion
+
+        #region 设置最后连接字符串
+        /// <summary>
+        /// 设置最后连接字符串
+        /// </summary>
+        /// <param name="sqlType">数据库类型 0=mssql 1=mysql</param>
+        /// <param name="Host">数据库地址</param>
+        /// <param name="isPort">是否需要端口</param>
+        /// <param name="Port">端口号</param>
+        /// <param name="Database">数据库名</param>
+        /// <param name="Username">用户名</param>
+        /// <param name="Password">密码</param>
+        /// <returns>true/false</returns>
+        public static bool setLastConnectionStrings(int sqlType, string Host, bool isPort, string Port, string Database, string Username, string Password)
+        {
+            string value = sqlType + ";" + Host + ";" + isPort + ";" + Port + ";" + Database + ";" + Username + ";" + Password;
+            if (sqlType == 0 || sqlType == 1)//0=mssql，1=mysql
+            {
+                if (sqlType == 0)
+                {
+                    RWConfig.SetappSettingsValue("LastConnectionStringsForMSSQL", value, ConfigPath);
+                    return true;
+                }
+                if (sqlType == 1)
+                {
+                    RWConfig.SetappSettingsValue("LastConnectionStringsForMySQL", value, ConfigPath);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
+
+        #region 设置最后连接数据库类型
+        /// <summary>
+        /// 设置最后连接数据库类型
+        /// </summary>
+        /// <param name="sqlType">数据库类型，MSSQL/MySQL</param>
+        /// <returns>true/false</returns>
+        public static bool setLastConnectionType(string sqlType)
+        {
+            if (sqlType == "MSSQL" || sqlType == "MySQL")
+            {
+                RWConfig.SetappSettingsValue("LastConnectionType", sqlType, ConfigPath);
                 return true;
             }
             else
