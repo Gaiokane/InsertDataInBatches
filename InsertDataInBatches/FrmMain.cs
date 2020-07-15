@@ -167,7 +167,7 @@ namespace InsertDataInBatches
             //MSSQL的LastConnectionStrings问题，值为2
             if (getAndOperationResult(isLastConnectionSettingError, 2) != 0)
             {
-                ConfigSettings.setLastConnectionStrings(0, "127.0.0.1", false, "1433", "qktest", "sa", "11111");
+                ConfigSettings.setLastConnectionStrings(0, "docker,98", false, "1433", "qktest", "sa", "Qwer1234!");
             }
             //MySQL的LastConnectionStrings问题，值为4
             if (getAndOperationResult(isLastConnectionSettingError, 4) != 0)
@@ -686,6 +686,12 @@ namespace InsertDataInBatches
                                             btnShowDatabases.Enabled = false;
                                         }
 
+                                        //设置最后连接数据库类型
+                                        if (ConfigSettings.setLastConnectionType("MSSQL") == false)
+                                        {
+                                            MessageBox.Show("更新最后连接数据库类型出错！");
+                                        }
+
                                         //设置上一次连接字符串
                                         if (ConfigSettings.setLastConnectionStrings(0, host, chkboxPort.Checked, port, database, username, password) == false)
                                         {
@@ -735,6 +741,12 @@ namespace InsertDataInBatches
                                             txtboxUsername.Enabled = false;
                                             txtboxPassword.Enabled = false;
                                             btnShowDatabases.Enabled = false;
+                                        }
+
+                                        //设置最后连接数据库类型
+                                        if (ConfigSettings.setLastConnectionType("MySQL") == false)
+                                        {
+                                            MessageBox.Show("更新最后连接数据库类型出错！");
                                         }
 
                                         //设置上一次连接字符串
