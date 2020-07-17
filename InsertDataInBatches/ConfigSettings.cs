@@ -92,7 +92,11 @@ namespace InsertDataInBatches
             {
                 append += ";QuickInsert_RandomStr";
             }
-            RWConfig.SetappSettingsValue("QuickInsert", QuickInsert + append, ConfigPath);
+            //不为空才更新，否则每次运行都会更新
+            if (!string.IsNullOrEmpty(append))
+            {
+                RWConfig.SetappSettingsValue("QuickInsert", QuickInsert + append, ConfigPath);
+            }
         }
         #endregion
 
