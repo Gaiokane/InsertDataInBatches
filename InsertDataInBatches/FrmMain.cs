@@ -44,6 +44,17 @@ namespace InsertDataInBatches
 
         string host, port, database, username, password, sqlconn;
 
+        string[] sqlQuerys;
+
+        string comBoxText;
+
+        SqlConnection mssqlconn;
+        SqlCommand mssqlcmd = new SqlCommand();
+
+        MySqlConnection mysqlconn;
+        //MySqlCommand mysqlcmd = new MySqlCommand();
+
+        #region 获取数据库名、表名、视图名字段
         string sqlGetDatabasesNameListForMSSQL = "SELECT name AS DATABASE_NAME FROM sysdatabases ORDER BY name;";
         string sqlGetDatabasesNameListForMySQL = "SELECT SCHEMA_NAME AS DATABASE_NAME FROM `information_schema`.`SCHEMATA` ORDER BY SCHEMA_NAME;";
         DataTable dtDatabasesNameList;
@@ -58,13 +69,9 @@ namespace InsertDataInBatches
         string sqlGetDatabaseViewsNameListForMySQL = "SELECT 3;";
         DataTable dtDatabaseViewsNameList;
         List<string> listDatabaseViewsName;
+        #endregion
 
-        SqlConnection mssqlconn;
-        SqlCommand mssqlcmd = new SqlCommand();
-
-        MySqlConnection mysqlconn;
-        //MySqlCommand mysqlcmd = new MySqlCommand();
-
+        #region 正则匹配部分
         Regex rgGetID = new Regex("{{id:\\d\\d*}}");//{{id:7}}取整块
         Regex rgGetNum = new Regex("(?<={{id:)\\d*?(?=}})");//{{id:7}}取冒号后的数字
 
@@ -88,10 +95,7 @@ namespace InsertDataInBatches
 
         Regex rgGetRandomStr = new Regex("{{\\[(.*?);(.*?)\\]}}");//{{[x;y;z...]}}取整块
         Regex rgGetRandomStrRange = new Regex("(?<={{\\[)(.*?);(.*?)?(?=\\]}})");//{{[x;y;z...]}}取{{[]}}中间部分
-
-        string[] sqlQuerys;
-
-        string comBoxText;
+        #endregion
 
         public FrmMain()
         {
