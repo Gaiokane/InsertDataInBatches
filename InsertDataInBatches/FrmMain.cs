@@ -33,6 +33,7 @@ namespace InsertDataInBatches
          * 5.快捷插入配置/常用SQL配置，新增时判断是否输入“;”，有则提示，没有则新增成功
          * 6.支持选择表直接复制insert语句
          * 7.备份配置文件
+         * 8.增加“是否显示执行情况”勾选框，替换当前messagebox
          */
 
         /* 
