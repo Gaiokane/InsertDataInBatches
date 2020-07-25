@@ -63,6 +63,7 @@
             this.btn_CommonlyUsedSQL_New = new System.Windows.Forms.Button();
             this.btn_CommonlyUsedSQL_Insert = new System.Windows.Forms.Button();
             this.btn_SQLTableStructure = new System.Windows.Forms.Button();
+            this.chkbox_MoreResult = new System.Windows.Forms.CheckBox();
             this.cmbox_CommonlyUsedSQL_List = new InsertDataInBatches.MyComboBox();
             this.cmbox_QuickInsert_List = new InsertDataInBatches.MyComboBox();
             this.groupbox_DataBase.SuspendLayout();
@@ -430,6 +431,16 @@
             this.btn_SQLTableStructure.UseVisualStyleBackColor = true;
             this.btn_SQLTableStructure.Click += new System.EventHandler(this.btn_SQLTableStructure_Click);
             // 
+            // chkbox_MoreResult
+            // 
+            this.chkbox_MoreResult.AutoSize = true;
+            this.chkbox_MoreResult.Location = new System.Drawing.Point(831, 153);
+            this.chkbox_MoreResult.Name = "chkbox_MoreResult";
+            this.chkbox_MoreResult.Size = new System.Drawing.Size(72, 28);
+            this.chkbox_MoreResult.TabIndex = 14;
+            this.chkbox_MoreResult.Text = "显示详细\r\n执行情况";
+            this.chkbox_MoreResult.UseVisualStyleBackColor = true;
+            // 
             // cmbox_CommonlyUsedSQL_List
             // 
             this.cmbox_CommonlyUsedSQL_List.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -455,6 +466,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(918, 450);
+            this.Controls.Add(this.chkbox_MoreResult);
             this.Controls.Add(this.btn_SQLTableStructure);
             this.Controls.Add(this.groupbox_CommonlyUsedSQL);
             this.Controls.Add(this.groupbox_QuickInsert);
@@ -518,6 +530,7 @@
         private MyComboBox cmbox_QuickInsert_List;
         private System.Windows.Forms.Button btnShowDatabases;
         private System.Windows.Forms.Button btn_SQLTableStructure;
+        private System.Windows.Forms.CheckBox chkbox_MoreResult;
     }
 }
 

@@ -33,7 +33,7 @@ namespace InsertDataInBatches
          * 5.快捷插入配置/常用SQL配置，新增时判断是否输入“;”，有则提示，没有则新增成功
          * 6.支持选择表直接复制insert语句
          * 7.备份配置文件
-         * 8.增加“是否显示执行情况”勾选框，替换当前messagebox
+         * √8.增加“是否显示执行情况”勾选框，替换当前messagebox
          */
 
         /* 
@@ -132,6 +132,8 @@ namespace InsertDataInBatches
              */
 
             this.Icon = Properties.Resources._20200417083355795_easyicon_net_128;
+
+            chkbox_MoreResult.Checked = true;
 
             //MessageBox.Show(getDotLength(1.1).ToString());
 
@@ -1699,7 +1701,10 @@ namespace InsertDataInBatches
             }
             finally
             {
-                richtxtboxResult.Text = temp;
+                if (chkbox_MoreResult.Checked == true)
+                {
+                    richtxtboxResult.Text = temp;
+                }
                 //MySQLConn.Close();
             }
         }
@@ -1751,12 +1756,14 @@ namespace InsertDataInBatches
             }
             finally
             {
-                richtxtboxResult.Text = temp;
+                if (chkbox_MoreResult.Checked == true)
+                {
+                    richtxtboxResult.Text = temp;
+                }
                 //MySQLConn.Close();
             }
         }
         #endregion
-
         #endregion
 
         #region 生成设置范围内的Double的随机数 生成指定范围内随机数用到
