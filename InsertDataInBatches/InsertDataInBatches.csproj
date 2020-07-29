@@ -160,5 +160,8 @@
   <ItemGroup>
     <None Include="Resources\20200417083355795_easyicon_net_128.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="img\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
