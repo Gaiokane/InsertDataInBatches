@@ -35,7 +35,7 @@ namespace InsertDataInBatches
          * 7.备份配置文件
          * √8.增加“是否显示执行情况”勾选框，替换当前messagebox
          * 9.去除关闭数据库连接部分，点击连接后只有手动点击断开才会关闭数据库连接
-         * 10.执行情况增加执行时间
+         * √10.执行情况增加执行时间
          */
 
         /* 
@@ -1248,10 +1248,12 @@ namespace InsertDataInBatches
                             try
                             {
                                 richtxtboxResult.Text = "";
+                                DateTime dtnow = DateTime.Now;
                                 int result = getAffectRowsTransactionMSSQL(sqlQuerys, mssqlconn);
+                                int datetimeSubtract = GetSeconds(dtnow);
                                 if (result > 0)
                                 {
-                                    richtxtboxResult.Text += "\n插入成功，插入结束";
+                                    richtxtboxResult.Text += "\n插入成功，插入结束\n耗时：" + datetimeSubtract + "秒";
 
                                     //滚动到底部
                                     //让文本框获取焦点 
@@ -1286,10 +1288,12 @@ namespace InsertDataInBatches
                             try
                             {
                                 richtxtboxResult.Text = "";
+                                DateTime dtnow = DateTime.Now;
                                 int result = getAffectRowsTransactionMySQL(sqlQuerys, mysqlconn);
+                                int datetimeSubtract = GetSeconds(dtnow);
                                 if (result > 0)
                                 {
-                                    richtxtboxResult.Text += "\n插入成功，插入结束";
+                                    richtxtboxResult.Text += "\n插入成功，插入结束\n耗时：" + datetimeSubtract + "秒";
 
                                     //滚动到底部
                                     //让文本框获取焦点 
@@ -2278,6 +2282,19 @@ namespace InsertDataInBatches
         {
             int result = value & num;
             return result;
+        }
+        #endregion
+
+        #region 获取两个时间的间隔秒
+        /// <summary>
+        /// 获取两个时间的间隔秒
+        /// </summary>
+        /// <param name="oldtime">旧时间，DateTime类型</param>
+        /// <returns>间隔秒，int类型</returns>
+        private int GetSeconds(DateTime oldtime)
+        {
+            TimeSpan ts = DateTime.Now.Subtract(oldtime);
+            return ts.Seconds;
         }
         #endregion
     }
