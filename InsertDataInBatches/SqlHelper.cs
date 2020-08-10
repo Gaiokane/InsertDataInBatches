@@ -35,7 +35,7 @@ namespace InsertDataInBatches
             }
             finally
             {
-                SQLConn.Close();
+                //SQLConn.Close();
             }
         }
 
@@ -60,7 +60,7 @@ namespace InsertDataInBatches
             }
             finally
             {
-                SQLConn.Close();
+                //SQLConn.Close();
             }
         }
 
@@ -118,7 +118,7 @@ namespace InsertDataInBatches
             }
             finally
             {
-                SQLConn.Close();
+                //SQLConn.Close();
             }
         }
 
@@ -143,7 +143,7 @@ namespace InsertDataInBatches
             }
             finally
             {
-                SQLConn.Close();
+                //SQLConn.Close();
             }
         }
         #endregion
@@ -172,7 +172,7 @@ namespace InsertDataInBatches
             }
             finally
             {
-                MySQLConn.Close();
+                //MySQLConn.Close();
             }
         }
 
@@ -197,7 +197,7 @@ namespace InsertDataInBatches
             }
             finally
             {
-                MySQLConn.Close();
+                //MySQLConn.Close();
             }
         }
 
@@ -255,7 +255,7 @@ namespace InsertDataInBatches
             }
             finally
             {
-                MySQLConn.Close();
+                //MySQLConn.Close();
             }
         }
 
@@ -280,7 +280,7 @@ namespace InsertDataInBatches
             }
             finally
             {
-                MySQLConn.Close();
+                //MySQLConn.Close();
             }
         }
         #endregion

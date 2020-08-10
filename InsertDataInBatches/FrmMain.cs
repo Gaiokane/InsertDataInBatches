@@ -34,7 +34,7 @@ namespace InsertDataInBatches
          * 6.支持选择表直接复制insert语句
          * 7.备份配置文件
          * √8.增加“是否显示执行情况”勾选框，替换当前messagebox
-         * 9.去除关闭数据库连接部分，点击连接后只有手动点击断开才会关闭数据库连接
+         * √9.去除关闭数据库连接部分，点击连接后只有手动点击断开才会关闭数据库连接
          * √10.执行情况增加执行时间
          */
 
@@ -2061,16 +2061,17 @@ namespace InsertDataInBatches
 
                     try
                     {
+                        //SqlHelper中把conn.close都去掉了
                         //处理单击树节点显示表结构后连接被关闭
-                        if (mssqlconn.State == ConnectionState.Closed)
+                        /*if (mssqlconn.State == ConnectionState.Closed)
                         {
                             mssqlconn.Open();
-                        }
+                        }*/
                         if (mssqlconn.State == ConnectionState.Open)
                         {
                             //获取当前数据库下的表名
                             dtDatabaseTablesNameList = SqlHelper.getDataSetMSSQL(sqlGetDatabaseTablesNameListForMSSQL, mssqlconn).Tables[0];
-                            mssqlconn.Open();
+                            //mssqlconn.Open();
                             //将表名存到list
                             listDatabaseTablesName = DataTableToList(dtDatabaseTablesNameList);
                             tn.Nodes.Add("表");
@@ -2081,7 +2082,7 @@ namespace InsertDataInBatches
 
                             //获取当前数据库下的视图名
                             dtDatabaseViewsNameList = SqlHelper.getDataSetMSSQL(sqlGetDatabaseViewsNameListForMSSQL, mssqlconn).Tables[0];
-                            mssqlconn.Open();
+                            //mssqlconn.Open();
                             //将表名存到list
                             listDatabaseViewsName = DataTableToList(dtDatabaseViewsNameList);
                             tn.Nodes.Add("视图");
@@ -2131,16 +2132,17 @@ namespace InsertDataInBatches
 
                     try
                     {
+                        //SqlHelper中把conn.close都去掉了
                         //处理单击树节点显示表结构后连接被关闭
-                        if (mysqlconn.State == ConnectionState.Closed)
+                        /*if (mysqlconn.State == ConnectionState.Closed)
                         {
                             mysqlconn.Open();
-                        }
+                        }*/
                         if (mysqlconn.State == ConnectionState.Open)
                         {
                             //获取当前数据库下的表名
                             dtDatabaseTablesNameList = SqlHelper.getDataSetMySQL(sqlGetDatabaseTablesNameListForMySQL, mysqlconn).Tables[0];
-                            mysqlconn.Open();
+                            //mysqlconn.Open();
                             //将表名存到list
                             listDatabaseTablesName = DataTableToList(dtDatabaseTablesNameList);
                             tn.Nodes.Add("表");
@@ -2151,7 +2153,7 @@ namespace InsertDataInBatches
 
                             //获取当前数据库下的视图名
                             dtDatabaseViewsNameList = SqlHelper.getDataSetMySQL(sqlGetDatabaseViewsNameListForMySQL, mysqlconn).Tables[0];
-                            mysqlconn.Open();
+                            //mysqlconn.Open();
                             //将表名存到list
                             listDatabaseViewsName = DataTableToList(dtDatabaseViewsNameList);
                             tn.Nodes.Add("视图");
