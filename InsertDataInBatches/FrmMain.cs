@@ -1228,20 +1228,25 @@ namespace InsertDataInBatches
                     #endregion
 
                     //遍历数组 并复制到剪切板
-                    string q = "";
-                    foreach (var item in sqlQuerys)
+                    string PreviewSQLAll = "";
+                    string PreviewSQLFive = "";
+                    for (int i = 0; i < sqlQuerys.Length; i++)
                     {
-                        q += item + "\n";
+                        if (i < 5)
+                        {
+                            PreviewSQLFive += sqlQuerys[i] + "\n";
+                        }
+                        PreviewSQLAll += sqlQuerys[i] + "\n";
                     }
-                    Clipboard.SetText(q);
+                    Clipboard.SetText(PreviewSQLAll);
 
-                    if (DialogResult.OK == MessageBox.Show(noMatch + "\n是否预览全部SQL？", "提示", MessageBoxButtons.OKCancel))
+                    if (DialogResult.OK == MessageBox.Show(noMatch + "\n是否预览前五条SQL？", "提示", MessageBoxButtons.OKCancel))
                     {
-                        MessageBox.Show(q);
+                        MessageBox.Show(PreviewSQLFive);
                     }
 
                     //二次确认 预览SQL发现有错可以取消
-                    if (DialogResult.OK == MessageBox.Show("SQL已复制到剪切板\n" + "是否执行？", "提示", MessageBoxButtons.OKCancel))
+                    if (DialogResult.OK == MessageBox.Show("全部SQL已复制到剪切板\n" + "是否执行？", "提示", MessageBoxButtons.OKCancel))
                     {
                         #region 使用MSSQL
                         if (radiobtnMSSQL.Checked == true)
