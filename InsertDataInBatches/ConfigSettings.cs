@@ -9,7 +9,7 @@ namespace InsertDataInBatches
 {
     class ConfigSettings
     {
-        public static string QuickInsert, QuickInsert_IDIncrement, QuickInsert_RandomNum, QuickInsert_NewID, QuickInsert_NewDateTime, QuickInsert_SameNewID, QuickInsert_RandomStr;
+        public static string QuickInsert, QuickInsert_IDIncrement, QuickInsert_RandomNum, QuickInsert_NewID, QuickInsert_NewDateTime, QuickInsert_SameNewID, QuickInsert_RandomStr, QuickInsert_IDIncrementPlus;
         public static string CommonlyUsedSQL, CommonlyUsedSQL_Default;
         public static string ConfigPath = "./InsertDataInBatches.exe";
 
@@ -26,6 +26,7 @@ namespace InsertDataInBatches
             QuickInsert_NewDateTime = RWConfig.GetappSettingsValue("QuickInsert_NewDateTime", ConfigPath);
             QuickInsert_SameNewID = RWConfig.GetappSettingsValue("QuickInsert_SameNewID", ConfigPath);
             QuickInsert_RandomStr = RWConfig.GetappSettingsValue("QuickInsert_RandomStr", ConfigPath);
+            QuickInsert_IDIncrementPlus = RWConfig.GetappSettingsValue("QuickInsert_IDIncrementPlus", ConfigPath);
         }
         #endregion
 
@@ -37,7 +38,7 @@ namespace InsertDataInBatches
         {
             if (string.IsNullOrEmpty(QuickInsert))
             {
-                RWConfig.SetappSettingsValue("QuickInsert", "QuickInsert_IDIncrement;QuickInsert_RandomNum;QuickInsert_NewID;QuickInsert_NewDateTime;QuickInsert_SameNewID", ConfigPath);
+                RWConfig.SetappSettingsValue("QuickInsert", "QuickInsert_IDIncrement;QuickInsert_RandomNum;QuickInsert_NewID;QuickInsert_NewDateTime;QuickInsert_SameNewID;QuickInsert_RandomStr;QuickInsert_IDIncrementPlus", ConfigPath);
             }
             if (string.IsNullOrEmpty(QuickInsert_IDIncrement))
             {
@@ -62,6 +63,10 @@ namespace InsertDataInBatches
             if (string.IsNullOrEmpty(QuickInsert_RandomStr))
             {
                 RWConfig.SetappSettingsValue("QuickInsert_RandomStr", "在指定元素中随机选择一项;{{[x；y；z...]}};x、y、z为指定元素，\n能在元素中随机选择一项，\n请将；换成英文分号", ConfigPath);
+            }
+            if (string.IsNullOrEmpty(QuickInsert_IDIncrementPlus))
+            {
+                RWConfig.SetappSettingsValue("QuickInsert_IDIncrementPlus", "指定id按指定数递增;{{id+x:y}};从y开始按指定x+-*/，\n(+|-|*|/)x:y，\n{{id-7:77}}，\n77、70、63...", ConfigPath);
             }
 
             //快捷插入中缺失默认配置会自动新增
@@ -91,6 +96,10 @@ namespace InsertDataInBatches
             if (Array.IndexOf(arrayQuickInsert, "QuickInsert_RandomStr") == -1)
             {
                 append += ";QuickInsert_RandomStr";
+            }
+            if (Array.IndexOf(arrayQuickInsert, "QuickInsert_IDIncrementPlus") == -1)
+            {
+                append += ";QuickInsert_IDIncrementPlus";
             }
             //不为空才更新，否则每次运行都会更新
             if (!string.IsNullOrEmpty(append))

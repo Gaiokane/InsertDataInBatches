@@ -105,6 +105,10 @@ namespace InsertDataInBatches
 
         Regex rgGetRandomStr = new Regex("{{\\[(.*?);(.*?)\\]}}");//{{[x;y;z...]}}取整块
         Regex rgGetRandomStrRange = new Regex("(?<={{\\[)(.*?);(.*?)?(?=\\]}})");//{{[x;y;z...]}}取{{[]}}中间部分
+
+        Regex rgGetIDPlusAll = new Regex("{{id(\\+|\\-|\\*|\\/)\\d*:(\\-|\\+)?\\d*}}");//{{id(+|-|*|/)7:77}}取整块
+        Regex rgGetIDPlusDiff = new Regex("(\\+|\\-|\\*|\\/)\\d*(?=:)");//{{id+-*/7:77}}取(+|-|*|/)数字
+        Regex rgGetIDPlusNum = new Regex("(?<=:).+(?=}})");//{{id+-*/7:77}}取冒号后的数字
         #endregion
 
         public FrmMain()
@@ -1231,6 +1235,20 @@ namespace InsertDataInBatches
                     }
                     #endregion
 
+                    #region 判断是否有匹配{{id(+|-|*|/)x:y}}
+                    //判断是否有匹配{{id(+|-|*|/)x:y}}
+                    if (rgGetIDPlusAll.IsMatch(sqlQuerys[0]))
+                    {
+                        //MessageBox.Show("true");
+                        getResultIDPlus(sqlQuerys);
+                    }
+                    else
+                    {
+                        //MessageBox.Show("没有匹配项{{id(+|-|*|/)x:y}}");
+                        noMatch += "没有匹配项{{id(+|-|*|/)x:y}}\n";
+                    }
+                    #endregion
+
                     //遍历数组 并复制到剪切板
                     string PreviewSQLAll = "";
                     string PreviewSQLFive = "";
@@ -1646,6 +1664,55 @@ namespace InsertDataInBatches
                     int randnum = Convert.ToInt32(NextDouble(random, 1, Range.Length)) - 1;
                     //MessageBox.Show("randnum：" + NextDouble(r, 1, Range.Length).ToString());
                     sourceSQL[i] = rgGetRandomStr.Replace(sourceSQL[i], Range[randnum], 1);
+                }
+            }
+            return sourceSQL;
+        }
+        #endregion
+
+        #region 将{{id(+|-|*|/)x:y}}指定y累加x
+        /// <summary>
+        /// 将{{id(+|-|*|/)x:y}}指定y累加x
+        /// </summary>
+        /// <param name="sourceSQL">原始SQL数组</param>
+        /// <returns>替换完的数组</returns>
+        private string[] getResultIDPlus(string[] sourceSQL)
+        {
+            Match matchrgGetIDPlusAll;
+            Match matchrgGetIDPlusDiff;
+            Match matchrgGetIDPlusNum;
+            while (rgGetIDPlusAll.Match(sourceSQL[0]).Success == true)
+            {
+                for (int i = 0; i < sourceSQL.Length; i++)
+                {
+                    matchrgGetIDPlusAll = rgGetIDPlusAll.Match(sourceSQL[i]);//{{id(+|-|*|/)7:77}}取整块
+                    matchrgGetIDPlusDiff = rgGetIDPlusDiff.Match(sourceSQL[i]);//{{id+-*/7:77}}取(+|-|*|/)数字
+                    matchrgGetIDPlusNum = rgGetIDPlusNum.Match(sourceSQL[i]);//{{id+-*/7:77}}取冒号后的数字
+
+                    string str = matchrgGetIDPlusDiff.Groups[0].Value;//取(+|-|*|/)数字
+                    string symbol = str.Substring(0, 1);//(+|-|*|/)
+                    int length = Convert.ToInt32(str.Substring(1, str.Length - 1));//数字
+
+                    if (symbol == "+")
+                    {
+                        //用这条，仅替换第一个匹配对象
+                        sourceSQL[i] = rgGetIDPlusAll.Replace(sourceSQL[i], (Convert.ToInt32(matchrgGetIDPlusNum.Groups[0].Value) + length * i).ToString(), 1);
+                    }
+                    if (symbol == "-")
+                    {
+                        //用这条，仅替换第一个匹配对象
+                        sourceSQL[i] = rgGetIDPlusAll.Replace(sourceSQL[i], (Convert.ToInt32(matchrgGetIDPlusNum.Groups[0].Value) - length * i).ToString(), 1);
+                    }
+                    if (symbol == "*")
+                    {
+                        //用这条，仅替换第一个匹配对象
+                        sourceSQL[i] = rgGetIDPlusAll.Replace(sourceSQL[i], (Convert.ToInt32(matchrgGetIDPlusNum.Groups[0].Value) * (Math.Pow(length, i))).ToString(), 1);
+                    }
+                    if (symbol == "/")
+                    {
+                        //用这条，仅替换第一个匹配对象
+                        sourceSQL[i] = rgGetIDPlusAll.Replace(sourceSQL[i], (Convert.ToInt32(matchrgGetIDPlusNum.Groups[0].Value) / (Math.Pow(length, i))).ToString(), 1);
+                    }
                 }
             }
             return sourceSQL;
