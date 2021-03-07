@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
 using Gaiokane;
+using System.Threading;
 
 namespace InsertDataInBatches
 {
@@ -57,6 +56,13 @@ namespace InsertDataInBatches
         string[] sqlQuerys;
 
         string comBoxText;
+
+        //线程 判断是否有匹配
+        static string noMatch = "";
+
+        //线程 遍历数组 并复制到剪切板
+        static string PreviewSQLFive = "";
+        static StringBuilder sbPreviewSQLAll = new StringBuilder("");
 
         SqlConnection mssqlconn;
         SqlCommand mssqlcmd = new SqlCommand();
@@ -107,8 +113,8 @@ namespace InsertDataInBatches
         Regex rgGetRandomStrRange = new Regex("(?<={{\\[)(.*?);(.*?)?(?=\\]}})");//{{[x;y;z...]}}取{{[]}}中间部分
 
         Regex rgGetIDPlusAll = new Regex("{{id(\\+|\\-|\\*|\\/)\\d*:(\\-|\\+)?\\d*}}");//{{id(+|-|*|/)7:77}}取整块
-        Regex rgGetIDPlusDiff = new Regex("(\\+|\\-|\\*|\\/)\\d*(?=:)");//{{id+-*/7:77}}取(+|-|*|/)数字
-        Regex rgGetIDPlusNum = new Regex("(?<=:).+(?=}})");//{{id+-*/7:77}}取冒号后的数字
+        Regex rgGetIDPlusDiff = new Regex("(?<={{id)(\\+|\\-|\\*|\\/)\\d+(?=:\\d*}})");//{{id+-*/7:77}}取(+|-|*|/)数字
+        Regex rgGetIDPlusNum = new Regex("(?<={{id(\\+|\\-|\\*|\\/)\\d*:).+(?=}})");//{{id+-*/7:77}}取冒号后的数字
         #endregion
 
         public FrmMain()
@@ -1149,6 +1155,10 @@ namespace InsertDataInBatches
                         sqlQuerys[i] = richtxtboxInsertSQL.Text.Trim();
                     }
 
+                    //MessageBox.Show("循环执行完，准备开始替换匹配项");
+
+                    #region 以下已注释 判断是否有匹配 换用下面线程处理 ThreadMatchReg()
+                    /*
                     string noMatch = "";
 
                     #region 判断是否有匹配{{id:x}}
@@ -1249,6 +1259,20 @@ namespace InsertDataInBatches
                     }
                     #endregion
 
+                    */
+                    #endregion
+
+                    #region 替换上面 判断是否有匹配 线程处理 ThreadMatchReg()
+                    Thread threadmatchreg = new Thread(new ThreadStart(ThreadMatchReg));
+                    threadmatchreg.Start();
+                    //等待线程执行完毕
+                    threadmatchreg.Join();
+                    #endregion
+
+                    //MessageBox.Show("替换匹配项执行完");
+
+                    #region 以下已注释 遍历数组 并复制到剪切板 换用下面线程处理 ThreadPreviewSQL()
+                    /*
                     //遍历数组 并复制到剪切板
                     string PreviewSQLAll = "";
                     string PreviewSQLFive = "";
@@ -1260,6 +1284,17 @@ namespace InsertDataInBatches
                         }
                         PreviewSQLAll += sqlQuerys[i] + "\n";
                     }
+                    */
+                    #endregion
+
+                    #region 替换上面 遍历数组 并复制到剪切板 线程处理 ThreadPreviewSQL()
+                    Thread threadpreviewsql = new Thread(new ThreadStart(ThreadPreviewSQL));
+                    threadpreviewsql.Start();
+                    //等待线程执行完毕
+                    threadmatchreg.Join();
+                    #endregion
+
+                    //MessageBox.Show("遍历到string结束");
 
                     if (DialogResult.OK == MessageBox.Show(noMatch + "\n是否预览前五条SQL？", "提示", MessageBoxButtons.OKCancel))
                     {
@@ -1268,7 +1303,8 @@ namespace InsertDataInBatches
 
                     if (DialogResult.OK == MessageBox.Show("是否将全部SQL复制到剪切板？", "提示", MessageBoxButtons.OKCancel))
                     {
-                        Clipboard.SetText(PreviewSQLAll);
+                        //Clipboard.SetText(PreviewSQLAll);
+                        Clipboard.SetText(sbPreviewSQLAll.ToString());
                     }
 
                     //二次确认 预览SQL发现有错可以取消
@@ -1359,6 +1395,11 @@ namespace InsertDataInBatches
                     {
                         richtxtboxResult.Text = "取消插入！";
                     }
+
+                    //清空遍历
+                    //PreviewSQLAll = "";
+                    sbPreviewSQLAll.Clear();
+                    sqlQuerys.Initialize();
                 }
             }
         }
@@ -2378,6 +2419,128 @@ namespace InsertDataInBatches
         {
             TimeSpan ts = DateTime.Now.Subtract(oldtime);
             return ts.Seconds;
+        }
+        #endregion
+
+        #region 线程处理 判断是否有匹配 2021-03-07
+        private void ThreadMatchReg()
+        {
+            noMatch = "";
+
+            #region 判断是否有匹配{{id:x}}
+            //判断是否有匹配{{id:x}}
+            if (rgGetID.IsMatch(sqlQuerys[0]))
+            {
+                //MessageBox.Show("true");
+                getResultID(sqlQuerys);
+            }
+            else
+            {
+                //MessageBox.Show("没有匹配项{{id:x}}");
+                noMatch += "没有匹配项{{id:x}}\n";
+            }
+            #endregion
+
+            #region 判断是否有匹配{{[1.22-22]}}
+            //判断是否有匹配{{id:x}}
+            if (rgGetRandom.IsMatch(sqlQuerys[0]))
+            {
+                //MessageBox.Show("true");
+                getRandomNum(sqlQuerys);
+            }
+            else
+            {
+                //MessageBox.Show("没有匹配项{{[x-y]}}");
+                noMatch += "没有匹配项{{[x-y]}}\n";
+            }
+            #endregion
+
+            #region 判断是否有匹配{{newid}}
+            //判断是否有匹配{{newid}}
+            if (rgGetNewID.IsMatch(sqlQuerys[0]))
+            {
+                //MessageBox.Show("true");
+                getNewID(sqlQuerys);
+            }
+            else
+            {
+                //MessageBox.Show("没有匹配项{{newid}}");
+                noMatch += "没有匹配项{{newid}}\n";
+            }
+            #endregion
+
+            #region 判断是否有匹配{{samenewid}}
+            //判断是否有匹配{{samenewid}}
+            if (rgGetSameNewID.IsMatch(sqlQuerys[0]))
+            {
+                //MessageBox.Show("true");
+                getSameNewID(sqlQuerys);
+            }
+            else
+            {
+                //MessageBox.Show("没有匹配项{{samenewid}}");
+                noMatch += "没有匹配项{{samenewid}}\n";
+            }
+            #endregion
+
+            #region 判断是否有匹配{{time(d|h|m|s)(+|-)7:datetime}}
+            //判断是否有匹配{{time(d|h|m|s)(+|-)7:datetime}}
+            if (rgGetDateTimeAll.IsMatch(sqlQuerys[0]))
+            {
+                //MessageBox.Show("true");
+                getNewDateTime(sqlQuerys);
+            }
+            else
+            {
+                //MessageBox.Show("没有匹配项{{time(d|h|m|s)(+|-)7:datetime}}");
+                noMatch += "没有匹配项{{time(d|h|m|s)(+|-)7:datetime}}\n";
+            }
+            #endregion
+
+            #region 判断是否有匹配{{[x;y;z...]}}
+            //判断是否有匹配{{[x;y;z...]}}
+            if (rgGetRandomStr.IsMatch(sqlQuerys[0]))
+            {
+                //MessageBox.Show("true");
+                getRandomStr(sqlQuerys);
+            }
+            else
+            {
+                //MessageBox.Show("没有匹配项{{[x;y;z]}}");
+                noMatch += "没有匹配项{{[x;y;z...]}}\n";
+            }
+            #endregion
+
+            #region 判断是否有匹配{{id(+|-|*|/)x:y}}
+            //判断是否有匹配{{id(+|-|*|/)x:y}}
+            if (rgGetIDPlusAll.IsMatch(sqlQuerys[0]))
+            {
+                //MessageBox.Show("true");
+                getResultIDPlus(sqlQuerys);
+            }
+            else
+            {
+                //MessageBox.Show("没有匹配项{{id(+|-|*|/)x:y}}");
+                noMatch += "没有匹配项{{id(+|-|*|/)x:y}}\n";
+            }
+            #endregion
+        }
+        #endregion
+
+        #region 线程处理 遍历数组 并复制到剪切板 2021-03-07
+        private void ThreadPreviewSQL()
+        {
+            PreviewSQLFive = "";
+            sbPreviewSQLAll.Clear();
+
+            for (int i = 0; i < sqlQuerys.Length; i++)
+            {
+                if (i < 5)
+                {
+                    PreviewSQLFive += sqlQuerys[i] + "\n";
+                }
+                sbPreviewSQLAll.AppendLine(sqlQuerys[i]);
+            }
         }
         #endregion
     }
