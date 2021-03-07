@@ -1260,15 +1260,19 @@ namespace InsertDataInBatches
                         }
                         PreviewSQLAll += sqlQuerys[i] + "\n";
                     }
-                    Clipboard.SetText(PreviewSQLAll);
 
                     if (DialogResult.OK == MessageBox.Show(noMatch + "\n是否预览前五条SQL？", "提示", MessageBoxButtons.OKCancel))
                     {
                         MessageBox.Show(PreviewSQLFive);
                     }
 
+                    if (DialogResult.OK == MessageBox.Show("是否将全部SQL复制到剪切板？", "提示", MessageBoxButtons.OKCancel))
+                    {
+                        Clipboard.SetText(PreviewSQLAll);
+                    }
+
                     //二次确认 预览SQL发现有错可以取消
-                    if (DialogResult.OK == MessageBox.Show("全部SQL已复制到剪切板\n" + "是否执行？", "提示", MessageBoxButtons.OKCancel))
+                    if (DialogResult.OK == MessageBox.Show("是否执行？", "提示", MessageBoxButtons.OKCancel))
                     {
                         #region 使用MSSQL
                         if (radiobtnMSSQL.Checked == true)
