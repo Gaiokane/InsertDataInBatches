@@ -1263,10 +1263,13 @@ namespace InsertDataInBatches
                     #endregion
 
                     #region 替换上面 判断是否有匹配 线程处理 ThreadMatchReg()
+                    DateTime dtnowThreadMatchReg = DateTime.Now;
                     Thread threadmatchreg = new Thread(new ThreadStart(ThreadMatchReg));
                     threadmatchreg.Start();
                     //等待线程执行完毕
                     threadmatchreg.Join();
+                    //处理耗时
+                    int dtsubThreadMatchReg = GetSeconds(dtnowThreadMatchReg);
                     #endregion
 
                     //MessageBox.Show("替换匹配项执行完");
@@ -1296,7 +1299,7 @@ namespace InsertDataInBatches
 
                     //MessageBox.Show("遍历到string结束");
 
-                    if (DialogResult.OK == MessageBox.Show(noMatch + "\n是否预览前五条SQL？", "提示", MessageBoxButtons.OKCancel))
+                    if (DialogResult.OK == MessageBox.Show(noMatch + "\n是否预览前五条SQL？\n判断替换耗时：" + dtsubThreadMatchReg + "秒", "提示", MessageBoxButtons.OKCancel))
                     {
                         MessageBox.Show(PreviewSQLFive);
                     }
@@ -1321,7 +1324,7 @@ namespace InsertDataInBatches
                                 int datetimeSubtract = GetSeconds(dtnow);
                                 if (result > 0)
                                 {
-                                    richtxtboxResult.Text += "\n插入成功，插入结束\n耗时：" + datetimeSubtract + "秒";
+                                    richtxtboxResult.Text += "\n插入成功，插入结束\n判断替换耗时：" + dtsubThreadMatchReg + "秒\n写入数据耗时：" + datetimeSubtract + "秒\n总耗时：" + (dtsubThreadMatchReg + datetimeSubtract) + "秒";
 
                                     //滚动到底部
                                     //让文本框获取焦点 
@@ -1361,7 +1364,7 @@ namespace InsertDataInBatches
                                 int datetimeSubtract = GetSeconds(dtnow);
                                 if (result > 0)
                                 {
-                                    richtxtboxResult.Text += "\n插入成功，插入结束\n耗时：" + datetimeSubtract + "秒";
+                                    richtxtboxResult.Text += "\n插入成功，插入结束\n判断替换耗时：" + dtsubThreadMatchReg + "秒\n写入数据耗时：" + datetimeSubtract + "秒\n总耗时：" + (dtsubThreadMatchReg + datetimeSubtract) + "秒";
 
                                     //滚动到底部
                                     //让文本框获取焦点 
