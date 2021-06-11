@@ -114,7 +114,7 @@ namespace InsertDataInBatches
 
         Regex rgGetIDPlusAll = new Regex("{{id(\\+|\\-|\\*|\\/)\\d*:(\\-|\\+)?\\d*}}");//{{id(+|-|*|/)7:77}}取整块
         Regex rgGetIDPlusDiff = new Regex("(?<={{id)(\\+|\\-|\\*|\\/)\\d+(?=:\\d*}})");//{{id+-*/7:77}}取(+|-|*|/)数字
-        Regex rgGetIDPlusNum = new Regex("(?<={{id(\\+|\\-|\\*|\\/)\\d*:).+(?=}})");//{{id+-*/7:77}}取冒号后的数字
+        Regex rgGetIDPlusNum = new Regex("(?<={{id(\\+|\\-|\\*|\\/)\\d*:)(\\-|\\+)?\\d+(\\.\\d+)?(?=}})");//{{id+-*/7:77}}取冒号后的数字
         #endregion
 
         public FrmMain()
